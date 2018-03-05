@@ -1,10 +1,22 @@
 # cs0320 Term Project 2018
 
-**Team Members:** _Fill this in!_
+**Team Members:** Diane, Lina, Matthew, Mounika
 
-**Team Strengths and Weaknesses:** _Fill this in!_
+**Team Strengths**
 
-**Project Idea(s):** _Fill this in!_
+1. The team members
+2. Energy, drive, willpower, desire to learn, etc
+3. Respect for each others' ideas and talents
+4. Willingness to help one another
+
+**Team Weaknesses**
+
+1. not too much experience making large-scale applications
+2. have not made a chat-bot before
+
+
+**Project Idea(s):** 
+A chatbot that helps you choose where to eat when going out with friends/family! Based on a group of users' conversation with the chatbot, they would give you a suggestion on where to eat. This could be integrated with a Facebook API or other social networks.
 
 **Mentor TA:** _Put your mentor TA's name and email here once you're assigned one!_
 
