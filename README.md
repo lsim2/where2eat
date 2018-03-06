@@ -16,6 +16,8 @@
 
 **Project Idea(s):** 
 A chatbot that helps you choose where to eat when going out with friends/family! Based on a group of users' conversation with the chatbot, they would give you suggestions on where to eat. This could be integrated with a Facebook API or other social networks.
+**Problem: **
+This app will help people explore different cuisines and places to eat. It will save time while deciding where to have their meals because it will do the deciding for them. This will be especially helpful when multiple people want to share a meal because it will align their interests.
 
 **Mentor TA:** _Put your mentor TA's name and email here once you're assigned one!_
 
