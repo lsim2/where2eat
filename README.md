@@ -15,7 +15,7 @@
 2. have not made a chat-bot before
 
 **Project Idea(s):** 
-A chatbot that helps you choose where to eat when going out with friends/family! Based on a group of users' conversation with the chatbot, they would give you a suggestion on where to eat. This could be integrated with a Facebook API or other social networks.
+A chatbot that helps you choose where to eat when going out with friends/family! Based on a group of users' conversation with the chatbot, they would give you suggestions on where to eat. This could be integrated with a Facebook API or other social networks.
 
 **Mentor TA:** _Put your mentor TA's name and email here once you're assigned one!_
 
