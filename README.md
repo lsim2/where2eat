@@ -1,3 +1,5 @@
+Approved by Alex!
+
 # cs0320 Term Project 2018
 
 **Team Members:** Diane Mutako, Lina Sim, Matthew Liu, Mounika Dandu
