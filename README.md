@@ -1,6 +1,6 @@
 Approved by Alex!
 
-# cs0320 Term Project 2018
+# FoodGroup
 
 **Team Members:** Diane Mutako, Lina Sim, Matthew Liu, Mounika Dandu
 
@@ -16,8 +16,11 @@ Approved by Alex!
 1. not too much experience making large-scale applications
 2. have not made a chat-bot before
 
-**Project Idea(s):** 
-A chatbot that helps you choose where to eat when going out with friends/family! Based on a group of users' conversation with the chatbot, they would give you suggestions on where to eat. This could be integrated with a Facebook API or other social networks.
+**Diagram**
+[https://drive.google.com/file/d/1UrB0W0WXKJBw-JEp3ygq_qHQx8kvqAns/view?usp=sharing](https://drive.google.com/file/d/1UrB0W0WXKJBw-JEp3ygq_qHQx8kvqAns/view?usp=sharing)
+
+**Overview**
+An app that lets a group of friends decide where to eat. An initial user - from a pool of options - creates an interactive form, which is then sent to friends. Friends answer questions/enter different types of preferences and then are put into a chatroom with the rest of the group. Then the app, based upon factors such as distance, ambiance, reputability, size, cuisine style and etc, creates an aesthetically pleasing list of rankings. 
 
 **Problem:**
 This app will help people explore different cuisines and places to eat. It will save time while deciding where to have their meals because it will do the deciding for them. This will be especially helpful when multiple people want to share a meal because it will align their interests.
