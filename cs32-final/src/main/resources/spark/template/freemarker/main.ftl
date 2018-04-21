@@ -10,8 +10,7 @@
     <link rel="stylesheet" href="/css/html5bp.css">
     <link rel="stylesheet" href="/css/main.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+
          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
 
 		<link rel="stylesheet"
@@ -22,16 +21,15 @@
 		<link rel="stylesheet" href="/css/bootstrap-material-datetimepicker.css" />
 		<link href='http://fonts.googleapis.com/css?family=Roboto:400,500' rel='stylesheet' type='text/css'>
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  </head>
-  <body>
-  <nav class="navbar navbar-fixed-top">
+         <nav class="navbar navbar-fixed-top">
   <div class="container-fluid">
     <div class="navbar-header">
       <a class="navbar-brand" href="#">YELP 2.0</a>
     </div>
   </div>
 </nav>
-     ${content}
+  </head>
+  <body>
      
      <!-- Again, we're serving up the unminified source for clarity. -->
      <script src="/js/jquery-3.1.1.js"></script>
@@ -51,7 +49,6 @@
 
      <script src="/js/script.js"></script>
      <script src="/js/time.js"></script>
-      <script src="/js/chat.js"></script>
   </body>
   <!-- See http://html5boilerplate.com/ for a good place to start
        dealing with real world issues like old browsers.  -->

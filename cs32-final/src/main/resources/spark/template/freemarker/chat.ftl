@@ -1,5 +1,6 @@
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <link rel="stylesheet" href="/css/chat.css">
+<br><br>
 <div class="container bootstrap snippet">
     <div class="row">
 		<div class="col-md-3">
@@ -19,11 +20,11 @@
                 <ul id="chatList" class="chat">
                     <li class="left clearfix">
                     	<span class="chat-img pull-left">
-                    		<img src="https://api.adorable.io/avatars/50/johndoe@adorable.png" alt="User Avatar">
+                    		<img src="https://api.adorable.io/avatars/50/Diane@adorable.png" alt="User Avatar">
                     	</span>
                     	<div class="chat-body clearfix">
                     		<div class="header">
-                    			<strong class="primary-font">John Doe</strong>
+                    			<strong class="primary-font">Diane</strong>
                     			<small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 12 mins ago</small>
                     		</div>
                     		<p>
@@ -31,27 +32,13 @@
                     		</p>
                     	</div>
                     </li>
-                    <li class="right clearfix">
-                    	<span class="chat-img pull-right">
-                    		<img src="https://api.adorable.io/avatars/50/sarah@adorable.png" alt="User Avatar">
-                    	</span>
-                    	<div class="chat-body clearfix">
-                    		<div class="header">
-                    			<strong class="primary-font">Sarah</strong>
-                    			<small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 13 mins ago</small>
-                    		</div>
-                    		<p>
-                    			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales at. 
-                    		</p>
-                    	</div>
-                    </li>
                     <li class="left clearfix">
                         <span class="chat-img pull-left">
-                    		<img src="https://api.adorable.io/avatars/50/jj@adorable.png" alt="User Avatar">
+                    		<img src="https://api.adorable.io/avatars/50/Matthew@adorable.png" alt="User Avatar">
                     	</span>
                     	<div class="chat-body clearfix">
                     		<div class="header">
-                    			<strong class="primary-font">JJ</strong>
+                    			<strong class="primary-font">Matthew</strong>
                     			<small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 12 mins ago</small>
                     		</div>
                     		<p>
@@ -61,11 +48,11 @@
                     </li>
                     <li class="right clearfix">
                         <span class="chat-img pull-right">
-                    		<img src="https://api.adorable.io/avatars/50/sarah@adorable.png" alt="User Avatar">
+                    		<img src="https://api.adorable.io/avatars/50/Mounika@adorable.png" alt="User Avatar">
                     	</span>
                     	<div class="chat-body clearfix">
                     		<div class="header">
-                    			<strong class="primary-font">Sarah</strong>
+                    			<strong class="primary-font">Mounika</strong>
                     			<small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 13 mins ago</small>
                     		</div>
                     		<p>
@@ -75,11 +62,11 @@
                     </li>                    
                     <li class="left clearfix">
                         <span class="chat-img pull-left">
-                    		<img src="https://api.adorable.io/avatars/50/jj@adorable.png" alt="User Avatar">
+                    		<img src="https://api.adorable.io/avatars/50/Lina@adorable.png" alt="User Avatar">
                     	</span>
                     	<div class="chat-body clearfix">
                     		<div class="header">
-                    			<strong class="primary-font">JJ</strong>
+                    			<strong class="primary-font">Lina</strong>
                     			<small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 12 mins ago</small>
                     		</div>
                     		<p>
@@ -100,5 +87,6 @@
 		</div>        
 	</div>
 </div>
-
+<script src="/js/jquery-3.1.1.js"></script>
+<script src="/js/chat.js"></script>
 <#include "main.ftl">

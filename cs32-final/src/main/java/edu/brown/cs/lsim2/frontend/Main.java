@@ -4,17 +4,24 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.gson.Gson;
 
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import spark.ExceptionHandler;
 import spark.ModelAndView;
+import spark.QueryParamsMap;
 import spark.Request;
 import spark.Response;
+import spark.Route;
 import spark.Spark;
 import spark.TemplateViewRoute;
 import spark.template.freemarker.FreeMarkerEngine;
@@ -28,6 +35,8 @@ public final class Main {
 
   private static final int DEFAULT_PORT = 4567;
   //private static Repl myRepl;
+  private static Map<UUID, Poll> pollDb = new HashMap<>(); 
+  private static final Gson GSON = new Gson();
 
   /**
    * The initial method called when execution begins.
@@ -92,8 +101,12 @@ public final class Main {
     FreeMarkerEngine freeMarker = createEngine();
     // Setup Spark Routes
     Spark.get("/", new FrontHandler(), freeMarker);
+    Spark.get("/home", new homeFrontHandler(), freeMarker);
+    Spark.post("/home", new homeSubmitHandler());
     Spark.get("/date", new dateFrontHandler(), freeMarker);
     Spark.get("/chat", new chatFrontHandler(), freeMarker);
+    Spark.post("/poll", new pollFrontHandler(), freeMarker);
+    Spark.get("/poll/:id", new pollUniqueHandler(), freeMarker);
   }
 
   /**
@@ -105,10 +118,25 @@ public final class Main {
     @Override
     public ModelAndView handle(Request req, Response res) {
       Map<String, Object> variables = ImmutableMap.of("title",
-          "Yelp 2.0", "content", "");
+          "Yelp 2.0");
       return new ModelAndView(variables, "index.ftl");
     }
   }
+  
+  /**
+   * Handle requests to the front page of our Stars website.
+   *
+   * @author lsim2
+   */
+  private static class homeFrontHandler implements TemplateViewRoute {
+    @Override
+    public ModelAndView handle(Request req, Response res) {
+      Map<String, Object> variables = ImmutableMap.of("title",
+          "Yelp 2.0");
+      return new ModelAndView(variables, "home.ftl");
+    }
+  }
+
 
   /**
    * Handle requests to the front page of our Autocorrect website.
@@ -119,8 +147,69 @@ public final class Main {
 	    @Override
 	    public ModelAndView handle(Request req, Response res) {
 	      Map<String, Object> variables = ImmutableMap.of("title",
-	          "Yelp 2.0", "content", "");
+	          "Yelp 2.0");
 	      return new ModelAndView(variables, "date.ftl");
+	    }
+	  }
+  
+  /**
+   * Handle requests to the front page of our Autocorrect website.
+   *
+   * @author lsim2
+   */
+  private static class pollUniqueHandler implements TemplateViewRoute {
+	    @Override
+	    public ModelAndView handle(Request req, Response res) {
+	    		String id = req.raw().getQueryString();
+	        String raw = req.raw().getRequestURL().toString();
+	        int index = raw.lastIndexOf('/') + 1;
+	      Map<String, Object> variables = ImmutableMap.of("title",
+	          "Yelp 2.0", "pollId", raw);
+	      return new ModelAndView(variables, "poll.ftl");
+	    }
+	  }
+  
+  /**
+   * Handle requests to the front page of our Autocorrect website.
+   *
+   * @author lsim2
+   */
+  private static class pollFrontHandler implements TemplateViewRoute {
+	    @Override
+	    public ModelAndView handle(Request req, Response res) {
+	      QueryParamsMap qm = req.queryMap();
+	      String name = qm.value("name");
+	      String title = qm.value("title");
+	      String location = qm.value("location");
+	      String date = qm.value("date");
+	      String msg = qm.value("message");
+	      UUID pollId = UUID.randomUUID();
+	      Poll poll = new Poll(pollId, name, title,location,date,msg);
+	      pollDb.put(pollId, poll);
+	      Map<String, Object> variables = ImmutableMap.of("title",
+		          "Yelp 2.0", "pollId", pollId);
+	      return new ModelAndView(variables, "poll.ftl");
+	    }
+	  }
+  
+  /**
+   * Handle requests to the front page of our Autocorrect website.
+   *
+   * @author lsim2
+   */
+  private static class homeSubmitHandler implements Route {
+	    public String handle(Request req, Response res) {
+	      QueryParamsMap qm = req.queryMap();
+	      String name = qm.value("name");
+	      String title = qm.value("title");
+	      String location = qm.value("location");
+	      String date = qm.value("date");
+	      String msg = qm.value("message");
+	      UUID pollId = UUID.randomUUID();
+	      Poll poll = new Poll(pollId, name, title,location,date,msg);
+	      pollDb.put(pollId, poll);
+	      Map<String, Object> variables = ImmutableMap.of("pollId", pollId, "pollTitle", title, "location", location, "date", date);
+	      return GSON.toJson(variables);
 	    }
 	  }
 
@@ -134,7 +223,7 @@ public final class Main {
 	  @Override
 	    public ModelAndView handle(Request req, Response res) {
 	      Map<String, Object> variables = ImmutableMap.of("title",
-	          "Yelp 2.0", "content", "");
+	          "Yelp 2.0");
 	      return new ModelAndView(variables, "chat.ftl");
 	    }
   }

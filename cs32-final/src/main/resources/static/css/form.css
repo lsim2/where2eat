@@ -1,0 +1,23 @@
+.slider.slider-horizontal{
+  width:400px; /* sample value - set it as you like*/
+}
+
+#title {
+    text-align: center;
+}
+.ranking {
+    position: relative; 
+    float: left; 
+    padding: 45px; 
+}
+
+.form {
+     margin: 0 auto;
+     width: 1000px; 
+     padding: 10px; 
+}
+
+
+#time .slider-selection {
+	background: green;
+}

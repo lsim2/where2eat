@@ -76,7 +76,7 @@ small, .small {
 .chat-message {
   padding: 60px 20px 11px;
   overflow-y: auto;
-  height: 500px;
+  height: 450px;
 }
 
 .chat {

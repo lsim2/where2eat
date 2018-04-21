@@ -5,10 +5,10 @@ coolform.directive('coolForm', function($timeout) {
       $scope.activequestion = -1;
       $scope.answering = true;
       
-      $scope.questions.push({'question': 'Title'});
-      $scope.questions.push({'question': 'Location'});
-      $scope.questions.push({'question': 'Date and Time'});
-      $scope.questions.push({'question': 'Message'});
+      $scope.questions.push({'question': 'Create a title'});
+      $scope.questions.push({'question': 'Select a general location'});
+      $scope.questions.push({'question': 'Select the Date and Time'});
+      $scope.questions.push({'question': 'Write a Message!'});
       
       function removeOpen() {
         for(i=0;i<qs.length;i++){
@@ -40,6 +40,7 @@ coolform.directive('coolForm', function($timeout) {
           if (!angular.element(qs[order]).hasClass('open')) {
             angular.element(qs[order]).addClass('open');
           }
+            console.log(document.getElementById('q-answer').innerHTML);
         }
 
       }
@@ -48,16 +49,18 @@ coolform.directive('coolForm', function($timeout) {
           if (duration <= 10) {
             document.getElementById('q'+(focus)).focus();
             if (focus == 2) {
-                console.log("time");
-                document.getElementById('q2').classList.add('form-control');
+                //document.getElementById('q2').classList.add('form-control');
                 //document.getElementById('q2').classList.add('datepicker');
                 document.getElementById('q2').placeholder = "";
                 $('#q2').bootstrapMaterialDatePicker
                 ({
-                    format: 'dddd DD MMMM YYYY - HH:mm'
+                    format: 'dddd DD MMMM YYYY - HH:mm',
                 });
-                $.material.init()
-                console.log(document.getElementById('q2'))
+                $.material.init();
+                $('#q2').focus();
+            } else if (focus == 3) {
+                document.getElementById("q3").style = "font-size: 50%";
+                document.getElementById("q3").style.height = "350px";
             }
             return;
           }

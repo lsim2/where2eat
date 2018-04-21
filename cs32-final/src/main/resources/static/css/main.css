@@ -1,6 +1,8 @@
+/*
 input[type="number"] {
   width: em;
 }
+*/
 
 
 body {
@@ -9,26 +11,32 @@ body {
 	margin-left: 30px; 
 	font-family: 'Montserrat', sans-serif;
 	background-size: cover;
-	background: #50C9C3;  /* fallback for old browsers */
+	background: #50C9C3; 
+    /* fallback for old browsers */
     background: -webkit-linear-gradient(to right, #96DEDA, #50C9C3);  /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(to right, #96DEDA, #50C9C3); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
 }
 
 
-* { box-sizing: border-box; position:relative;}
+/** { box-sizing: border-box; position:relative;}*/
 
+/*
 .wrapper {
   font-family: "lato", sans-serif;
   color: black;
 }
+*/
 
+/*
 #form-wrapper {
   margin-top: 80px;
   height:450px;
   transition: all 1s ease;
   overflow: hidden;
 }
+*/
+/*
 #form-wrapper.answering {
   height: 150px;
   overflow: hidden;
@@ -45,12 +53,12 @@ body {
 .question label {font-size: 20px; padding-left:20px;}
 .question input, .question .q-next {display: none;}
 .question .q-text {height:30px;line-height:30px; color:black;}
-.question .q-answer {display:inline; color: blue;}
+.question .q-answer {display:inline; color: blue;font-size: 70%;}
 
 .question.open {height: 90px; margin-bottom: 150px;}
 .question.open label {font-size: 30px;}
 .question.open .q-back {opacity: 0;}
-.question.open input {display: block; color: black;}
+.question.open input {display: block; color: darkgreen; font-size: 70%;}
 .question.open .q-next {display: block;}
 .question.open .q-text {height:40px;line-height:40px;}
 .question.open .q-answer {display:none;}
@@ -160,3 +168,4 @@ hr {
   height: 1px;
   background: rgba(255,255,255,.2);
 }
+*/
