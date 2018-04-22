@@ -3,6 +3,7 @@ let ractive = new Ractive({
   template: '#template',
   data: {}
 });
+let pollId = "";
 
 $("#submit").click(function(e) {
     let postParameter = {
@@ -10,12 +11,19 @@ $("#submit").click(function(e) {
         title: document.getElementById('title').value, 
         location: document.getElementById('location').value, 
         date: document.getElementById('date-format').value, 
-        message: document.getElementById('message').innerHTML
+        message: document.getElementById('message').value
      };
+    for (var key in postParameter) {
+        if (postParameter[key] == "" && key != message) {
+          alert("Please enter a " + key);
+        ractive.toggle( 'flipCard' );
+          return;
+        }
+    }
     $.post("/home", postParameter, response => { 
         const responseObject = JSON.parse(response);
         console.log(responseObject);
-        let pollId = "" + responseObject.pollId; 
+        pollId = "" + responseObject.pollId; 
         let title = "" + responseObject.pollTitle; 
         let location = "" + responseObject.location;
         let date = "" + responseObject.date; 
@@ -45,5 +53,43 @@ e.preventDefault();
 });
 
 $("#goToPoll").click(function(e){
-        document.getElementById("form_id").submit();
+        location.href = 'localhost:4567/poll/:id?'+pollId;
 });
+
+function initAutocomplete() {
+  var input = document.getElementById('location');
+  var searchBox = new google.maps.places.SearchBox(input);
+  // Listen for the event fired when the user selects a prediction and retrieve
+  // more details for that place.
+  searchBox.addListener('places_changed', function() {
+    var places = searchBox.getPlaces();
+
+    if (places.length == 0) {
+      return;
+    }
+    // For each place, get the icon, name and location.
+    var bounds = new google.maps.LatLngBounds();
+    places.forEach(function(place) {
+      if (!place.geometry) {
+        console.log("Returned place contains no geometry");
+        return;
+      }
+      var icon = {
+        url: place.icon,
+        size: new google.maps.Size(71, 71),
+        origin: new google.maps.Point(0, 0),
+        anchor: new google.maps.Point(17, 34),
+        scaledSize: new google.maps.Size(25, 25)
+      };
+      console.log(place.geometry.location.lat());
+      console.log(place.geometry.location.lng());
+
+      if (place.geometry.viewport) {
+        // Only geocodes have viewport.
+        bounds.union(place.geometry.viewport);
+      } else {
+        bounds.extend(place.geometry.location);
+      }
+    });
+  });
+}

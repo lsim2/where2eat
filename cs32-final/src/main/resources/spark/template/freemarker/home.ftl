@@ -25,25 +25,26 @@
                 <div class="top-wrapper">
                   <div class="input">
                     <label style="color: white">Name</label>
-                    <input type="text" name="name" id="name" autocomplete="off"/>
+                    <input type="text" name="name" id="name" autocomplete="off" placeholder="Your name" required />
                   </div>
                   <div class="input">
                     <label style="color: white">Title</label>
-                    <input type="text" name="title" id="title" autocomplete="off"/>
+                    <input type="text" name="title" id="title" autocomplete="off" placeholder="What meal are you having?" required/>
                   </div>
                   <div class="input">
                     <label style="color: white">Location</label>
-                    <input type="text" name="location" id="location" autocomplete="off"/>
+                    <input id="location" name="location" class="controls" type="text" placeholder="Where would you like to go?">
+                    <!--<input type="text" name="location" id="location" autocomplete="off" required/>-->
                   </div>
                 </div>
                 <div class="bottom-wrapper">
                   <div class="input">
                     <label style="color: white">Date and Time</label>
-                    <input type="text" name="date" id="date-format" autocomplete="off"/>
+                    <input type="text" name="date" id="date-format" autocomplete="off" placeholder="When are you planning to meet?" required/>
                   </div>
                   <div class="input">
                     <label style="color: white">Message</label>
-                    <textarea rows="5" name="message" id="message"></textarea>
+                    <textarea rows="5" name="message" id="message" value="Let's eat!"></textarea>
                   </div>
                   <div class="submit">
                     <div id="submit" class="submit-card" on-click="toggle('flipCard')">Create poll!</div>
@@ -75,9 +76,9 @@
   <script src='https://cdn.jsdelivr.net/npm/ractive@0.9'></script>
   <script src="/js/jquery-3.1.1.js"></script>
   
-  
-    <script  src="js/home.js"></script>
-
+      <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLgFAXSqI8kWNeYgYQw3jv3llyRSQy9z0&libraries=places&callback=initAutocomplete"
+  type="text/javascript"></script>
+      <script  src="js/home.js"></script>
 
 
 

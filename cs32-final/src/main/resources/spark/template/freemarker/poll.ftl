@@ -43,6 +43,30 @@
           data-slider-step="1"
           data-slider-value="9"  data-slider-tooltip="hide"/><br/>
 </div>
+<div class="ranking">
+<p><b>Select a cuisine</b>:</p>
+<input type='text'
+       placeholder='Cuisine'
+       id='flexdatalist'
+       data-min-length='1'
+       data-selection-required='true'
+       list='languages'
+       value='Japanese'
+       name='language2'>
+
+<datalist id="cuisine">
+    <option value="Japanese">Japanese</option>
+    <option value="Indian">Indian</option>
+    <option value="Candadian">Candadian</option>
+    <option value="American">American</option>
+    <option value="Chinese">Chinese</option>
+    <option value="Syrian">Syrian</option>
+    <option value="Pizza">Pizza</option>
+    <option value="Noodles">Noodles</option>
+    <option value="Wraps">Wraps</option>
+    <option value="Sushi">Sushi</option>
+</datalist>
+</div>
 </div>
 </form>
 <script src="/js/jquery-3.1.1.js"></script>

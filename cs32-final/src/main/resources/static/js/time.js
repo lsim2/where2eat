@@ -14,7 +14,8 @@ $(document).ready(function()
 			});
 			$('#date-format').bootstrapMaterialDatePicker
 			({
-				format: 'dddd DD MMMM YYYY - HH:mm'
+				format: 'dddd DD MMMM YYYY - HH:mm', 
+                clearButton: true
 			});
 			$('#date-fr').bootstrapMaterialDatePicker
 			({
