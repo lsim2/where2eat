@@ -150,10 +150,13 @@ public class Ranker {
 
 	}
 
-	private void checkRestrictions(List<Restaurant> allRests) {
+	private void checkRestrictions(List<Restaurant> allRests, Answer ans) {
 		// if it has dietary restrictions increase its scores by like 30 cannot make all
 		// the restaurants, if a dietary restriction matches a preference, only on
 		// increse
+		for(Restaurant rest : allRests) {
+			if(rest.getRestrictions()  )
+		}
 
 	}
 

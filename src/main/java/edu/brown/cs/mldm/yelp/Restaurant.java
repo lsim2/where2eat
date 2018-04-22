@@ -1,5 +1,6 @@
 package edu.brown.cs.mldm.yelp;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -89,6 +90,10 @@ public class Restaurant {
 			System.out.println(rest.get("alias"));
 			System.out.println(rest.get("title"));
 
+			// cat.add(rest.get("title"));
+			// System.out.println(rest.get("alias"));
+			// System.out.println(rest.get("title"));
+
 		}
 		return cat;
 	}
@@ -160,6 +165,23 @@ public class Restaurant {
 	 */
 	public void incrementScore() {
 		score++;
+	}
+
+	public Set<String> getRestrictions() {
+		Set<String> result = new HashSet<>();
+		Set<String> restrictions = new HashSet<>(
+				Arrays.asList(new String[] { "vegan", "vegetarian", "gluten_free", "halal", "kosher" }));
+		Set<String> all = this.getCategories();
+
+		for (String cat : all) {
+			for (String res : restrictions) {
+				if (cat.equals(res)) {
+					System.out.println(res);
+					result.add(res);
+				}
+			}
+		}
+		return result;
 	}
 
 }
