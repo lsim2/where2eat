@@ -1,7 +1,9 @@
 package edu.brown.cs.mldm.yelp;
 
+
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -33,16 +35,17 @@ public class YelpApi {
 		apiKey = key;
 	}
 	
-	public List<Set<Restaurant>> getPossibleRestaurants(Map<String, Answer> answers){
-		List<Set<Restaurant>> results = new ArrayList<>();
+	public Map<Answer,Set<Restaurant>> getPossibleRestaurants(Map<String, Answer> answers){
+		Map<Answer, Set<Restaurant>> results = new HashMap<>();
 		if(answers == null || answers.size()==0){
 			return results;
 		}
 		for(Entry<String, Answer> userAnswer: answers.entrySet()){
 				Set<Restaurant> smallSet = this.getRestaurantSet(userAnswer.getValue());
-				results.add(smallSet);
+				//results.add(smallSet);
+				results.put(userAnswer.getValue(), smallSet);
 		}
-		
+	
 		return results;
 	}
 	
@@ -131,7 +134,7 @@ public class YelpApi {
 	            JsonArray myResponse =  jsonObject.get("businesses").getAsJsonArray();
 	            
 	            for(JsonElement str: myResponse){
-	            	System.out.println(str);
+	            	//System.out.println(str);
 	            	//System.out.println(str.getAsJsonObject().get("name"));
 	            	Restaurant rest = GSON.fromJson(str.getAsJsonObject(), Restaurant.class);
 	            	results.add(rest);
@@ -146,6 +149,4 @@ public class YelpApi {
 	        return results;
 
 	    }
-
-
 }
