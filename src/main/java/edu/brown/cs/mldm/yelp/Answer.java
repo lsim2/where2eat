@@ -4,27 +4,29 @@ import java.util.List;
 
 public class Answer {
 
-	//private double rating;
+	// private double rating;
 	private int price;
 	private List<String> cuisine;
 	private int radius;
 	private double[] coordinates;
-	//private double time;
+	// private double time;
 	private List<String> foodTerms;
-	
-	public Answer(List<String> cuisine, List<String> foodTerms, int price,double[] coordinates, int radius/*, int rating*/){
-		//this.rating = rating;
+	private List<String> restrictions;
+
+	public Answer(List<String> cuisine, List<String> foodTerms, int price, double[] coordinates,
+			int radius/* , int rating */) {
+		// this.rating = rating;
 		this.price = price;
 		this.cuisine = cuisine;
 		this.radius = radius;
-		//this.time = time;
+		// this.time = time;
 		this.coordinates = coordinates;
-		this.foodTerms= foodTerms;
+		this.foodTerms = foodTerms;
 	}
-	
-//	public double getRating(){
-//		return rating;
-//	}
+
+	// public double getRating(){
+	// return rating;
+	// }
 
 	public List<String> getCuisine() {
 		return cuisine;
@@ -37,17 +39,20 @@ public class Answer {
 	public int getRadius() {
 		return radius;
 	}
-//
-//	public double getTime() {
-//		return time;
-//	}
-	
-	public double[] getCoordinates(){
+	//
+	// public double getTime() {
+	// return time;
+	// }
+
+	public double[] getCoordinates() {
 		return coordinates;
 	}
-	
-	public List<String> getFoodTerms(){
+
+	public List<String> getFoodTerms() {
 		return foodTerms;
 	}
 
+	public List<String> getRestrictions() {
+		return restrictions;
+	}
 }
