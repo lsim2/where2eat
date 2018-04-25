@@ -1,5 +1,17 @@
-.slider.slider-horizontal{
-  width:400px; /* sample value - set it as you like*/
+@import url(https://fonts.googleapis.com/css?family=Roboto:100,300,600);
+[id*=flat-slider].ui-slider, [id*=flat-slider].ui-slider .ui-slider-pip .ui-slider-line {
+  background: #7e8c9f;
+}
+[id*=flat-slider].ui-slider .ui-slider-handle .ui-slider-tip:after {
+  border-left-color: #434d5a;
+}
+[id*=flat-slider].ui-slider .ui-slider-handle.ui-state-hover, [id*=flat-slider].ui-slider .ui-slider-handle.ui-state-focus, [id*=flat-slider].ui-slider .ui-slider-handle.ui-state-active {
+  border-color: white;
+}
+.stuff {
+  padding: 50px 50px 50px;
+  max-width: 900px;
+  margin: auto;
 }
 
 #title {
@@ -8,16 +20,126 @@
 .ranking {
     position: relative; 
     float: left; 
-    padding: 45px; 
+    padding: 20px; 
+    margin-left: 100px; 
 }
 
-.form {
-     margin: 0 auto;
+.myForm {
+     margin-left:  75px;
+     margin-bottom: 100px; 
+     margin-top: -50px; 
      width: 1000px; 
      padding: 10px; 
+     background: #fff;
+     position: relative;
+     float: left; 
+     border-radius: 35px;
+     align-content: center;
+}
+
+.invite {
+    padding: 50px; 
 }
 
 
 #time .slider-selection {
 	background: green;
+}
+
+.selectize-input.items.not-full.has-options.has-items div{
+  background-color:#f00 !important;
+}
+
+.select {
+    width: 300px; 
+}
+
+#flat-slider-vertical-1 {
+    width: 300px; 
+}
+
+#flat-slider-vertical-2 {
+    width: 300px; 
+}
+
+#flat-slider {
+    width: 300px; 
+}
+.ui-slider-label {
+    padding: 0.8em 0;
+}
+
+
+/* entire container, keeps perspective */
+.flip-container {
+	perspective: 1000px;
+}
+	/* flip the pane when hovered */
+	.flip-container.hover .flipper {
+		transform: rotateY(180deg);
+	}
+
+.flip-container, .front, .back {
+	width: 1000px; 
+	height: 580px;
+}
+
+/* flip speed goes here */
+.flipper {
+	transition: 0.6s;
+	transform-style: preserve-3d;
+
+	position: relative;
+}
+
+/* hide back of pane during swap */
+.front, .back {
+	backface-visibility: hidden;
+
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+/* front pane, placed above back */
+.front {
+	z-index: 2;
+	/* for firefox 31 */
+	transform: rotateY(0deg);
+}
+
+/* back, initially hidden pane */
+.back {
+	transform: rotateY(180deg);
+}
+
+#sign-in {
+    width: 230px; 
+}
+
+.signbox {
+    margin-left: 250px; 
+}
+
+.enter {
+    margin-left: 400px; 
+}
+
+.flip {
+ display: "inline-block";
+ padding:0.3em 1.2em;
+ margin:0 0.3em 0.3em 0;
+ border-radius:2em;
+ box-sizing: "border-box";
+ text-decoration:none;
+ font-family:'Roboto', 'sans-serif';
+ font-weight:300;
+ color: "#FFFFFF";
+ background-color:"#4eb5f1";
+ text-align:center;
+ transition: all 0.2s;
+}
+
+.flip:hover{
+ background-color:""#4095c6";
 }

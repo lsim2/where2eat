@@ -15,7 +15,7 @@
   
   <div id="container"></div>
   <script id="template">
-    <div class="flip-card" on-click="toggle('flipCard')">{{ flipCard ? 'Reset' : 'Create poll' }}</div>
+    <div id="flip" class="flip-card">Clear form</div>
     <div class="contact-wrapper">
         <div class="envelope {{ flipCard ? 'active' : '' }}">
           <div class="back paper"></div>
@@ -66,7 +66,7 @@
 <h3 id="pollTitle"></h3>
 <p id="pollInfo"></p>
 <div class="submit">
-  <a id="goToPoll" class="submit-card">Go to poll!</a>
+  <a id="update" class="submit-card">Change poll information</a>
 </div>
 <a class="popup-close" data-popup-close="popup-1">x</a>
 </div>

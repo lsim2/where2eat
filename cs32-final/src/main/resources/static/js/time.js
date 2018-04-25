@@ -15,7 +15,8 @@ $(document).ready(function()
 			$('#date-format').bootstrapMaterialDatePicker
 			({
 				format: 'dddd DD MMMM YYYY - HH:mm', 
-                clearButton: true
+                clearButton: true, 
+                stepping: 15
 			});
 			$('#date-fr').bootstrapMaterialDatePicker
 			({
