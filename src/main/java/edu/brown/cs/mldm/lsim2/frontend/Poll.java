@@ -8,15 +8,17 @@ public class Poll {
 	private static String title; 
 	private static String location; 
 	private static String date; 
-	private static String msg; 
+	private static String msg;
+	private static double[] coordinates; 
 	
-	public Poll(UUID id, String author, String title, String location, String date, String msg) {
+	public Poll(UUID id, String author, String title, String location, String date, String msg, double[] coordinates) {
 		this.id = id; 
 		this.author = author; 
 		this.title = title; 
 		this.location = location;
 		this.date = date; 
 		this.msg = msg; 
+		this.coordinates = coordinates; 
 	}
 	
 	public String getAuthor() {
@@ -33,5 +35,9 @@ public class Poll {
 	}
 	public String getMsg() {
 		return this.msg; 
+	}
+	
+	public double[] getCoordinates() {
+		return this.coordinates;
 	}
 }
