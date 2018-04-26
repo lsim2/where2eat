@@ -37,7 +37,7 @@ public final class Main {
   private static final int DEFAULT_PORT = 4567;
   //private static Repl myRepl;
   private static Map<UUID, Poll> pollDb = new HashMap<>(); 
-  private static Map<UUID, Answer> answersDb = new HashMap<>(); 
+  private static Map<UUID, List<Answer>> answersDb = new HashMap<>(); 
   private static final Gson GSON = new Gson();
 
   /**
@@ -248,8 +248,6 @@ public final class Main {
 	  @SuppressWarnings("unchecked")
 	@Override
 	    public ModelAndView handle(Request req, Response res) {
-	      Map<String, Object> variables = ImmutableMap.of("title",
-	          "Yelp 2.0");
 	      QueryParamsMap qm = req.queryMap();
 	      String price = qm.value("price");
 	      String distance = qm.value("distance");
@@ -265,8 +263,14 @@ public final class Main {
 	      String url = qm.value("url");
 	      int index = url.lastIndexOf('?') + 1;
 	      String uuidString = url.substring(index, url.length());
-	      Answer a = new Answer(user, cuisine, restrictions, Integer.parseInt(price), Arrays.asList(startTime, endTime), Double.parseDouble(distance), misc);
-	      answersDb.put(UUID.fromString(uuidString), a);
+	      UUID id = UUID.fromString(uuidString);
+	      Answer ans = new Answer(user, cuisine, restrictions, Integer.parseInt(price), Arrays.asList(startTime, endTime), Double.parseDouble(distance), misc);
+	      if (!answersDb.containsKey(id)) {
+	    	  	answersDb.put(id, new ArrayList<Answer>());
+	      }
+	      answersDb.get(UUID.fromString(uuidString)).add(ans);
+	      Map<String, Object> variables = ImmutableMap.of("title",
+		          "Yelp 2.0", "user", user);
 	      return new ModelAndView(variables, "chat.ftl");
 	    }
   }

@@ -22,7 +22,7 @@
 
 let bgColor = '#98ff98';
 index = 0; 
-let name = "Mounika";
+let name = $("#user").html();
 $(document).keydown(
     function(e)
     {    

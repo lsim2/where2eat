@@ -15,6 +15,7 @@
         
         <!--=========================================================-->
         <!-- selected chat -->
+        <div id="user" hidden>${user}</div>
     	<div class="col-md-8">
             <div class="chat-message" id="chat-message">
                 <ul id="chatList" class="chat">
