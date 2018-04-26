@@ -1,4 +1,4 @@
-package edu.brown.cs.lsim2.frontend;
+package edu.brown.cs.mldm.lsim2.frontend;
 
 import java.util.UUID;
 
