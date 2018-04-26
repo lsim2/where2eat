@@ -8,6 +8,7 @@ import java.util.Set;
 
 public class Restaurant {
 	private String id;
+	private double score;
 	private String name;
 	private Map<String, Object> location; // need to get rid of Object? 
 	private String price;
@@ -16,10 +17,11 @@ public class Restaurant {
 	private Map<String, String> coordinates;
 	private String is_closed;
 	private String open_at;
+	private String image_url;
 	
 	
 	public Restaurant(){
-		
+		score = this.getRating();
 	}
 	
 	/**
@@ -80,10 +82,6 @@ public class Restaurant {
 		Set<String> cat = new HashSet<>();
 		for(Map<String, String> rest: categories){
 			cat.add(rest.get("alias"));
-			//cat.add(rest.get("title"));
-			//System.out.println(rest.get("alias"));
-			//System.out.println(rest.get("title"));
-			
 		}
 		return cat;
 	}
@@ -123,12 +121,15 @@ public class Restaurant {
 		for(String cat: all){
 			for(String res: restrictions){
 				if(cat.equals(res)){
-					System.out.println(res);
 					result.add(res);
 				}
 			}
 		}
 		return result;
+	}
+	
+	public String getImageUrl(){
+		return image_url;
 	}
 	
 	@Override 

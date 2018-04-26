@@ -1,0 +1,5 @@
+Vegan vegan
+Vegetarian vegetarian
+Gluten-Free gluten_free
+Kosher kosher
+Halal halal

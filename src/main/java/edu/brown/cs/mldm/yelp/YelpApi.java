@@ -1,6 +1,5 @@
 package edu.brown.cs.mldm.yelp;
 
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,10 +11,6 @@ import java.util.Set;
 
 import okhttp3.*;
 import okhttp3.Request.Builder;
-//import org.json.simple.JSONArray;
-//import org.json.simple.JSONObject;
-//import org.json.simple.JSONValue;
-//import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -135,9 +130,9 @@ public class YelpApi {
 	            
 	            for(JsonElement str: myResponse){
 	            	//System.out.println(str);
-	            	//System.out.println(str.getAsJsonObject().get("name"));
 	            	Restaurant rest = GSON.fromJson(str.getAsJsonObject(), Restaurant.class);
 	            	results.add(rest);
+	            	rest.getRestrictions();
 	            }
 
 	        }catch(IOException e){ 

@@ -1,0 +1,83 @@
+Afghan afghani
+African african
+American (New) newamerican
+American (Traditional) tradamerican
+Andalusian andalusian
+Arabian arabian
+Argentine argentine
+Armenian armenian
+Asian Fusion asianfusion
+Asturian asturian
+Australian australian
+Austrian austrian
+Bangladeshi bangladeshi
+Barbeque bbq
+Basque basque
+Bavarian bavarian
+Belgian belgian
+Brazilian brazilian
+Breakfast & Brunch breakfast_brunch
+British british
+Bulgarian bulgarian
+Burmese burmese
+Cajun/Creole cajun
+Cambodian cambodian
+Caribbean caribbean
+Catalan catalan
+Chinese chinese
+Cuban cuban
+Czech czech
+Ethiopian ethiopian
+Fast Food hotdogs
+Filipino filipino
+French french
+Georgian georgian
+German german
+Greek greek
+Guamanian guamanian
+Hawaiian hawaiian
+Himalayan/Nepalese himalayan
+Honduran honduran
+Hungarian hungarian
+Iberian iberian
+Indian indpak
+Indonesian indonesian
+Irish irish
+Italian italian
+Japanese japanese
+Korean korean
+Laotian laotian
+Latin American latin
+Malaysian malaysian
+Mediterranean mediterranean
+Mexican mexican
+Middle Eastern mideastern
+Modern European modern_european
+Mongolian mongolian
+Moroccan moroccan
+New Mexican Cuisine newmexican
+New Zealand newzealand
+Nicaraguan nicaraguan
+Pakistani pakistani
+Pan Asian panasian
+Persian/Iranian persian
+Peruvian peruvian
+Polish polish
+Polynesian polynesian
+Portuguese portuguese
+Russian russian
+Scandinavian scandinavian
+Scottish scottish
+Seafood seafood
+Singaporean singaporean
+Slovakian slovakian
+Southern southern
+Spanish spanish
+Sri Lankan srilankan
+Syrian syrian
+Taiwanese taiwanese
+Tex-Mex tex-mex
+Thai thai
+Turkish turkish
+Ukrainian ukrainian
+Uzbek uzbek
