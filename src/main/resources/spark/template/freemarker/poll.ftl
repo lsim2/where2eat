@@ -59,21 +59,21 @@
 <div class="ranking">
 <p><b>Cuisine preferences (choose up to 3)</b>:</p>
     <select id="cuisine" class="select" multiple>
-      <option value="Chinese">Chinese</option>
-      <option value="Indian">Indian</option>
-      <option value="Mexican">Mexican</option>
-      <option value="Korean">Korean</option>
-      <option value="Italian">Italian</option>
+      <option value="chinese">chinese</option>
+      <option value="indpak">indpak</option>
+      <option value="mexican">mexican</option>
+      <option value="korean">korean</option>
+      <option value="italian">italian</option>
     </select>
 </div>
 <div class="ranking">
 <p><b>Any dietary restrictions?</b></p>
     <select id="restrictions" class="select" multiple>
-      <option value="Vegan">Vegan</option>
-      <option value="Vegetarian">Vegetarian</option>
-      <option value="Kosher">Kosher</option>
-      <option value="Halal">Halal</option>
-      <option value="Gluten-Free">Gluten-Free</option>
+      <option value="vegan">Vegan</option>
+      <option value="vegetarian">Vegetarian</option>
+      <option value="kosher">Kosher</option>
+      <option value="halal">Halal</option>
+      <option value="gluten_free">Gluten-Free</option>
     </select>
 </div>
 <div class="ranking">
@@ -83,11 +83,9 @@
 <div class="ranking">
 <p><b>Any additional preferences?</b></p>
     <select id="misc" class="select" multiple>
-      <option value="Pizza">Pizza</option>
-      <option value="Wraps">Wraps</option>
-      <option value="Noodles">Noodles</option>
-      <option value="Spicy">Spicy</option>
-      <option value="Alcohol">Alcohol</option>
+      <option value="pizza">Pizza</option>
+      <option value="wraps">Wraps</option>
+      <option value="noodles">Noodles</option>
     </select>
 </div>
 <div class="ranking">

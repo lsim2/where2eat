@@ -28,6 +28,7 @@ public class Answer {
 //	public double getRating(){
 //		return rating;
 //	}
+	
 
 	public List<String> getCuisine() {
 		return cuisine;

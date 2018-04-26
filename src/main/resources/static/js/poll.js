@@ -1,4 +1,4 @@
-let preferences = {cuisine:[], restrictions:[], misc:[], price: 1, startTime: '2pm', endTime: '4pm', distance: 12}; 
+let preferences = {user:"", cuisine:JSON.stringify([]), restrictions:JSON.stringify([]), misc:JSON.stringify([]), price: 1, startTime: '2pm', endTime: '4pm', distance: 12}; 
 $(function() {
   $('#cuisine').selectize({
       plugins: ['remove_button'],

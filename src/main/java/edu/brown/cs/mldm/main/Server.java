@@ -5,10 +5,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import com.google.common.collect.ImmutableMap;
@@ -16,6 +16,8 @@ import com.google.gson.Gson;
 
 import edu.brown.cs.mldm.chatroom.ChatWebSocket;
 import edu.brown.cs.mldm.yelp.Answer;
+import edu.brown.cs.mldm.yelp.Restaurant;
+import edu.brown.cs.mldm.yelp.YelpApi;
 import edu.brown.cs.mldm.lsim2.frontend.Poll;
 import freemarker.template.Configuration;
 import spark.ExceptionHandler;
@@ -32,6 +34,7 @@ public class Server {
 	private static Map<UUID, Poll> pollDb = new HashMap<>(); 
 	private static Map<UUID, List<Answer>> answersDb = new HashMap<>(); 
 	private static final Gson GSON = new Gson();
+	private static final String YELPKEY = "gKGjR4vy8kXQAyKrBjuPXepYBqladSEtwSTm_NNshaMPebXqQkZsGLIOe6FSUESQIh_l-cSN5lIhxiQ3-mkCnr_orbJARb_cCSr3OlQs0Jxi21D-m8uiqoHJr1jVWnYx";
 	
 	void runSparkServer(int port) {
 		Spark.webSocket("/score", ChatWebSocket.class);
@@ -201,6 +204,7 @@ public class Server {
 		  @SuppressWarnings("unchecked")
 		@Override
 		    public ModelAndView handle(Request req, Response res) {
+			  // Getting information from frontend
 		      QueryParamsMap qm = req.queryMap();
 		      int price = Integer.parseInt(qm.value("price"));
 		      int distance = Integer.parseInt(qm.value("distance"));
@@ -217,11 +221,22 @@ public class Server {
 		      int index = url.lastIndexOf('?') + 1;
 		      String uuidString = url.substring(index, url.length());
 		      UUID id = UUID.fromString(uuidString);
+		      System.out.println(cuisine + " " + restrictions + " " + misc  + " " + misc.size() + " " + misc.isEmpty());
+		      //String userId, List<String> cuisine, List<String> restrictions, List<String> foodTerms, int price,double[] coordinates, int radius
 		      Answer ans = new Answer(user, cuisine, restrictions, misc, price, pollDb.get(id).getCoordinates(), distance);
 		      if (!answersDb.containsKey(id)) {
 		    	  	answersDb.put(id, new ArrayList<Answer>());
 		      }
 		      answersDb.get(id).add(ans);
+		      // processing with the algorithm:
+		      YelpApi yelpApi = new YelpApi(YELPKEY);
+		      Map<Answer,Set<Restaurant>> results = yelpApi.getPossibleRestaurants(answersDb.get(id));
+		      for (Set<Restaurant> a : results.values()) {
+		    	  	for (Restaurant r : a) {
+					  System.out.println(r.getName());
+		    	  	}
+		      }
+		      
 		      Map<String, Object> variables = ImmutableMap.of("title",
 			          "Yelp 2.0", "user", user);
 		      return new ModelAndView(variables, "chat.ftl");

@@ -1,6 +1,5 @@
 edu/brown/cs/mldm/main/Server$ChatroomGetHandler.class
 edu/brown/cs/mldm/main/Server.class
-edu/brown/cs/mldm/lsim2/frontend/Main$1.class
 edu/brown/cs/mldm/chatroom/ChatWebSocket.class
 edu/brown/cs/mldm/yelp/YelpApi.class
 edu/brown/cs/mldm/yelp/Answer.class

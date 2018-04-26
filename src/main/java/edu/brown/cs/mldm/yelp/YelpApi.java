@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.UUID;
 
 import okhttp3.*;
 import okhttp3.Request.Builder;
@@ -30,15 +31,15 @@ public class YelpApi {
 		apiKey = key;
 	}
 	
-	public Map<Answer,Set<Restaurant>> getPossibleRestaurants(Map<String, Answer> answers){
+	public Map<Answer,Set<Restaurant>> getPossibleRestaurants(List<Answer> answers){
 		Map<Answer, Set<Restaurant>> results = new HashMap<>();
 		if(answers == null || answers.size()==0){
 			return results;
 		}
-		for(Entry<String, Answer> userAnswer: answers.entrySet()){
-				Set<Restaurant> smallSet = this.getRestaurantSet(userAnswer.getValue());
+		for(Answer answer: answers){
+				Set<Restaurant> smallSet = this.getRestaurantSet(answer);
 				//results.add(smallSet);
-				results.put(userAnswer.getValue(), smallSet);
+				results.put(answer, smallSet);
 		}
 	
 		return results;
@@ -62,6 +63,7 @@ public class YelpApi {
 		StringBuilder url = new StringBuilder();
 		
 		if(!answer.getFoodTerms().isEmpty()){
+			System.out.println("food terms is non empty");
 			for(String term: answer.getFoodTerms()){
 				terms = terms + "," + term  ;
 			}
