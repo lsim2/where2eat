@@ -31,7 +31,6 @@ import java.util.Set;
  */
 public class Ranker {
 	private static final int INC = 30;
-	private static final int DEC = -5;
 
 	public Ranker() {
 
@@ -188,7 +187,7 @@ public class Ranker {
 	private class ScoreComparator implements Comparator<Restaurant> {
 		@Override
 		public int compare(Restaurant r1, Restaurant r2) {
-			return Integer.compare(r1.getScore(), r2.getScore());
+			return Double.compare(r1.getScore(), r2.getScore());
 		}
 	}
 
@@ -196,7 +195,7 @@ public class Ranker {
 
 		@Override
 		public int compare(Restaurant o1, Restaurant o2) {
-			return Integer.compare(o2.getPrice(), o1.getPrice());
+			return Double.compare(o2.getPrice(), o1.getPrice());
 		}
 
 	}

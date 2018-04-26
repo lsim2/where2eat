@@ -157,11 +157,11 @@ public class Restaurant {
 	}
 
 	/**
-	 * @param score
+	 * @param d
 	 *            the new score to be set.
 	 */
-	public void setScore(int score) {
-		this.score = score;
+	public void setScore(double d) {
+		this.score = d;
 	}
 
 	/**
