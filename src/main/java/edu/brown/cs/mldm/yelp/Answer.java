@@ -13,8 +13,8 @@ public class Answer {
 	private List<String> foodTerms;
 	private List<String> restrictions;
 
-	public Answer(List<String> cuisine, List<String> foodTerms, int price, double[] coordinates,
-			int radius/* , int rating */) {
+	public Answer(List<String> cuisine, List<String> foodTerms, int price, double[] coordinates, int radius,
+			List<String> restrictions) {
 		// this.rating = rating;
 		this.price = price;
 		this.cuisine = cuisine;
@@ -22,6 +22,7 @@ public class Answer {
 		// this.time = time;
 		this.coordinates = coordinates;
 		this.foodTerms = foodTerms;
+		this.restrictions = restrictions;
 	}
 
 	// public double getRating(){
