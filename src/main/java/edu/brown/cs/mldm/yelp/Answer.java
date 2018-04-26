@@ -5,6 +5,7 @@ import java.util.List;
 public class Answer {
 
 	//private double rating;
+	private String userId;
 	private int price;
 	private List<String> cuisine;
 	private int radius;
@@ -13,7 +14,7 @@ public class Answer {
 	private List<String> foodTerms;
 	private List<String> restrictions;
 	
-	public Answer(List<String> cuisine, List<String> restrictions, List<String> foodTerms, int price,double[] coordinates, int radius/*, int rating*/){
+	public Answer(String userId, List<String> cuisine, List<String> restrictions, List<String> foodTerms, int price,double[] coordinates, int radius/*, int rating*/){
 		//this.rating = rating;
 		this.price = price;
 		this.cuisine = cuisine;

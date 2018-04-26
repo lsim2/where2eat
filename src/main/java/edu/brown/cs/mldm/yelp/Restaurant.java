@@ -85,10 +85,10 @@ public class Restaurant {
 		}
 		return cat;
 	}
-	
-/**
- * Returns a double between 0-5 depending on how well the restaurant is rated, 0 is worst, 5 is best. 
- */
+		
+	/**
+	 * Returns a double between 0-5 depending on how well the restaurant is rated, 0 is worst, 5 is best. 
+	 */
 	public double getRating(){
 		return rating;
 	}
