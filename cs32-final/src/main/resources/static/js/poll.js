@@ -1,16 +1,14 @@
-$("#price").slider({});
-$("#distance").slider({});
-$("#time").slider({ id: "time", range: true});
+let preferences = {cuisine:[], restrictions:[], misc:[]}; 
 $(function() {
   $('#cuisine').selectize({
       plugins: ['remove_button'],
-      maxItems: 3
+      maxItems: 3,
   });
   $('#restrictions').selectize({
-      plugins: ['remove_button']
+      plugins: ['remove_button'],
   });
   $('#misc').selectize({
-      plugins: ['remove_button']
+      plugins: ['remove_button'],
   });
 });
 
@@ -28,7 +26,9 @@ $("#flat-slider")
         values: [0, 4],
     change: function(event, ui) { 
          document.getElementById("starttime").innerHTML = times[ui.values[0]]; 
-        document.getElementById("endtime").innerHTML = times[ui.values[1]]; 
+        document.getElementById("endtime").innerHTML = times[ui.values[1]];
+        preferences.startTime = times[ui.values[0]];
+        preferences.endTime = times[ui.values[1]];
     } 
     })
     .slider("pips", {
@@ -44,6 +44,9 @@ $("#flat-slider-vertical-1")
         min: 0,
         range: "min",
         value: 0,
+     change: function(event, ui) { 
+        preferences.price = ui.value;
+    } 
     })
     .slider("pips", {
         rest: "label",
@@ -57,8 +60,9 @@ $("#flat-slider-vertical-1")
         range: "min",
         value: 12,
         change: function(event, ui) { 
-        document.getElementById("dist").innerHTML = ui.value; 
-    } 
+            document.getElementById("dist").innerHTML = ui.value; 
+            preferences.distance = ui.value;
+        } 
     }) .slider("pips", {
         first: "pip",
         last: "pip"
@@ -66,15 +70,43 @@ $("#flat-slider-vertical-1")
     .slider("float");
 
 
+let currentUser = $('#sign-in').val(); 
+
 $('.flip').click(function() {
     if ($('#sign-in').val()=="") {
         alert("Please sign in first!");
     } else {
+        currentUser = $('#sign-in').val();
+        preferences.user = currentUser;
+        $('#username').html("Hello " + $('#sign-in').val() + "! ");
         $('.flip-container .flipper').closest('.flip-container').toggleClass('hover');
         $('.flip-container .flipper').css('transform, rotateY(180deg)');
     }
 });
 
+$('.goback').click(function() {
+     let reload = false;
+     if ($('#sign-in').val() != currentUser) {
+            currentUser = $('#sign-in').val();
+            reload = true;
+        }
+        preferences.user = currentUser;
+        $('#username').html("Hello " + currentUser + "! ");
+        $('.flip-container .flipper').closest('.flip-container').toggleClass('hover');
+        $('.flip-container .flipper').css('transform, rotateY(180deg)');
+        if (reload) {
+            location.reload();
+        }
+});
+
 $('#signin-form').submit(function(){
     $(".flip").attr("disabled",false);
+});
+
+$('#toResults').click(function() {
+    preferences.cuisine = $("#cuisine").val();
+    preferences.restrictions = $("#restrictions").val();
+    preferences.misc = $("#misc").val();
+    console.log(preferences);
+//    $("#form").submit(); 
 });

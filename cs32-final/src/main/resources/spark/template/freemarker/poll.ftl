@@ -38,15 +38,14 @@
 <h2 style="text-align:center">Lina says: <i>"Let's eat!"</i></h2>
 <br><br>
 <form id="signin-form">
-<span class="signbox">Name: <input id="sign-in" type="text" placeholder="Sign in with just your name!" autocomplete="off" required>
-<input type="submit" id="submit-name"></span><br><br>
+<span class="signbox">Name: <input id="sign-in" type="text" placeholder="Sign in with just your name!" autocomplete="off" required> <br><br>
 </form>
 	<span class="enter"><button type="button" class="flip" title="Please sign in!">Go to form!</button></span>
 </div>
 </div>
 <div class="back">
-<form method="POST" action="/res">
-<h2 id="title">Choose your preferences</h2>
+<form id="form" method="POST" action="/chat">
+<h2 id="title"><span id="username"></span>Choose your preferences</h2><button type="button" class="goback btn">Go back</button>
 <div class="ranking">
 <p><b>My preferred price range is:</b></p><br>
 <div id="flat-slider-vertical-1"></div>
@@ -58,21 +57,21 @@
 <div class="ranking">
 <p><b>Cuisine preferences (choose up to 3)</b>:</p>
     <select id="cuisine" class="select" multiple>
-      <option value="0">Chinese</option>
-      <option value="1">Indian</option>
-      <option value="2">Mexican</option>
-      <option value="3">Korean</option>
-      <option value="4">Italian</option>
+      <option value="Chinese">Chinese</option>
+      <option value="Indian">Indian</option>
+      <option value="Mexican">Mexican</option>
+      <option value="Korean">Korean</option>
+      <option value="Italian">Italian</option>
     </select>
 </div>
 <div class="ranking">
 <p><b>Any dietary restrictions?</b></p>
     <select id="restrictions" class="select" multiple>
-      <option value="0">Vegan</option>
-      <option value="1">Vegetarian</option>
-      <option value="2">Kosher</option>
-      <option value="3">Halal</option>
-      <option value="4">Gluten-Free</option>
+      <option value="Vegan">Vegan</option>
+      <option value="Vegetarian">Vegetarian</option>
+      <option value="Kosher">Kosher</option>
+      <option value="Halal">Halal</option>
+      <option value="Gluten-Free">Gluten-Free</option>
     </select>
 </div>
 <div class="ranking">
@@ -83,14 +82,16 @@
 <p><b>Any additional preferences?</b></p>
     <select id="misc" class="select" multiple>
       <option value="0">Pizza</option>
-      <option value="1">Wraps</option>
-      <option value="2">Noodles</option>
-      <option value="3">Spicy</option>
-      <option value="4">Alcohol</option>
+      <option value="Wraps">Wraps</option>
+      <option value="Noodles">Noodles</option>
+      <option value="Spicy">Spicy</option>
+      <option value="Alcohol">Alcohol</option>
     </select>
 </div>
+<div class="ranking">
+<button type="button" id="toResults" class="btn">Submit</button>
+</div>
 </form>
-<button type="button" class="flip">Re-sign in</button>
 </div>
 </div>
 </div>
