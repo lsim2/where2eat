@@ -16,10 +16,13 @@ public class Restaurant {
 	private Map<String, String> coordinates;
 	private String is_closed;
 	private String open_at;
-	private int score = 0;
+
+	private double score = 0;
+
+	private String image_url;
 
 	public Restaurant() {
-
+		score = this.getRating();
 	}
 
 	/**
@@ -86,9 +89,10 @@ public class Restaurant {
 		Set<String> cat = new HashSet<>();
 		for (Map<String, String> rest : categories) {
 			cat.add(rest.get("alias"));
+
 			cat.add(rest.get("title"));
-			System.out.println(rest.get("alias"));
-			System.out.println(rest.get("title"));
+			// System.out.println(rest.get("alias"));
+			// System.out.println(rest.get("title"));
 
 			// cat.add(rest.get("title"));
 			// System.out.println(rest.get("alias"));
@@ -148,7 +152,7 @@ public class Restaurant {
 	 *         a suggestion it is. Every restaurant's score starts off as its
 	 *         ranking and increases if it is a better match.
 	 */
-	public int getScore() {
+	public double getScore() {
 		return score;
 	}
 
@@ -172,16 +176,18 @@ public class Restaurant {
 		Set<String> restrictions = new HashSet<>(
 				Arrays.asList(new String[] { "vegan", "vegetarian", "gluten_free", "halal", "kosher" }));
 		Set<String> all = this.getCategories();
-
 		for (String cat : all) {
 			for (String res : restrictions) {
 				if (cat.equals(res)) {
-					System.out.println(res);
 					result.add(res);
 				}
 			}
 		}
 		return result;
+	}
+
+	public String getImageUrl() {
+		return image_url;
 	}
 
 }

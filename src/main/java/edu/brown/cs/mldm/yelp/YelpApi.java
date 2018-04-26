@@ -90,9 +90,17 @@ public class YelpApi {
 		if (answer.getRadius() >= 0) {
 			radius = Integer.toString(answer.getRadius());
 		}
-		if (!answer.getCuisine().isEmpty()) {
-			for (String category : answer.getCuisine()) {
-				categories = categories + category + ",";
+
+		if (!answer.getCuisine().isEmpty() || !answer.getRestrictions().isEmpty()) {
+			if (!answer.getCuisine().isEmpty()) {
+				for (String category : answer.getCuisine()) {
+					categories = categories + category + ",";
+				}
+			}
+			if (!answer.getRestrictions().isEmpty()) {
+				for (String category : answer.getRestrictions()) {
+					categories = categories + category + ",";
+				}
 			}
 
 			if (categories.charAt(categories.length() - 1) == ',') {
@@ -103,12 +111,6 @@ public class YelpApi {
 		}
 
 		url.append("&radius=" + radius);
-
-		// String url = "term=" + terms + "&categories=" + categories + "&latitude=" +
-		// coordinates[0] + "&longitude=" + coordinates[1] + "&radius=" + radius +
-		// "&price="+price;
-
-		// System.out.println(url);
 		return this.makeRequest(url.toString());
 	}
 
@@ -141,4 +143,5 @@ public class YelpApi {
 		return results;
 
 	}
+
 }
