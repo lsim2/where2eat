@@ -21,7 +21,7 @@
          <nav class="navbar navbar-fixed-top">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">YELP 2.0</a>
+      <a class="navbar-brand" href="/home">YELP 2.0</a>
     </div>
   </div>
 </nav>
@@ -34,8 +34,10 @@
 <div class="front">
 <div class="invite">
 <h1 style="text-align:center"><i>Invitation</i></h1>
-<h2 id="title"><i>Lina</i> has invited you for <i>Lunch</i> at <i>Kabob and Curry</i> on <i>Thursday April 27th</i> and wants your input!</h2>
-<h2 style="text-align:center">Lina says: <i>"Let's eat!"</i></h2>
+<h2 id="title"><i>${name}</i> has invited you for <i>${meal}!!</h2>
+<h3 style="text-align:center">Where? <i>${location}</i></h3>
+<h3 style="text-align:center">When? <i>${date}</i></h3>
+<h3 style="text-align:center">Message from ${name}: <i>"${message}"</i></h3>
 <br><br>
 <form id="signin-form">
 <span class="signbox">Name: <input id="sign-in" type="text" placeholder="Sign in with just your name!" autocomplete="off" required> <br><br>
@@ -81,7 +83,7 @@
 <div class="ranking">
 <p><b>Any additional preferences?</b></p>
     <select id="misc" class="select" multiple>
-      <option value="0">Pizza</option>
+      <option value="Pizza">Pizza</option>
       <option value="Wraps">Wraps</option>
       <option value="Noodles">Noodles</option>
       <option value="Spicy">Spicy</option>

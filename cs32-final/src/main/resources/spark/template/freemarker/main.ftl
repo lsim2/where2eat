@@ -24,7 +24,7 @@
          <nav class="navbar navbar-fixed-top">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">YELP 2.0</a>
+      <a class="navbar-brand" href="/home">YELP 2.0</a>
     </div>
   </div>
 </nav>

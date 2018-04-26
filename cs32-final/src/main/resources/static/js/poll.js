@@ -1,4 +1,4 @@
-let preferences = {cuisine:[], restrictions:[], misc:[]}; 
+let preferences = {cuisine:[], restrictions:[], misc:[], price: 1, startTime: '2pm', endTime: '4pm', distance: 12}; 
 $(function() {
   $('#cuisine').selectize({
       plugins: ['remove_button'],
@@ -71,7 +71,22 @@ $("#flat-slider-vertical-1")
 
 
 let currentUser = $('#sign-in').val(); 
-
+$(document).keydown(
+    function(e)
+    {    
+        if (e.keyCode == 13) { 
+            e.preventDefault();
+        if ($('#sign-in').val()=="") {
+            alert("Please sign in first!");
+    } else {
+        currentUser = $('#sign-in').val();
+        preferences.user = currentUser;
+        $('#username').html("Hello " + $('#sign-in').val() + "! ");
+        $('.flip-container .flipper').closest('.flip-container').toggleClass('hover');
+        $('.flip-container .flipper').css('transform, rotateY(180deg)');
+    }
+        }
+    });
 $('.flip').click(function() {
     if ($('#sign-in').val()=="") {
         alert("Please sign in first!");
@@ -104,9 +119,12 @@ $('#signin-form').submit(function(){
 });
 
 $('#toResults').click(function() {
-    preferences.cuisine = $("#cuisine").val();
-    preferences.restrictions = $("#restrictions").val();
-    preferences.misc = $("#misc").val();
-    console.log(preferences);
-//    $("#form").submit(); 
+    if ($("#cuisine").val() != null) {preferences.cuisine = JSON.stringify($("#cuisine").val());}
+    if ($("#restrictions").val() != null) {preferences.restrictions = JSON.stringify($("#restrictions").val());}
+    if ($("#misc").val() != null) {preferences.misc = JSON.stringify($("#misc").val());}
+    preferences.url = window.location.href;
+    for (var key in preferences) {
+      $('#form').append("<input name='" + key +"' value='" + preferences[key] +"' type='hidden'/>");
+    }
+    $("#form").submit(); 
 });

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -36,6 +37,7 @@ public final class Main {
   private static final int DEFAULT_PORT = 4567;
   //private static Repl myRepl;
   private static Map<UUID, Poll> pollDb = new HashMap<>(); 
+  private static Map<UUID, Answer> answersDb = new HashMap<>(); 
   private static final Gson GSON = new Gson();
 
   /**
@@ -104,9 +106,11 @@ public final class Main {
     Spark.get("/home", new homeFrontHandler(), freeMarker);
     Spark.post("/home", new homeSubmitHandler());
     Spark.get("/date", new dateFrontHandler(), freeMarker);
-    Spark.get("/chat", new chatFrontHandler(), freeMarker);
-    Spark.post("/poll", new pollFrontHandler(), freeMarker);
+//    Spark.post("/poll", new pollFrontHandler(), freeMarker);
     Spark.get("/poll/:id", new pollUniqueHandler(), freeMarker);
+    Spark.get("/chat", new chatFrontHandler(), freeMarker);
+//    Spark.post("/chat", new chatFrontHandler(), freeMarker);
+    Spark.post("/chat", new pollResHandler(), freeMarker);
   }
 
   /**
@@ -161,10 +165,16 @@ public final class Main {
 	    @Override
 	    public ModelAndView handle(Request req, Response res) {
 	    		String id = req.raw().getQueryString();
-	        String raw = req.raw().getRequestURL().toString();
-	        int index = raw.lastIndexOf('/') + 1;
-	      Map<String, Object> variables = ImmutableMap.of("title",
-	          "Yelp 2.0", "pollId", raw);
+	      Poll poll = pollDb.get(UUID.fromString((id)));
+	      Map<String, Object> variables = ImmutableMap.<String, Object>builder()
+	    		    .put("title", "Yelp 2.0") 
+	    		    .put("name", poll.getAuthor()) 
+	    		    .put("meal", poll.getMeal()) 
+	    		    .put("location", poll.getLocation()) 
+	    		    .put("date", poll.getDate()) 
+	    		    .put("message", poll.getMsg()) 
+	    		    .put("key9", "value9")
+	    		    .build();
 	      return new ModelAndView(variables, "poll.ftl");
 	    }
 	  }
@@ -224,6 +234,39 @@ public final class Main {
 	    public ModelAndView handle(Request req, Response res) {
 	      Map<String, Object> variables = ImmutableMap.of("title",
 	          "Yelp 2.0");
+	      return new ModelAndView(variables, "chat.ftl");
+	    }
+  }
+  
+  /**
+   * Handle requests to the front page of our Autocorrect website.
+   *
+   * @author lsim2
+   */
+  private static class pollResHandler implements TemplateViewRoute {
+
+	  @SuppressWarnings("unchecked")
+	@Override
+	    public ModelAndView handle(Request req, Response res) {
+	      Map<String, Object> variables = ImmutableMap.of("title",
+	          "Yelp 2.0");
+	      QueryParamsMap qm = req.queryMap();
+	      String price = qm.value("price");
+	      String distance = qm.value("distance");
+	      String user = qm.value("user");
+	      String startTime = qm.value("startTime");
+	      String endTime = qm.value("endTime");
+	      String cuisineString = qm.value("cuisine");
+	      String restrictionsString = qm.value("restrictions");
+	      String miscString = qm.value("misc");
+	      List<String> cuisine  = GSON.fromJson(cuisineString, List.class);
+	      List<String> restrictions  = GSON.fromJson(restrictionsString, List.class);
+	      List<String> misc  = GSON.fromJson(miscString, List.class);
+	      String url = qm.value("url");
+	      int index = url.lastIndexOf('?') + 1;
+	      String uuidString = url.substring(index, url.length());
+	      Answer a = new Answer(user, cuisine, restrictions, Integer.parseInt(price), Arrays.asList(startTime, endTime), Double.parseDouble(distance), misc);
+	      answersDb.put(UUID.fromString(uuidString), a);
 	      return new ModelAndView(variables, "chat.ftl");
 	    }
   }

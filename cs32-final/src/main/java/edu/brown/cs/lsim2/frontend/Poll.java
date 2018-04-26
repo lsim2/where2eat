@@ -18,4 +18,20 @@ public class Poll {
 		this.date = date; 
 		this.msg = msg; 
 	}
+	
+	public String getAuthor() {
+		return this.author; 
+	}
+	public String getMeal() {
+		return this.title; 
+	}
+	public String getLocation() {
+		return this.location; 
+	}
+	public String getDate() {
+		return this.date; 
+	}
+	public String getMsg() {
+		return this.msg; 
+	}
 }
