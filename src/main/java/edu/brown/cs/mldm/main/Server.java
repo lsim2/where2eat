@@ -15,7 +15,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 
 import edu.brown.cs.mldm.chatroom.ChatWebSocket;
-import edu.brown.cs.mldm.lsim2.frontend.Answer;
+import edu.brown.cs.mldm.yelp.Answer;
 import edu.brown.cs.mldm.lsim2.frontend.Poll;
 import freemarker.template.Configuration;
 import spark.ExceptionHandler;
@@ -140,8 +140,11 @@ public class Server {
 		      String location = qm.value("location");
 		      String date = qm.value("date");
 		      String msg = qm.value("message");
+		      String lat = qm.value("lat");
+		      String lng = qm.value("lng");
+		      double[] coordinates ={Double.parseDouble(lat), Double.parseDouble(lng)};
 		      UUID pollId = UUID.randomUUID();
-		      Poll poll = new Poll(pollId, name, title,location,date,msg);
+		      Poll poll = new Poll(pollId, name, title,location,date,msg, coordinates);
 		      pollDb.put(pollId, poll);
 		      Map<String, Object> variables = ImmutableMap.of("title",
 			          "Yelp 2.0", "pollId", pollId);
@@ -163,7 +166,10 @@ public class Server {
 		      String date = qm.value("date");
 		      String msg = qm.value("message");
 		      UUID pollId = UUID.randomUUID();
-		      Poll poll = new Poll(pollId, name, title,location,date,msg);
+		      String lat = qm.value("lat");
+		      String lng = qm.value("lng");
+		      double[] coordinates ={Double.parseDouble(lat), Double.parseDouble(lng)};
+		      Poll poll = new Poll(pollId, name, title,location,date,msg,coordinates);
 		      pollDb.put(pollId, poll);
 		      Map<String, Object> variables = ImmutableMap.of("pollId", pollId, "pollTitle", title, "location", location, "date", date);
 		      return GSON.toJson(variables);
@@ -196,8 +202,8 @@ public class Server {
 		@Override
 		    public ModelAndView handle(Request req, Response res) {
 		      QueryParamsMap qm = req.queryMap();
-		      String price = qm.value("price");
-		      String distance = qm.value("distance");
+		      int price = Integer.parseInt(qm.value("price"));
+		      int distance = Integer.parseInt(qm.value("distance"));
 		      String user = qm.value("user");
 		      String startTime = qm.value("startTime");
 		      String endTime = qm.value("endTime");
@@ -211,11 +217,11 @@ public class Server {
 		      int index = url.lastIndexOf('?') + 1;
 		      String uuidString = url.substring(index, url.length());
 		      UUID id = UUID.fromString(uuidString);
-		      Answer ans = new Answer(user, cuisine, restrictions, Integer.parseInt(price), Arrays.asList(startTime, endTime), Double.parseDouble(distance), misc);
+		      Answer ans = new Answer(user, cuisine, restrictions, misc, price, pollDb.get(id).getCoordinates(), distance);
 		      if (!answersDb.containsKey(id)) {
 		    	  	answersDb.put(id, new ArrayList<Answer>());
 		      }
-		      answersDb.get(UUID.fromString(uuidString)).add(ans);
+		      answersDb.get(id).add(ans);
 		      Map<String, Object> variables = ImmutableMap.of("title",
 			          "Yelp 2.0", "user", user);
 		      return new ModelAndView(variables, "chat.ftl");
