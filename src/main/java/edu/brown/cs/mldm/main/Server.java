@@ -16,6 +16,7 @@ import com.google.gson.Gson;
 
 import edu.brown.cs.mldm.chatroom.ChatWebSocket;
 import edu.brown.cs.mldm.yelp.Answer;
+import edu.brown.cs.mldm.yelp.Ranker;
 import edu.brown.cs.mldm.yelp.Restaurant;
 import edu.brown.cs.mldm.yelp.YelpApi;
 import edu.brown.cs.mldm.lsim2.frontend.Poll;
@@ -207,7 +208,7 @@ public class Server {
 			  // Getting information from frontend
 		      QueryParamsMap qm = req.queryMap();
 		      int price = Integer.parseInt(qm.value("price"));
-		      int distance = Integer.parseInt(qm.value("distance"));
+		      int distance = Math.min(Integer.parseInt(qm.value("distance"))*1609,39999);
 		      String user = qm.value("user");
 		      String startTime = qm.value("startTime");
 		      String endTime = qm.value("endTime");
@@ -221,20 +222,19 @@ public class Server {
 		      int index = url.lastIndexOf('?') + 1;
 		      String uuidString = url.substring(index, url.length());
 		      UUID id = UUID.fromString(uuidString);
-		      System.out.println(cuisine + " " + restrictions + " " + misc  + " " + misc.size() + " " + misc.isEmpty());
-		      //String userId, List<String> cuisine, List<String> restrictions, List<String> foodTerms, int price,double[] coordinates, int radius
 		      Answer ans = new Answer(user, cuisine, restrictions, misc, price, pollDb.get(id).getCoordinates(), distance);
 		      if (!answersDb.containsKey(id)) {
 		    	  	answersDb.put(id, new ArrayList<Answer>());
 		      }
 		      answersDb.get(id).add(ans);
+		      
 		      // processing with the algorithm:
 		      YelpApi yelpApi = new YelpApi(YELPKEY);
 		      Map<Answer,Set<Restaurant>> results = yelpApi.getPossibleRestaurants(answersDb.get(id));
-		      for (Set<Restaurant> a : results.values()) {
-		    	  	for (Restaurant r : a) {
-					  System.out.println(r.getName());
-		    	  	}
+		      Ranker ranker = new Ranker();
+		      List<Restaurant> restList = ranker.rank(results);
+		      for (Restaurant r : restList) {
+		    	  	System.out.println(r);
 		      }
 		      
 		      Map<String, Object> variables = ImmutableMap.of("title",

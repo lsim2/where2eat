@@ -63,7 +63,6 @@ public class YelpApi {
 		StringBuilder url = new StringBuilder();
 		
 		if(!answer.getFoodTerms().isEmpty()){
-			System.out.println("food terms is non empty");
 			for(String term: answer.getFoodTerms()){
 				terms = terms + "," + term  ;
 			}

@@ -5,15 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.Charset;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import com.google.gson.Gson;
-
-import edu.brown.cs.mldm.lsim2.frontend.Answer;
-import edu.brown.cs.mldm.lsim2.frontend.Poll;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 

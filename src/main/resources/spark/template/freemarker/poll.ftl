@@ -59,11 +59,11 @@
 <div class="ranking">
 <p><b>Cuisine preferences (choose up to 3)</b>:</p>
     <select id="cuisine" class="select" multiple>
-      <option value="chinese">chinese</option>
-      <option value="indpak">indpak</option>
-      <option value="mexican">mexican</option>
-      <option value="korean">korean</option>
-      <option value="italian">italian</option>
+      <option value="chinese">Chinese</option>
+      <option value="indpak">Indian</option>
+      <option value="mexican">Mexican</option>
+      <option value="korean">Korean</option>
+      <option value="italian">Italian</option>
     </select>
 </div>
 <div class="ranking">
