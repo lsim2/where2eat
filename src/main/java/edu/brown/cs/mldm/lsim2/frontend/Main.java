@@ -193,8 +193,11 @@ public final class Main {
 	      String location = qm.value("location");
 	      String date = qm.value("date");
 	      String msg = qm.value("message");
+	      String lat = qm.value("lat");
+	      String lng = qm.value("lng");
+	      double[] coordinates = {Double.parseDouble(lat), Double.parseDouble(lng)};
 	      UUID pollId = UUID.randomUUID();
-	      Poll poll = new Poll(pollId, name, title,location,date,msg);
+	      Poll poll = new Poll(pollId, name, title,location,date,msg,coordinates);
 	      pollDb.put(pollId, poll);
 	      Map<String, Object> variables = ImmutableMap.of("title",
 		          "Yelp 2.0", "pollId", pollId);
