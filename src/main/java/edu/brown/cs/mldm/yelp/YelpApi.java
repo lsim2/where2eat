@@ -90,9 +90,16 @@ public class YelpApi {
 		if(answer.getRadius() >= 0){
 			radius = Integer.toString(answer.getRadius());
 		}
-		if(!answer.getCuisine().isEmpty()){
-			for(String category: answer.getCuisine()){
-				categories = categories + category  + ",";
+		if(!answer.getCuisine().isEmpty() ||!answer.getRestrictions().isEmpty() ){
+			if(!answer.getCuisine().isEmpty()){
+				for(String category: answer.getCuisine()){
+					categories = categories + category  + ",";
+				}
+			}
+			if(!answer.getRestrictions().isEmpty()){
+				for(String category: answer.getRestrictions()){
+					categories = categories + category  + ",";
+				}
 			}
 			
 			if(categories.charAt(categories.length()-1) == ','){
