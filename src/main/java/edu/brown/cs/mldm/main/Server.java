@@ -81,7 +81,7 @@ public class Server {
 		@Override
 		public ModelAndView handle(Request req, Response response) {
 			QueryParamsMap qm = req.queryMap();
-			String name = qm.value("usrName");
+			String name = qm.value("user");
 			System.out.println("the name is: " + name);
 			chatSocket.addName(name);
 			Map<String, Object> variables = ImmutableMap.of("title", "Chatroom");
