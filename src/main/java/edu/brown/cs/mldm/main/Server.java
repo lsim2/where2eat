@@ -41,7 +41,7 @@ public class Server {
 
 	void runSparkServer(int port) {
 		chatSocket = new ChatWebSocket();
-		Spark.webSocket("/chat", chatSocket);
+		Spark.webSocket("/chatting", chatSocket);
 
 		Spark.port(port);
 		Spark.externalStaticFileLocation("src/main/resources/static");

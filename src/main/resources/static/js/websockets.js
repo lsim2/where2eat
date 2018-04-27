@@ -16,7 +16,8 @@ var myMap = new Map();
 // Setup the WebSocket connection for live updating of scores.
 const setup_chatter = () => {
   // TODO Create the WebSocket connection and assign it to `conn`
-  conn = new WebSocket("ws://localhost:1234/chat"); // only 1 server <-- eveyr client has a connection to that server
+  conn = new WebSocket("ws://localhost:1234/chatting"); // only 1 server <-- eveyr client has a connection to that server
+ 
   conn.onerror = err => {
     console.log('Connection error:', err);
   };

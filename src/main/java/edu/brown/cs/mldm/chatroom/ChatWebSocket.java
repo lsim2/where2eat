@@ -60,6 +60,8 @@ public class ChatWebSocket {
 		JsonArray ids = new JsonArray();
 		JsonArray content = new JsonArray();
 
+		// we're adding all previous msgs to the payload
+		// this is because a new user should know all previous msgs in chatroom
 		for (Message msg : allMessages) {
 			Date unParsedDate = msg.getDate();
 			SimpleDateFormat dataFormat = new SimpleDateFormat("h:m a");
@@ -81,7 +83,7 @@ public class ChatWebSocket {
 		payLoadObject.add("names", names);
 		payLoadObject.add("content", content);
 
-		addUniqueNames(session); // THIS ADDS ALL THE UNIQUE USERS
+		addUniqueNames(session); // helper func: THIS ADDS ALL THE UNIQUE USERS
 
 		jObject.add("payload", payLoadObject);
 
@@ -95,6 +97,7 @@ public class ChatWebSocket {
 		jObject.addProperty("type", MESSAGE_TYPE.UPDATEALLNAMES.ordinal());
 
 		JsonArray uniqueNames = new JsonArray();
+
 		// need to add unique names
 		for (String uniqueName : idsToName.values()) {
 			uniqueNames.add(uniqueName);
@@ -102,13 +105,14 @@ public class ChatWebSocket {
 
 		jObject.add("uniqueNames", uniqueNames);
 
+		// broadcasting to every1 that there's a new user - and we should handle it
 		for (Session sesh : sessions) {
-			System.out.println("broadcasting from add unique names!!!");
 			sesh.getRemote().sendString(GSON.toJson(jObject));
 		}
 
 	}
 
+	// when the server gets a msg that one of the clients has closed/left
 	@OnWebSocketClose
 	public void closed(Session session, int statusCode, String reason) throws IOException {
 		System.out.println("closing starting");
@@ -117,10 +121,10 @@ public class ChatWebSocket {
 		String nameOfClosedUser = idsToName.get(idSession);
 		idsToName.remove(idSession);
 
-		// broadcast to every1 to delete the - already - closed user from
-		// active users list
 		sessions.remove(session);
 
+		// broadcast to every1 to delete the - already - closed user from
+		// active users list
 		for (Session sesh : sessions) {
 			System.out.println("broadcasting to remaining sessions");
 			JsonObject updatedObject = new JsonObject();
@@ -129,9 +133,6 @@ public class ChatWebSocket {
 			sesh.getRemote().sendString(GSON.toJson(updatedObject));
 		}
 
-		System.out.println("ending");
-
-		// TODO Remove the session from the queue
 	}
 
 	// when we receive a message from the client
@@ -154,18 +155,18 @@ public class ChatWebSocket {
 		String receivedName = idsToName.get(receivedId);
 
 		Date now = new Date();
+
 		// construct a message
 		Message msg = new Message();
-
 		msg.setContent(userText);
 		msg.setSender(receivedStringId);
 		msg.setDate(now);
+		// add the msg to our list of msgs
 		allMessages.add(msg);
 
 		// wanna iterate through all messages and
 		SimpleDateFormat dataFormat = new SimpleDateFormat("h:m a");
 		String date = dataFormat.format(now);
-		System.out.println("date is: " + date);
 
 		JsonObject updatedObject = new JsonObject();
 		updatedObject.addProperty("type", MESSAGE_TYPE.UPDATE.ordinal());
@@ -179,8 +180,8 @@ public class ChatWebSocket {
 
 		updatedObject.add("payload", payLoadObject);
 
+		// tell all sessions about the new msg we received
 		for (Session sesh : sessions) {
-			System.out.println("broadcasting");
 			sesh.getRemote().sendString(GSON.toJson(updatedObject));
 		}
 	}
