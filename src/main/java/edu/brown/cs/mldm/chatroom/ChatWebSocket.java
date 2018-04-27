@@ -65,12 +65,11 @@ public class ChatWebSocket {
 		for (Message msg : allMessages) {
 			Date unParsedDate = msg.getDate();
 			SimpleDateFormat dataFormat = new SimpleDateFormat("h:m a");
-			String strId = msg.getSender();
-			Integer id = Integer.parseInt(strId);
+			Integer senderId = msg.getSenderId();
 
-			String StringId = strId;
+			String StringId = Integer.toString(senderId);
 			String stringDate = dataFormat.format(unParsedDate);
-			String stringName = idsToName.get(id);
+			String stringName = msg.getSenderName();
 			String stringContent = msg.getContent();
 
 			ids.add(StringId);
@@ -141,26 +140,25 @@ public class ChatWebSocket {
 
 		JsonObject received = GSON.fromJson(message, JsonObject.class);
 		JsonObject receivedPayload = received.get("payload").getAsJsonObject();
+		String receivedName = receivedPayload.get("name").getAsString();
 		int receivedId = receivedPayload.get("id").getAsInt();
-
+		// could have just directly asked for the name to
+		
 		int msgType = received.get("type").getAsInt();
-		System.out.println("received msg");
 
 		assert msgType == MESSAGE_TYPE.SEND.ordinal();
 
 		String userText = receivedPayload.get("text").getAsString();
-		System.out.println("my userText is: " + userText);
-
-		String receivedStringId = Integer.toString(receivedId);
-		String receivedName = idsToName.get(receivedId);
+		
 
 		Date now = new Date();
 
 		// construct a message
 		Message msg = new Message();
 		msg.setContent(userText);
-		msg.setSender(receivedStringId);
+		msg.setSenderName(receivedName);
 		msg.setDate(now);
+		msg.setSenderId(receivedId);
 		// add the msg to our list of msgs
 		allMessages.add(msg);
 

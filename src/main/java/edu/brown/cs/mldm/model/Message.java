@@ -5,7 +5,8 @@ import java.util.Date;
 public class Message {
 
 	private String content;
-	private String sender;
+	private String senderName;
+	private int senderId;
 	private Date date;
 	private int tracker;
 
@@ -13,20 +14,30 @@ public class Message {
 		return content;
 	}
 
-	public final void setContent(final String content) {
-		this.content = content;
+	public final String getSenderName() {
+		return senderName;
 	}
 
-	public final String getSender() {
-		return sender;
+	public final int getSenderId() {
+		return senderId;
 	}
-
-	public final void setSender(final String sender) {
-		this.sender = sender;
-	}
+	
 
 	public final Date getDate() {
 		return date;
+	}
+	
+	public final void setContent(final String content) {
+		this.content = content;
+	}
+	
+	
+	public final void setSenderId(final int senderId) {
+		this.senderId = senderId;
+	}
+
+	public final void setSenderName(final String sender) {
+		this.senderName = sender;
 	}
 
 	public final void setDate(final Date date) {

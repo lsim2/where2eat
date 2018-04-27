@@ -87,7 +87,7 @@ const setup_chatter = () => {
 const send_chat = chat => {
   console.log("we received the chat and it is: " + chat);
 
-  let payLoad = {"id": myId, "text": chat}; 
+  let payLoad = {"name": myName, "id": myId, "text": chat}; 
   let jsonObject = { "type": MESSAGE_TYPE.SEND, "payload": payLoad} 
   let jsonString = JSON.stringify(jsonObject)
   conn.send(jsonString); 
