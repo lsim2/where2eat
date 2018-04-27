@@ -1,4 +1,4 @@
-<#assign content>
+
 		<div>
 		  	<p>Currently connected users</p>
 		  	<ul id="connectedUsrs"></ul>
@@ -13,7 +13,6 @@
 		  	<p>Chat:</p>
 		  	<ul id="chatMsgs"></ul>
 	  	 </div>
-</#assign>
 <#include "../main.ftl">
 
 <script>
