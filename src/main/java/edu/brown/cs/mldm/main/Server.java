@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 
 import com.google.common.collect.ImmutableMap;
@@ -190,7 +189,7 @@ public class Server {
 		  @Override
 		    public ModelAndView handle(Request req, Response res) {
 		      Map<String, Object> variables = ImmutableMap.of("title",
-		          "Yelp 2.0");
+		          "Yelp 2.0", "user", "John", "restaurants", "");
 		      return new ModelAndView(variables, "chat.ftl");
 		    }
 	  }
@@ -230,15 +229,21 @@ public class Server {
 		      
 		      // processing with the algorithm:
 		      YelpApi yelpApi = new YelpApi(YELPKEY);
-		      Map<Answer,Set<Restaurant>> results = yelpApi.getPossibleRestaurants(answersDb.get(id));
+		      Map<Answer,List<Restaurant>> results = yelpApi.getPossibleRestaurants(answersDb.get(id));
 		      Ranker ranker = new Ranker();
+		      for(List<Restaurant> a : results.values()) {
+		    	  	for (Restaurant r : a) {
+		    	  		System.out.println(r.getName());
+		    	  	}
+		      }
 		      List<Restaurant> restList = ranker.rank(results);
+		      List<String> restaurants = new ArrayList<>();
 		      for (Restaurant r : restList) {
-		    	  	System.out.println(r);
+		    	  	restaurants.add(r.getName());
 		      }
 		      
 		      Map<String, Object> variables = ImmutableMap.of("title",
-			          "Yelp 2.0", "user", user);
+			          "Yelp 2.0", "user", user, "restaurants", restaurants);
 		      return new ModelAndView(variables, "chat.ftl");
 		    }
 	  }

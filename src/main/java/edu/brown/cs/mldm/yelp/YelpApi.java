@@ -1,6 +1,7 @@
 package edu.brown.cs.mldm.yelp;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -25,19 +26,19 @@ import okhttp3.Response;
 public class YelpApi {
 	private String apiKey;
 	private static final String NORMAL_LIMIT = "30"; // suggestions per person
-	private static final String SORT = "best_match"; // could also be rating, number of reviews, distance or
+	private static final String SORT = "distance"; // could also be rating, number of reviews, distance or
 	private static final Gson GSON = new Gson();
 
 	public YelpApi(String key) {
 		apiKey = key;
 	}
-	public Map<Answer,Set<Restaurant>> getPossibleRestaurants(List<Answer> answers){
-		Map<Answer, Set<Restaurant>> results = new HashMap<>();
+	public Map<Answer,List<Restaurant>> getPossibleRestaurants(List<Answer> answers){
+		Map<Answer, List<Restaurant>> results = new HashMap<>();
 		if (answers == null || answers.size() == 0) {
 			return results;
 		}
 		for(Answer answer: answers){
-				Set<Restaurant> smallSet = this.getRestaurantSet(answer);
+				List<Restaurant> smallSet = this.getRestaurantSet(answer);
 				//results.add(smallSet);
 				results.put(answer, smallSet);
 		}
@@ -45,14 +46,14 @@ public class YelpApi {
 		return results;
 	}
 
-	public Set<Restaurant> getRestaurantSet(Answer answer) {
+	public List<Restaurant> getRestaurantSet(Answer answer) {
 		// String location = "Providence, RI";
 		String terms = "restaurants";
 		String price = "1"; // price 1 = $, 2 = $$, 3 = $$$, 4 = $$$$
 		String radius = "40000";
 		String categories = "";
 
-		Set<Restaurant> restaurants = new HashSet<>();
+		List<Restaurant> restaurants = new ArrayList<>();
 		if (answer.getCoordinates() == null || answer.getFoodTerms() == null || answer.getCuisine() == null) {
 			System.out.println("ERROR: Answer attributes cannot be null!");
 			return restaurants;
@@ -112,12 +113,13 @@ public class YelpApi {
 		}
 
 		url.append("&radius=" + radius);
+		System.out.println(url);
 		return this.makeRequest(url.toString());
 	}
 
-	public Set<Restaurant> makeRequest(String requestURL) {
+	public List<Restaurant> makeRequest(String requestURL) {
 		OkHttpClient client2 = new OkHttpClient();
-		Set<Restaurant> results = new HashSet<>();
+		List<Restaurant> results = new ArrayList<>();
 		Request request2 = new Builder()
 				.url("https://api.yelp.com/v3/businesses/search?" + requestURL + "&limit=" + NORMAL_LIMIT + "&sort_by="
 						+ SORT)

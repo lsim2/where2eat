@@ -7,10 +7,9 @@
             <div class=" row border-bottom padding-sm" style="height: 40px;">
             </div>
             <br>
-                <ul>
-                <li>Kabob</li>
-                <li>Soban</li>
-                </ul>
+                <#list restaurants as restaurants>
+                    <li>${restaurants}</li>
+                </#list>
           </div>
         
         <!--=========================================================-->
