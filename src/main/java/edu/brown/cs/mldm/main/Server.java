@@ -12,6 +12,7 @@ import edu.brown.cs.mldm.chatroom.ChatWebSocket;
 import freemarker.template.Configuration;
 import spark.ExceptionHandler;
 import spark.ModelAndView;
+import spark.QueryParamsMap;
 import spark.Request;
 import spark.Response;
 import spark.Spark;
@@ -19,8 +20,11 @@ import spark.TemplateViewRoute;
 import spark.template.freemarker.FreeMarkerEngine;
 
 public class Server {
+	static ChatWebSocket chatSocket;
+
 	void runSparkServer(int port) {
-		Spark.webSocket("/score", ChatWebSocket.class);
+		chatSocket = new ChatWebSocket();
+		Spark.webSocket("/chat", chatSocket);
 
 		Spark.port(port);
 		Spark.externalStaticFileLocation("src/main/resources/static");
@@ -28,7 +32,9 @@ public class Server {
 
 		FreeMarkerEngine freeMarker = createEngine();
 
-		Spark.get("/chatroom", new ChatroomGetHandler(), freeMarker);
+		Spark.post("/chatroom", new ChatroomPostHandler(), freeMarker);
+		// Spark.get("/chatroom", new ChatroomGetHandler(), freeMarker);
+		Spark.get("/name", new NameGetHandler(), freeMarker);
 	}
 
 	private static FreeMarkerEngine createEngine() {
@@ -46,12 +52,32 @@ public class Server {
 	/**
 	 * Handles requests to the starting query page.
 	 */
+	private static class ChatroomPostHandler implements TemplateViewRoute {
+		@Override
+		public ModelAndView handle(Request req, Response response) {
+			QueryParamsMap qm = req.queryMap();
+			String name = qm.value("usrName");
+			System.out.println("the name is: " + name);
+			chatSocket.addName(name);
+			Map<String, Object> variables = ImmutableMap.of("title", "Chatroom");
+			return new ModelAndView(variables, "chatroom/chatroom.ftl");
+		}
+	}
+
 	private static class ChatroomGetHandler implements TemplateViewRoute {
+		@Override
+		public ModelAndView handle(Request req, Response response) {
+			Map<String, Object> variables = ImmutableMap.of("title", "Chatroom");
+			return new ModelAndView(variables, "chatroom/chatroom.ftl");
+		}
+	}
+
+	private static class NameGetHandler implements TemplateViewRoute {
 		@Override
 		public ModelAndView handle(Request request, Response response) {
 
-			Map<String, Object> variables = ImmutableMap.of("title", "Chatroom");
-			return new ModelAndView(variables, "chatroom/chatroom.ftl");
+			Map<String, Object> variables = ImmutableMap.of("title", "Name");
+			return new ModelAndView(variables, "chatroom/name.ftl");
 		}
 	}
 
