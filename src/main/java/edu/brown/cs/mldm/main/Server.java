@@ -86,7 +86,7 @@ public class Server {
 	    @Override
 	    public ModelAndView handle(Request req, Response res) {
 	      Map<String, Object> variables = ImmutableMap.of("title",
-	          "Yelp 2.0");
+	          "Where2Eat");
 	      return new ModelAndView(variables, "home.ftl");
 	    }
 	  }
@@ -101,7 +101,7 @@ public class Server {
 		    @Override
 		    public ModelAndView handle(Request req, Response res) {
 		      Map<String, Object> variables = ImmutableMap.of("title",
-		          "Yelp 2.0");
+		          "Where2Eat");
 		      return new ModelAndView(variables, "date.ftl");
 		    }
 		  }
@@ -117,7 +117,7 @@ public class Server {
 		    		String id = req.raw().getQueryString();
 		      Poll poll = pollDb.get(UUID.fromString((id)));
 		      Map<String, Object> variables = ImmutableMap.<String, Object>builder()
-		    		    .put("title", "Yelp 2.0") 
+		    		    .put("title", "Where2Eat") 
 		    		    .put("name", poll.getAuthor()) 
 		    		    .put("meal", poll.getMeal()) 
 		    		    .put("location", poll.getLocation()) 
@@ -150,7 +150,7 @@ public class Server {
 		      Poll poll = new Poll(pollId, name, title,location,date,msg, coordinates);
 		      pollDb.put(pollId, poll);
 		      Map<String, Object> variables = ImmutableMap.of("title",
-			          "Yelp 2.0", "pollId", pollId);
+			          "Where2Eat", "pollId", pollId);
 		      return new ModelAndView(variables, "poll.ftl");
 		    }
 		  }
@@ -189,7 +189,7 @@ public class Server {
 		  @Override
 		    public ModelAndView handle(Request req, Response res) {
 		      Map<String, Object> variables = ImmutableMap.of("title",
-		          "Yelp 2.0", "user", "John", "restaurants", "");
+		          "Where2Eat", "user", "John", "restaurants", "");
 		      return new ModelAndView(variables, "chat.ftl");
 		    }
 	  }
@@ -243,7 +243,7 @@ public class Server {
 		      }
 		      
 		      Map<String, Object> variables = ImmutableMap.of("title",
-			          "Yelp 2.0", "user", user, "restaurants", restaurants);
+			          "Where2Eat", "user", user, "restaurants", restaurants);
 		      return new ModelAndView(variables, "chat.ftl");
 		    }
 	  }
