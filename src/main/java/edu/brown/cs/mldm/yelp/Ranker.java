@@ -25,8 +25,7 @@ import java.util.Set;
  *
  * Restaurants in the order
  *
- * Ranking the top 3, based
- *
+ * Ranking the top 3, based on location, and several cuisine
  *
  */
 public class Ranker {
