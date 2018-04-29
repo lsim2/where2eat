@@ -45,7 +45,7 @@ public class Ranker {
 	 *
 	 *         Test the lack of duplicates in
 	 */
-	public List<Restaurant> rank(Map<Answer, Set<Restaurant>> suggestions) {
+	public List<Restaurant> rank(Map<Answer, List<Restaurant>> suggestions) {
 		// Go through the set and increase the score of any restaurant which appears
 		// more than once[NOT DONE] if a restaurant shows up more than once,
 		// increment its score, replace it with that particular restaurant, ensure
@@ -87,8 +87,8 @@ public class Ranker {
 	 *
 	 * @return the set of restaurants to use
 	 */
-	public Set<Restaurant> findTop5(Set<Restaurant> prefRestaurants, Answer answer, boolean three) {
-		List<Restaurant> sortedRests = new ArrayList<Restaurant>(prefRestaurants);
+	public Set<Restaurant> findTop5(List<Restaurant> list, Answer answer, boolean three) {
+		List<Restaurant> sortedRests = new ArrayList<Restaurant>(list);
 		checkRestrictions(sortedRests, answer);
 		sortedRests.sort(new PriceComparator());
 		// check whether in price range
@@ -120,14 +120,14 @@ public class Ranker {
 	 * @param bestRests
 	 *            the list of everyone's restaurant
 	 */
-	private List<Restaurant> rankBestMatches(Map<Answer, Set<Restaurant>> suggestions, List<Restaurant> dupls) {
+	private List<Restaurant> rankBestMatches(Map<Answer, List<Restaurant>> suggestions, List<Restaurant> dupls) {
 		// check dietary restrictions[KEEP A LIST OF DIETARY RESTRICTIONS]
 		// then sort and return
 		// list of the 3 best matches per user
 		Set<Restaurant> bestMatches = new HashSet<Restaurant>();
-		Set<Entry<Answer, Set<Restaurant>>> suggs = suggestions.entrySet();
+		Set<Entry<Answer, List<Restaurant>>> suggs = suggestions.entrySet();
 		// Call findTop3 this removes similar restaurants change this..
-		for (Entry<Answer, Set<Restaurant>> sugg : suggs) {
+		for (Entry<Answer, List<Restaurant>> sugg : suggs) {
 			Set<Restaurant> rests = new HashSet<Restaurant>();
 			if (suggs.size() > 1) {
 				rests = findTop5(sugg.getValue(), sugg.getKey(), false);
@@ -141,7 +141,6 @@ public class Ranker {
 				bestMatches.add(curr);
 			}
 		}
-		System.out.println("currfasdfasdfasd: " + bestMatches.size());
 		for (Restaurant curr : dupls) {
 			if (isInList(bestMatches, curr) == null) {
 				// just for testing

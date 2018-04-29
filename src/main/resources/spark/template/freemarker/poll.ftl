@@ -21,7 +21,7 @@
          <nav class="navbar navbar-fixed-top">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="/home">YELP 2.0</a>
+      <a class="navbar-brand" href="/home">Where2Eat</a>
     </div>
   </div>
 </nav>
@@ -46,7 +46,7 @@
 </div>
 </div>
 <div class="back">
-<form id="form" method="POST" action="/chat">
+<form id="form" method="POST" action="/chatroom">
 <h2 id="title"><span id="username"></span>Choose your preferences</h2><button type="button" class="goback btn">Go back</button>
 <div class="ranking">
 <p><b>My preferred price range is:</b></p><br>
