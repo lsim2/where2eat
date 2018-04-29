@@ -247,7 +247,6 @@ public class Server {
 			}
 			
 			String name = qm.value("user");
-			System.out.println("the name is: " + name);
 			chatSocket.addName(name);
 
 			Map<String, Object> variables = ImmutableMap.of("title", "Where2Eat", "user", user, "restaurants",
