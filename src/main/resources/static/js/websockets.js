@@ -63,6 +63,9 @@ const setup_chatter = () => {
           let txt = myContent[i];
           let nameTxt = myNames[i];
             let temp = document.getElementById("left");
+            if (nameTxt == myName) {
+                temp = document.getElementById("right");
+            }
             temp.content.querySelector('img').src = 'https://api.adorable.io/avatars/50/'+nameTxt+'@adorable.png';
             temp.content.querySelector(".user").innerHTML = nameTxt;
             temp.content.querySelector(".time").innerHTML = " " + date;
@@ -86,9 +89,12 @@ const setup_chatter = () => {
         console.log("received an update msg and the msg is: " + txt);
         console.log("received an update msg and the msg id is: " + txtId);
         let temp = document.getElementById("left");
+        if (nameTxt == myName) {
+                temp = document.getElementById("right");
+        }
         temp.content.querySelector('img').src = 'https://api.adorable.io/avatars/50/'+nameTxt+'@adorable.png';
         temp.content.querySelector(".user").innerHTML = nameTxt;
-        temp.content.querySelector(".time").innerHTML = date;
+        temp.content.querySelector(".time").innerHTML = " " + date;
         temp.content.querySelector(".msg").innerHTML = txt;
         let clone = document.importNode(temp.content, true);
         document.getElementById("chatMsgs").appendChild(clone);
