@@ -36,11 +36,16 @@ public class Server {
 
 	private static Map<UUID, Poll> pollDb = new HashMap<>();
 	private static Map<UUID, List<Answer>> answersDb = new HashMap<>();
+	
+	private static Map<String, String> cuisinesDb = new HashMap<>();
+	private static Map<String, String> restrictionsDb = new HashMap<>();
+	private static Map<String, String> foodDb = new HashMap<>();
 
 	private static final Gson GSON = new Gson();
 	private static final String YELPKEY = "gKGjR4vy8kXQAyKrBjuPXepYBqladSEtwSTm_NNshaMPebXqQkZsGLIOe6FSUESQIh_l-cSN5lIhxiQ3-mkCnr_orbJARb_cCSr3OlQs0Jxi21D-m8uiqoHJr1jVWnYx";
 
 	void runSparkServer(int port) {
+		readFiles();
 		chatSocket = new ChatWebSocket();
 		Spark.webSocket("/chatting", chatSocket);
 
@@ -73,6 +78,14 @@ public class Server {
 			System.exit(1);
 		}
 		return new FreeMarkerEngine(config);
+	}
+	
+	private void readFiles() {
+		Reader reader = new Reader();
+		reader.readFiles("data/cuisines.txt", cuisinesDb);
+		reader.readFiles("data/food.txt", foodDb);
+		reader.readFiles("data/restrictions.txt", restrictionsDb);
+		System.out.println(cuisinesDb);
 	}
 
 	/**
@@ -129,38 +142,13 @@ public class Server {
 			Poll poll = pollDb.get(UUID.fromString((id)));
 			Map<String, Object> variables = ImmutableMap.<String, Object>builder().put("title", "Where2Eat")
 					.put("name", poll.getAuthor()).put("meal", poll.getMeal()).put("location", poll.getLocation())
-					.put("date", poll.getDate()).put("message", poll.getMsg()).put("pollId", id).build();
+					.put("date", poll.getDate()).put("message", poll.getMsg())
+					.put("pollId", id).put("cuisines", cuisinesDb)
+					.put("restrictions", restrictionsDb).put("food", foodDb).build();
 			return new ModelAndView(variables, "poll.ftl");
 		}
 	}
 
-	/**
-	 * Handle requests to the front page of our Autocorrect website.
-	 *
-	 * @author lsim2
-	 */
-	private static class pollFrontHandler implements TemplateViewRoute {
-		@Override
-		public ModelAndView handle(Request req, Response res) {
-			QueryParamsMap qm = req.queryMap();
-			String name = qm.value("name");
-			String title = qm.value("title");
-			String location = qm.value("location");
-			String date = qm.value("date");
-			String msg = qm.value("message");
-			String lat = qm.value("lat");
-			String lng = qm.value("lng");
-			double[] coordinates = { Double.parseDouble(lat), Double.parseDouble(lng) };
-			UUID pollId = UUID.randomUUID();
-			while (pollDb.containsKey(pollId)) {
-				pollId = UUID.randomUUID();
-			}
-			Poll poll = new Poll(pollId, name, title, location, date, msg, coordinates);
-			pollDb.put(pollId, poll);
-			Map<String, Object> variables = ImmutableMap.of("title", "Where2Eat", "pollId", pollId);
-			return new ModelAndView(variables, "poll.ftl");
-		}
-	}
 
 	/**
 	 * Handle requests to the front page of our Autocorrect website.

@@ -31,6 +31,19 @@
     	<div class="col-md-4">
             <div class="chat-message" id="chat-message">
                 <ul id="chatMsgs" class="chat">
+                <li class="left clearfix">
+                <span class="chat-img pull-left">
+                    		<img src="https://api.adorable.io/avatars/50/FoodBot@adorable.png" alt="User Avatar">
+                    	</span>
+                    	<div class="chat-body clearfix">
+                    		<div class="header">
+                    			<strong class="primary-font">FoodBot</strong>
+                    		</div>
+                    		<p>
+                    			Welcome to Where2Eat! Chat here to talk to your fellow fooders!
+                    		</p>
+                    	</div>
+                        </li>
                     <template id="left">
                     <li class="left clearfix">
                     	<span class="chat-img pull-left">
