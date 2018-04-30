@@ -90,14 +90,6 @@ public class Restaurant {
 		for (Map<String, String> rest : categories) {
 			cat.add(rest.get("alias"));
 
-			cat.add(rest.get("title"));
-			// System.out.println(rest.get("alias"));
-			// System.out.println(rest.get("title"));
-
-			// cat.add(rest.get("title"));
-			// System.out.println(rest.get("alias"));
-			// System.out.println(rest.get("title"));
-
 		}
 		return cat;
 	}

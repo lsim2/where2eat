@@ -25,7 +25,7 @@ import java.util.Set;
  *
  * Restaurants in the order
  *
- * Ranking the top 3, based on location, and several cuisine
+ * If using google api, use it to rank a restaurant per cuisine Location sorter,
  *
  */
 public class Ranker {
@@ -46,15 +46,13 @@ public class Ranker {
 	 *         Test the lack of duplicates in
 	 */
 	public List<Restaurant> rank(Map<Answer, List<Restaurant>> suggestions) {
-		// Go through the set and increase the score of any restaurant which appears
-		// more than once[NOT DONE] if a restaurant shows up more than once,
-		// increment its score, replace it with that particular restaurant, ensure
-		// they're the same, keep track of these restaurants, add it to the ranking
+		// keep track of duplicate rests.
 		List<Restaurant> allRests = new ArrayList<Restaurant>();
 		List<Restaurant> dupls = new ArrayList<Restaurant>();
 		Set<Answer> keys = suggestions.keySet();
 		for (Answer key : keys) {
 			Iterator<Restaurant> currRests = suggestions.get(key).iterator();
+			// RankerTest.resPrinter(suggestions.get(key));
 			if (currRests.hasNext()) {
 
 				while (currRests.hasNext()) {
@@ -91,6 +89,7 @@ public class Ranker {
 		List<Restaurant> sortedRests = new ArrayList<Restaurant>(list);
 		checkRestrictions(sortedRests, answer);
 		sortedRests.sort(new PriceComparator());
+		sortedRests.sort(new DistComparator(answer));
 		// check whether in price range
 		Set<Restaurant> ret = new HashSet<Restaurant>();
 		for (int a = 0; a < 5 && a < sortedRests.size(); a++) {
@@ -103,12 +102,12 @@ public class Ranker {
 					sortedRests.get(a).incrementScore();
 				}
 			}
+			assert Math.sqrt(sqDistance(sortedRests.get(a), answer)) < answer.getRadius();
 			sortedRests.get(a).incrementScore();
+
 			ret.add(sortedRests.get(a));
-			// if (a == 2 && three) {
-			// break;
-			// }
 		}
+		// RankerTest.resPrinter(sortedRests);
 		return ret;
 	}
 
@@ -178,6 +177,7 @@ public class Ranker {
 			}
 		}
 		allRests.removeAll(toRemv);
+
 		return allRests;
 
 	}
@@ -205,6 +205,29 @@ public class Ranker {
 			}
 		}
 		return null;
+	}
+
+	private class DistComparator implements Comparator<Restaurant> {
+		private Answer ans;
+
+		public DistComparator(Answer answer) {
+			ans = answer;
+		}
+
+		@Override
+		public int compare(Restaurant r1, Restaurant r2) {
+			return Double.compare(sqDistance(r1, ans), sqDistance(r2, ans));
+		}
+	}
+
+	private double sqDistance(Restaurant rest, Answer ans) {
+
+		double distance = ((rest.getCoordinates()[0] - ans.getCoordinates()[0])
+				* (rest.getCoordinates()[0] - ans.getCoordinates()[0]))
+				+ ((rest.getCoordinates()[1] - ans.getCoordinates()[1])
+						* (rest.getCoordinates()[1] - ans.getCoordinates()[1]));
+		return distance;
+
 	}
 
 }
