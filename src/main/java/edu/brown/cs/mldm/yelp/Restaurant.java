@@ -16,7 +16,6 @@ public class Restaurant {
 	private Map<String, String> coordinates;
 	private String is_closed;
 	private String open_at;
-
 	private double score = 0;
 
 	private String image_url;
@@ -89,14 +88,6 @@ public class Restaurant {
 		Set<String> cat = new HashSet<>();
 		for (Map<String, String> rest : categories) {
 			cat.add(rest.get("alias"));
-
-			cat.add(rest.get("title"));
-			// System.out.println(rest.get("alias"));
-			// System.out.println(rest.get("title"));
-
-			// cat.add(rest.get("title"));
-			// System.out.println(rest.get("alias"));
-			// System.out.println(rest.get("title"));
 
 		}
 		return cat;

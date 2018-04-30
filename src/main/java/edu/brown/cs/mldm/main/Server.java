@@ -36,7 +36,7 @@ public class Server {
 
 	private static Map<UUID, Poll> pollDb = new HashMap<>();
 	private static Map<UUID, List<Answer>> answersDb = new HashMap<>();
-	
+
 	private static final Gson GSON = new Gson();
 	private static final String YELPKEY = "gKGjR4vy8kXQAyKrBjuPXepYBqladSEtwSTm_NNshaMPebXqQkZsGLIOe6FSUESQIh_l-cSN5lIhxiQ3-mkCnr_orbJARb_cCSr3OlQs0Jxi21D-m8uiqoHJr1jVWnYx";
 
@@ -58,7 +58,7 @@ public class Server {
 		Spark.post("/home", new homeSubmitHandler());
 		Spark.get("/date", new dateFrontHandler(), freeMarker);
 		Spark.get("/poll/:id", new pollUniqueHandler(), freeMarker);
-		//Spark.get("/chat/:id", new chatFrontHandler(), freeMarker);
+		// Spark.get("/chat/:id", new chatFrontHandler(), freeMarker);
 		Spark.post("/chat/:id", new pollResHandler(), freeMarker);
 
 	}
@@ -240,20 +240,20 @@ public class Server {
 			YelpApi yelpApi = new YelpApi(YELPKEY);
 			Map<Answer, List<Restaurant>> results = yelpApi.getPossibleRestaurants(answersDb.get(id));
 			Ranker ranker = new Ranker();
-			
-			//TODO: Delete this when we are done
-//			for (List<Restaurant> a : results.values()) {
-//				for (Restaurant r : a) {
-//					System.out.println(r.getName());
-//				}
-//			}
+
+			// TODO: Delete this when we are done
+			// for (List<Restaurant> a : results.values()) {
+			// for (Restaurant r : a) {
+			// System.out.println(r.getName());
+			// }
+			// }
 			List<Restaurant> restList = ranker.rank(results);
 			List<String> restaurants = new ArrayList<>();
 			for (Restaurant r : restList) {
 				restaurants.add(r.getName());
 			}
 			chatSocket.addRestaurantList(id, restList);
-			
+
 			String name = qm.value("user");
 			chatSocket.addName(name);
 

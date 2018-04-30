@@ -23,14 +23,15 @@ import java.util.Set;
  * already included) to find the top 5
  *
  *
- * Restaurants in the order
- *
- * Ranking the top 3, based
- *
+ * 
+ * 
+ * restaurant which appears first in its cuisine gets an increment,
+ * 
+ * If using google api, use it to rank a restaurant per cuisine Location sorter,
  *
  */
 public class Ranker {
-	private static final int INC = 30;
+	private static final int INC = 10;
 
 	public Ranker() {
 
@@ -47,13 +48,11 @@ public class Ranker {
 	 *         Test the lack of duplicates in
 	 */
 	public List<Restaurant> rank(Map<Answer, List<Restaurant>> suggestions) {
-		// Go through the set and increase the score of any restaurant which appears
-		// more than once[NOT DONE] if a restaurant shows up more than once,
-		// increment its score, replace it with that particular restaurant, ensure
-		// they're the same, keep track of these restaurants, add it to the ranking
+		// keep track of duplicate rests.
 		List<Restaurant> allRests = new ArrayList<Restaurant>();
 		List<Restaurant> dupls = new ArrayList<Restaurant>();
 		Set<Answer> keys = suggestions.keySet();
+
 		for (Answer key : keys) {
 			Iterator<Restaurant> currRests = suggestions.get(key).iterator();
 			if (currRests.hasNext()) {
@@ -67,7 +66,6 @@ public class Ranker {
 						suggestions.get(key).add(nRest);
 						dupls.add(nRest);
 					}
-					// currRest = currRests.next();
 				}
 				// ensures it was not emptied by iteration
 				assert !suggestions.get(key).isEmpty();
@@ -92,11 +90,12 @@ public class Ranker {
 		List<Restaurant> sortedRests = new ArrayList<Restaurant>(list);
 		checkRestrictions(sortedRests, answer);
 		sortedRests.sort(new PriceComparator());
+		sortedRests.sort(new DistComparator(answer));
+		checkCuisines(sortedRests, answer);
 		// check whether in price range
 		Set<Restaurant> ret = new HashSet<Restaurant>();
 		for (int a = 0; a < 5 && a < sortedRests.size(); a++) {
 			if (a == 0) {
-				// double check with Lina
 				if (!answer.getRestrictions().isEmpty()) {
 					sortedRests.get(a).setScore(sortedRests.get(a).getScore() + INC);
 
@@ -104,11 +103,10 @@ public class Ranker {
 					sortedRests.get(a).incrementScore();
 				}
 			}
+			assert Math.sqrt(sqDistance(sortedRests.get(a), answer)) < answer.getRadius();
 			sortedRests.get(a).incrementScore();
+
 			ret.add(sortedRests.get(a));
-			// if (a == 2 && three) {
-			// break;
-			// }
 		}
 		return ret;
 	}
@@ -122,9 +120,7 @@ public class Ranker {
 	 *            the list of everyone's restaurant
 	 */
 	private List<Restaurant> rankBestMatches(Map<Answer, List<Restaurant>> suggestions, List<Restaurant> dupls) {
-		// check dietary restrictions[KEEP A LIST OF DIETARY RESTRICTIONS]
-		// then sort and return
-		// list of the 3 best matches per user
+
 		Set<Restaurant> bestMatches = new HashSet<Restaurant>();
 		Set<Entry<Answer, List<Restaurant>>> suggs = suggestions.entrySet();
 		// Call findTop3 this removes similar restaurants change this..
@@ -179,6 +175,7 @@ public class Ranker {
 			}
 		}
 		allRests.removeAll(toRemv);
+
 		return allRests;
 
 	}
@@ -194,7 +191,7 @@ public class Ranker {
 
 		@Override
 		public int compare(Restaurant o1, Restaurant o2) {
-			return Double.compare(o2.getPrice(), o1.getPrice());
+			return Double.compare(o1.getPrice(), o2.getPrice());
 		}
 
 	}
@@ -206,6 +203,47 @@ public class Ranker {
 			}
 		}
 		return null;
+	}
+
+	private class DistComparator implements Comparator<Restaurant> {
+		private Answer ans;
+
+		public DistComparator(Answer answer) {
+			ans = answer;
+		}
+
+		@Override
+		public int compare(Restaurant r1, Restaurant r2) {
+			return Double.compare(sqDistance(r1, ans), sqDistance(r2, ans));
+		}
+	}
+
+	private double sqDistance(Restaurant rest, Answer ans) {
+
+		double distance = ((rest.getCoordinates()[0] - ans.getCoordinates()[0])
+				* (rest.getCoordinates()[0] - ans.getCoordinates()[0]))
+				+ ((rest.getCoordinates()[1] - ans.getCoordinates()[1])
+						* (rest.getCoordinates()[1] - ans.getCoordinates()[1]));
+		return distance;
+
+	}
+
+	/**
+	 * For every cuisine, increment the score of a restaurant
+	 * 
+	 * @param rests
+	 * @param answer
+	 */
+	private void checkCuisines(List<Restaurant> rests, Answer answer) {
+		for (String cuisine : answer.getCuisine()) {
+			for (Restaurant rest : rests) {
+				for (String category : rest.getCategories()) {
+					if (cuisine.equals(category)) {
+						rest.incrementScore();
+					}
+				}
+			}
+		}
 	}
 
 }

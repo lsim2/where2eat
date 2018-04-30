@@ -46,7 +46,7 @@ public class ChatWebSocket {
 	public void addName(String name) {
 		idsToName.put(nextId, name);
 	}
-	
+
 	// called in server
 	public void addRestaurantList(UUID id, List<Restaurant> restaurants) {
 		uuidToRestaurants.put(id, restaurants);
@@ -86,9 +86,9 @@ public class ChatWebSocket {
 			String myName = idsToName.get(personId);
 			uniqueNames.add(myName);
 		}
-		
+
 		JsonArray suggestions = new JsonArray();
-		
+
 		List<Restaurant> restaurantList = getRestaurantList(receivedRoomURL);
 		for (Restaurant r : restaurantList) {
 			suggestions.add(r.getName());
@@ -147,13 +147,12 @@ public class ChatWebSocket {
 		JsonArray ids = new JsonArray();
 		JsonArray content = new JsonArray();
 		JsonArray suggestions = new JsonArray();
-		
+
 		List<Restaurant> restaurantList = getRestaurantList(receivedRoomURL);
 		for (Restaurant r : restaurantList) {
 			suggestions.add(r.getName());
 			System.out.println(GSON.toJson(r));
 		}
-		
 
 		// we're adding all previous msgs (in the room) to the payload
 		List<Message> msgsInRoom = urlToMsgs.get(receivedRoomURL);
@@ -177,8 +176,8 @@ public class ChatWebSocket {
 		payLoadObject.add("names", names);
 		payLoadObject.add("content", content);
 		payLoadObject.add("suggestions", suggestions);
-		
-		//TODO: repeated code! 
+
+		// TODO: repeated code!
 
 		addUniqueNames(session, receivedRoomURL); // helper func: THIS ADDS ALL THE UNIQUE USERS
 
@@ -243,9 +242,9 @@ public class ChatWebSocket {
 		updatedObject.addProperty("type", MESSAGE_TYPE.UPDATE.ordinal());
 
 		JsonObject payLoadObject = new JsonObject();
-		
+
 		JsonArray suggestions = new JsonArray();
-		
+
 		List<Restaurant> restaurantList = getRestaurantList(receivedRoomURL);
 		for (Restaurant r : restaurantList) {
 			suggestions.add(r.getName());
@@ -264,12 +263,12 @@ public class ChatWebSocket {
 			sesh.getRemote().sendString(GSON.toJson(updatedObject));
 		}
 	}
-	
+
 	private List<Restaurant> getRestaurantList(String receivedRoomURL) {
 		int index = receivedRoomURL.lastIndexOf('?') + 1;
 		String uuidString = receivedRoomURL.substring(index, receivedRoomURL.length());
 		UUID id = UUID.fromString(uuidString);
-		
+
 		return uuidToRestaurants.get(id);
 	}
 }
