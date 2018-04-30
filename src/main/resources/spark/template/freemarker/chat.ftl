@@ -33,7 +33,7 @@
                 <ul id="chatMsgs" class="chat">
                 <li class="left clearfix">
                 <span class="chat-img pull-left">
-                    		<img src="https://api.adorable.io/avatars/50/FoodBot@adorable.png" alt="User Avatar">
+                    		<img src="https://api.adorable.io/avatars/50/Foodbot@adorable.png" alt="User Avatar">
                     	</span>
                     	<div class="chat-body clearfix">
                     		<div class="header">
