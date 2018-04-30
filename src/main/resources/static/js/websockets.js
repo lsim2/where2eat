@@ -64,15 +64,19 @@ const setup_chatter = () => {
           zoom: 18,
           center: center
         });
+            
+        let bounds = new google.maps.LatLngBounds();
 
         for(let i=0;i<data.rests.length;i++){
           const restaurant = JSON.parse(data.rests[i]);
           let pos = {lat: parseFloat(restaurant.coordinates.latitude), lng: parseFloat(restaurant.coordinates.longitude)};
           let marker = new google.maps.Marker({
-            position: pos,
+            position: new google.maps.LatLng(pos.lat, pos.lng),
             map: map
           });
+          bounds.extend(marker.position);
         }
+        map.fitBounds(bounds);
         break;
 
       case MESSAGE_TYPE.CONNECT:

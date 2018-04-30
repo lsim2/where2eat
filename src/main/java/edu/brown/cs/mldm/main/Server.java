@@ -85,7 +85,6 @@ public class Server {
 		reader.readFiles("data/cuisines.txt", cuisinesDb);
 		reader.readFiles("data/food.txt", foodDb);
 		reader.readFiles("data/restrictions.txt", restrictionsDb);
-		System.out.println(cuisinesDb);
 	}
 
 	/**
