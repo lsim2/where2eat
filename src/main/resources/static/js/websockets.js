@@ -3,7 +3,8 @@ const MESSAGE_TYPE = {
   SEND: 1,
   UPDATE: 2,
   DELETE: 3,
-  UPDATEALLNAMES: 4
+  UPDATEALLNAMES: 4,
+  ADDTOROOM: 5
 };
 // note DELETE is deleting an already disconnected socket
 
@@ -16,7 +17,7 @@ var myMap = new Map();
 // Setup the WebSocket connection for live updating of scores.
 const setup_chatter = () => {
   // TODO Create the WebSocket connection and assign it to `conn`
-  conn = new WebSocket("ws://localhost:4567/chatting"); // only 1 server <-- eveyr client has a connection to that server
+  conn = new WebSocket("ws://localhost:4567/chatting"); // only 1 server <-- every client has a connection to that server
  
   conn.onerror = err => {
     console.log('Connection error:', err);
@@ -32,6 +33,7 @@ const setup_chatter = () => {
         break;
       case MESSAGE_TYPE.DELETE:
         let nameToDelete = String(data.name);
+        console.log("name to delete is: " + nameToDelete );
         //http://jsfiddle.net/m7zUh/
         $('ul#connectedUsrs li:contains(' + nameToDelete + ')').remove();
         break;
@@ -48,9 +50,17 @@ const setup_chatter = () => {
         break;
 
       case MESSAGE_TYPE.CONNECT:
-        console.log("connected and my id is: " + data.payload.id);
+        // sending our info to the server, so the server can put us in the right room
         myId = data.payload.id;
         myName = data.payload.myName;
+
+        let payLoad = {"name": myName, "id": myId, "roomURL": window.location.href}; 
+        let jsonObject = { "type": MESSAGE_TYPE.ADDTOROOM, "payload": payLoad} 
+        let jsonString = JSON.stringify(jsonObject)
+        conn.send(jsonString); 
+        break;
+      case MESSAGE_TYPE.ADDTOROOM:
+        console.log("connected and my id is: " + data.payload.id);
 
         let myDates = data.payload.dates;
         let myIds = data.payload.ids;
@@ -111,7 +121,7 @@ const setup_chatter = () => {
 const send_chat = chat => {
   console.log("we received the chat and it is: " + chat);
 
-  let payLoad = {"name": myName, "id": myId, "text": chat}; 
+  let payLoad = {"name": myName, "id": myId, "text": chat, "roomURL": window.location.href}; 
   let jsonObject = { "type": MESSAGE_TYPE.SEND, "payload": payLoad} 
   let jsonString = JSON.stringify(jsonObject)
   conn.send(jsonString); 
