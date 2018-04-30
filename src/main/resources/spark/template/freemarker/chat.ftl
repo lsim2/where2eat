@@ -7,9 +7,10 @@
             <div class=" row border-bottom padding-sm" style="height: 40px;">
             </div>
             <br>
-                <#list restaurants as restaurants>
-                    <li>${restaurants}</li>
-                </#list>
+                <div>
+                    <p>Suggestions</p>
+                    <ul id="suggestions"></ul>
+                </div>
           </div>
         
         <!--=========================================================-->
@@ -51,7 +52,7 @@
             <div class="chat-box">
             	<div class="input-group bg-white">
                 <form id = "userForm">
-            		<input id="userInput" name="firstInput" class="form-control border no-shadow no-rounded" placeholder="Type your message here">
+            		<input id="userInput" name="firstInput" class="form-control border no-shadow no-rounded" placeholder="Type your message here" autocomplete="off">
                 </form>
             	</div><!-- /input-group -->	
             </div>            

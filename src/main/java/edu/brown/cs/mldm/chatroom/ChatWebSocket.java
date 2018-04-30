@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.eclipse.jetty.websocket.api.Session;
@@ -21,6 +22,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import edu.brown.cs.mldm.model.Message;
+import edu.brown.cs.mldm.yelp.Restaurant;
 
 //TODO: ask why this annotation is necessary <-- what does it even do?
 @WebSocket
@@ -31,6 +33,7 @@ public class ChatWebSocket {
 	private Map<Integer, String> idsToName = new HashMap<Integer, String>();
 	private Map<Session, Integer> sessionToId = new HashMap<Session, Integer>();
 	private Map<Session, String> sessionToURL = new HashMap<Session, String>();
+	private static Map<UUID, List<Restaurant>> uuidToRestaurants = new HashMap<>();
 
 	private Map<String, List<Message>> urlToMsgs = new HashMap<String, List<Message>>();
 	private Map<String, Queue<Session>> urlToQueueOfSessions = new HashMap<String, Queue<Session>>();
@@ -42,6 +45,11 @@ public class ChatWebSocket {
 	// called in server
 	public void addName(String name) {
 		idsToName.put(nextId, name);
+	}
+	
+	// called in server
+	public void addRestaurantList(UUID id, List<Restaurant> restaurants) {
+		uuidToRestaurants.put(id, restaurants);
 	}
 
 	@OnWebSocketConnect
@@ -78,8 +86,17 @@ public class ChatWebSocket {
 			String myName = idsToName.get(personId);
 			uniqueNames.add(myName);
 		}
+		
+		JsonArray suggestions = new JsonArray();
+		
+		List<Restaurant> restaurantList = getRestaurantList(receivedRoomURL);
+		for (Restaurant r : restaurantList) {
+			suggestions.add(r.getName());
+			System.out.println(GSON.toJson(r));
+		}
 
 		jObject.add("uniqueNames", uniqueNames);
+		jObject.add("suggestions", suggestions);
 
 		// broadcasting to every1 (in the room) that there's a new user - and we should
 		// handle it
@@ -130,6 +147,14 @@ public class ChatWebSocket {
 		JsonArray names = new JsonArray();
 		JsonArray ids = new JsonArray();
 		JsonArray content = new JsonArray();
+		JsonArray suggestions = new JsonArray();
+		
+		List<Restaurant> restaurantList = getRestaurantList(receivedRoomURL);
+		for (Restaurant r : restaurantList) {
+			suggestions.add(r.getName());
+			System.out.println(GSON.toJson(r));
+		}
+		
 
 		// we're adding all previous msgs (in the room) to the payload
 		List<Message> msgsInRoom = urlToMsgs.get(receivedRoomURL);
@@ -152,6 +177,9 @@ public class ChatWebSocket {
 		payLoadObject.add("dates", dates);
 		payLoadObject.add("names", names);
 		payLoadObject.add("content", content);
+		payLoadObject.add("suggestions", suggestions);
+		
+		//TODO: repeated code! 
 
 		addUniqueNames(session, receivedRoomURL); // helper func: THIS ADDS ALL THE UNIQUE USERS
 
@@ -216,11 +244,19 @@ public class ChatWebSocket {
 		updatedObject.addProperty("type", MESSAGE_TYPE.UPDATE.ordinal());
 
 		JsonObject payLoadObject = new JsonObject();
+		
+		JsonArray suggestions = new JsonArray();
+		
+		List<Restaurant> restaurantList = getRestaurantList(receivedRoomURL);
+		for (Restaurant r : restaurantList) {
+			suggestions.add(r.getName());
+		}
 
 		payLoadObject.addProperty("id", receivedId);
 		payLoadObject.addProperty("text", userText);
 		payLoadObject.addProperty("date", date);
 		payLoadObject.addProperty("name", receivedName);
+		payLoadObject.add("suggestions", suggestions);
 
 		updatedObject.add("payload", payLoadObject);
 		Queue<Session> myQueue = urlToQueueOfSessions.get(receivedRoomURL);
@@ -228,5 +264,13 @@ public class ChatWebSocket {
 		for (Session sesh : myQueue) {
 			sesh.getRemote().sendString(GSON.toJson(updatedObject));
 		}
+	}
+	
+	private List<Restaurant> getRestaurantList(String receivedRoomURL) {
+		int index = receivedRoomURL.lastIndexOf('?') + 1;
+		String uuidString = receivedRoomURL.substring(index, receivedRoomURL.length());
+		UUID id = UUID.fromString(uuidString);
+		
+		return uuidToRestaurants.get(id);
 	}
 }

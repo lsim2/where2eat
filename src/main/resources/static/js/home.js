@@ -41,6 +41,7 @@ $("#submit").click(function(e) {
         a.appendChild(linkText);
         a.title = 'localhost:4567/poll/:id?'+pollId;
         a.href = '/poll/:id?'+pollId;
+        a.target = "_blank";
         document.getElementById('pollInfo').appendChild(a);
     });
      setTimeout(function(){

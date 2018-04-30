@@ -113,7 +113,6 @@ public class YelpApi {
 		}
 
 		url.append("&radius=" + radius);
-		System.out.println(url);
 		return this.makeRequest(url.toString());
 	}
 

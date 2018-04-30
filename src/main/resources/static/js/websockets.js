@@ -47,18 +47,26 @@ const setup_chatter = () => {
           console.log("unique name is: " + uniqueName);
           $('#connectedUsrs').append("<li>" + uniqueName + "</li>");
         }
+            
+        $('#suggestions').empty();
+        // update all uniqque users in chat
+        let suggestions = data.suggestions;
+        for (let i = 0; i < suggestions.length; i++) {
+          let restaurant = suggestions[i];
+          $('#suggestions').append("<li>" + restaurant + "</li>");
+        }
         break;
 
       case MESSAGE_TYPE.CONNECT:
         // sending our info to the server, so the server can put us in the right room
         myId = data.payload.id;
         myName = data.payload.myName;
-
         let payLoad = {"name": myName, "id": myId, "roomURL": window.location.href}; 
         let jsonObject = { "type": MESSAGE_TYPE.ADDTOROOM, "payload": payLoad} 
         let jsonString = JSON.stringify(jsonObject)
         conn.send(jsonString); 
         break;
+            
       case MESSAGE_TYPE.ADDTOROOM:
         console.log("connected and my id is: " + data.payload.id);
 
@@ -84,9 +92,9 @@ const setup_chatter = () => {
             document.getElementById("chatMsgs").appendChild(clone);
             let chatMsg = document.getElementById("chat-message");
             chatMsg.scrollTop = chatMsg.scrollHeight;
-          //$('#chatMsgs').append("<li>" + date + " and id: " + txtId + " & name: "+ nameTxt + " and txt: " + txt +"</li>");
         }
         break;
+            
       case MESSAGE_TYPE.UPDATE:
         let txt;
         let txtId;
@@ -110,7 +118,6 @@ const setup_chatter = () => {
         document.getElementById("chatMsgs").appendChild(clone);
         let chatMsg = document.getElementById("chat-message");
         chatMsg.scrollTop = chatMsg.scrollHeight;
-       // $('#chatMsgs').append("<li>" + date + " and id: " + txtId + " & name: "+ nameTxt + " and txt: " + txt +"</li>");
     }
   };
 }
