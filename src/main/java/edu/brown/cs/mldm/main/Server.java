@@ -125,6 +125,7 @@ public class Server {
 		@Override
 		public ModelAndView handle(Request req, Response res) {
 			String id = req.raw().getQueryString();
+			System.out.println("my id: " + id);
 			Poll poll = pollDb.get(UUID.fromString((id)));
 			Map<String, Object> variables = ImmutableMap.<String, Object>builder().put("title", "Where2Eat")
 					.put("name", poll.getAuthor()).put("meal", poll.getMeal()).put("location", poll.getLocation())
