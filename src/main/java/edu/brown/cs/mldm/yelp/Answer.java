@@ -24,7 +24,6 @@ public class Answer {
 		this.restrictions = restrictions;
 	}
 
-
 	public List<String> getCuisine() {
 		return cuisine;
 	}

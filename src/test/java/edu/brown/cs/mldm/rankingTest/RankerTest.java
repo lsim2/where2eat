@@ -15,9 +15,9 @@ import edu.brown.cs.mldm.yelp.Ranker;
 import edu.brown.cs.mldm.yelp.Restaurant;
 import edu.brown.cs.mldm.yelp.YelpApi;
 
-// include location per person
-//include everyone's top cuisine restaurant 
-//figure out how to use Mounika's google api
+// include location per person[DONE]
+//include everyone's top cuisine restaurant[WORKING ON IT] 
+//figure out how to use Mounika's google api[CAN'T DO IT]
 // cards adding and removing restaurant or like ranking considerably reduced
 // use info on what was removed to rank
 public class RankerTest {
@@ -27,12 +27,11 @@ public class RankerTest {
 
 	@Test
 	public void testOnceAnswer() {
-		// create ranker, create fake answer, call both of those classes
-		// make the top 3 method public
+
 		List<String> cuisine = new ArrayList<String>();
 		cuisine.add("mexican");
 		cuisine.add("chinese");
-		cuisine.add("sandwiches");
+		// cuisine.add("sandwiches");
 		List<String> restrictions = new ArrayList<String>();
 		double[] rockLoc = { 41.8251002, -71.4028338 };
 		List<String> fT = new ArrayList<String>();
@@ -43,14 +42,28 @@ public class RankerTest {
 		Map<Answer, List<Restaurant>> possRest = testApi.getPossibleRestaurants(answers);
 		List<Restaurant> res = testRk.rank(possRest);
 		assertTrue(res.size() == 5);
-		resPrinter(res);
-		// assertTrue(containsRest(res, "bajas taqueria"));
 	}
 
+	@Test
 	public void testMultiple() {
 		Answer testAns = createAnswer("sandwiches", 3, new ArrayList<String>());
 		Answer test2 = createAnswer("chinese", 2, new ArrayList<String>());
 		Answer test3 = createAnswer("Fast Food", 3, Arrays.asList("vegan"));
+		List<Answer> answers = new ArrayList<Answer>();
+		answers.add(testAns);
+		answers.add(test2);
+		answers.add(test3);
+		Map<Answer, List<Restaurant>> possRest = testApi.getPossibleRestaurants(answers);
+		List<Restaurant> res = testRk.rank(possRest);
+		RankerTest.resPrinter(res);
+		assertTrue(res.size() == 5);
+	}
+
+	@Test
+	public void testMultiple1() {
+		Answer testAns = createAnswer("sandwiches", 3, new ArrayList<String>());
+		Answer test2 = createAnswer("chinese", 2, new ArrayList<String>());
+		Answer test3 = createAnswer("korean", 3, Arrays.asList("vegan"));
 		List<Answer> answers = new ArrayList<Answer>();
 		answers.add(testAns);
 		answers.add(test2);
@@ -73,13 +86,16 @@ public class RankerTest {
 
 	private Answer createAnswer(String cuisine, int p, List<String> restr) {
 		double[] rockLoc = { 41.8251002, -71.4028338 };
-		List<String> cui = Arrays.asList(cuisine);
+
+		List<String> cui = new ArrayList<String>();
+		cui.add("indpak");
+		cui.add(cuisine);
 		return new Answer("1", cui, restr, new ArrayList<String>(), p, rockLoc, 1000);
 	}
 
 	public static void resPrinter(List<Restaurant> res) {
 		for (Restaurant curr : res) {
-			System.out.println(curr.getName() + " :fhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
+			System.out.println(curr.getName());
 		}
 	}
 

@@ -83,6 +83,7 @@
       <version>2.8.2</version>
     </dependency>
 
+
     <!--
         Spark is a web framework for java.
         http://sparkjava.com/.
@@ -146,6 +147,13 @@
         </dependency>
      <!--  CHATROOM STUFF CHATROOM STUFFCHATROOM STUFFCHATROOM STUFF -->
     
+    <!-- Google Sentiment Analysis API-->
+    <dependency>
+        <groupId>com.google.cloud</groupId>
+        <artifactId>google-cloud-language</artifactId>
+        <version>1.26.0</version>
+    </dependency>
+
   </dependencies>
 
   <!-- Build section -->

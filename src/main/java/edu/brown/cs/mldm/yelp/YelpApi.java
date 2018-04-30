@@ -3,12 +3,8 @@ package edu.brown.cs.mldm.yelp;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.UUID;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -32,15 +28,16 @@ public class YelpApi {
 	public YelpApi(String key) {
 		apiKey = key;
 	}
-	public Map<Answer,List<Restaurant>> getPossibleRestaurants(List<Answer> answers){
+
+	public Map<Answer, List<Restaurant>> getPossibleRestaurants(List<Answer> answers) {
 		Map<Answer, List<Restaurant>> results = new HashMap<>();
 		if (answers == null || answers.size() == 0) {
 			return results;
 		}
-		for(Answer answer: answers){
-				List<Restaurant> smallSet = this.getRestaurantSet(answer);
-				//results.add(smallSet);
-				results.put(answer, smallSet);
+		for (Answer answer : answers) {
+			List<Restaurant> smallSet = this.getRestaurantSet(answer);
+			// results.add(smallSet);
+			results.put(answer, smallSet);
 		}
 
 		return results;
@@ -62,10 +59,10 @@ public class YelpApi {
 		double[] coordinates = answer.getCoordinates();
 
 		StringBuilder url = new StringBuilder();
-		
-		if(!answer.getFoodTerms().isEmpty()){
-			for(String term: answer.getFoodTerms()){
-				terms = terms + "," + term  ;
+
+		if (!answer.getFoodTerms().isEmpty()) {
+			for (String term : answer.getFoodTerms()) {
+				terms = terms + "," + term;
 			}
 
 			if (terms.charAt(terms.length() - 1) == ',') {
@@ -113,6 +110,7 @@ public class YelpApi {
 		}
 
 		url.append("&radius=" + radius);
+
 		System.out.println(url);
 		return this.makeRequest(url.toString());
 	}

@@ -16,7 +16,6 @@ public class Restaurant {
 	private Map<String, String> coordinates;
 	private String is_closed;
 	private String open_at;
-
 	private double score = 0;
 
 	private String image_url;
