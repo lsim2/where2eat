@@ -3,7 +3,8 @@ const MESSAGE_TYPE = {
   SEND: 1,
   UPDATE: 2,
   DELETE: 3,
-  UPDATEALLNAMES: 4
+  UPDATEALLNAMES: 4,
+  ADDTOROOM: 5
 };
 // note DELETE is deleting an already disconnected socket
 
@@ -16,7 +17,7 @@ var myMap = new Map();
 // Setup the WebSocket connection for live updating of scores.
 const setup_chatter = () => {
   // TODO Create the WebSocket connection and assign it to `conn`
-  conn = new WebSocket("ws://localhost:4567/chatting"); // only 1 server <-- eveyr client has a connection to that server
+  conn = new WebSocket("ws://localhost:4567/chatting"); // only 1 server <-- every client has a connection to that server
  
   conn.onerror = err => {
     console.log('Connection error:', err);
@@ -32,6 +33,7 @@ const setup_chatter = () => {
         break;
       case MESSAGE_TYPE.DELETE:
         let nameToDelete = String(data.name);
+        console.log("name to delete is: " + nameToDelete );
         //http://jsfiddle.net/m7zUh/
         $('ul#connectedUsrs li:contains(' + nameToDelete + ')').remove();
         break;
@@ -45,12 +47,28 @@ const setup_chatter = () => {
           console.log("unique name is: " + uniqueName);
           $('#connectedUsrs').append("<li>" + uniqueName + "</li>");
         }
+            
+        $('#suggestions').empty();
+        // update all uniqque users in chat
+        let suggestions = data.suggestions;
+        for (let i = 0; i < suggestions.length; i++) {
+          let restaurant = suggestions[i];
+          $('#suggestions').append("<li>" + restaurant + "</li>");
+        }
         break;
 
       case MESSAGE_TYPE.CONNECT:
-        console.log("connected and my id is: " + data.payload.id);
+        // sending our info to the server, so the server can put us in the right room
         myId = data.payload.id;
         myName = data.payload.myName;
+        let payLoad = {"name": myName, "id": myId, "roomURL": window.location.href}; 
+        let jsonObject = { "type": MESSAGE_TYPE.ADDTOROOM, "payload": payLoad} 
+        let jsonString = JSON.stringify(jsonObject)
+        conn.send(jsonString); 
+        break;
+            
+      case MESSAGE_TYPE.ADDTOROOM:
+        console.log("connected and my id is: " + data.payload.id);
 
         let myDates = data.payload.dates;
         let myIds = data.payload.ids;
@@ -63,6 +81,9 @@ const setup_chatter = () => {
           let txt = myContent[i];
           let nameTxt = myNames[i];
             let temp = document.getElementById("left");
+            if (nameTxt == myName) {
+                temp = document.getElementById("right");
+            }
             temp.content.querySelector('img').src = 'https://api.adorable.io/avatars/50/'+nameTxt+'@adorable.png';
             temp.content.querySelector(".user").innerHTML = nameTxt;
             temp.content.querySelector(".time").innerHTML = " " + date;
@@ -71,9 +92,9 @@ const setup_chatter = () => {
             document.getElementById("chatMsgs").appendChild(clone);
             let chatMsg = document.getElementById("chat-message");
             chatMsg.scrollTop = chatMsg.scrollHeight;
-          //$('#chatMsgs').append("<li>" + date + " and id: " + txtId + " & name: "+ nameTxt + " and txt: " + txt +"</li>");
         }
         break;
+            
       case MESSAGE_TYPE.UPDATE:
         let txt;
         let txtId;
@@ -86,15 +107,17 @@ const setup_chatter = () => {
         console.log("received an update msg and the msg is: " + txt);
         console.log("received an update msg and the msg id is: " + txtId);
         let temp = document.getElementById("left");
+        if (nameTxt == myName) {
+                temp = document.getElementById("right");
+        }
         temp.content.querySelector('img').src = 'https://api.adorable.io/avatars/50/'+nameTxt+'@adorable.png';
         temp.content.querySelector(".user").innerHTML = nameTxt;
-        temp.content.querySelector(".time").innerHTML = date;
+        temp.content.querySelector(".time").innerHTML = " " + date;
         temp.content.querySelector(".msg").innerHTML = txt;
         let clone = document.importNode(temp.content, true);
         document.getElementById("chatMsgs").appendChild(clone);
         let chatMsg = document.getElementById("chat-message");
         chatMsg.scrollTop = chatMsg.scrollHeight;
-       // $('#chatMsgs').append("<li>" + date + " and id: " + txtId + " & name: "+ nameTxt + " and txt: " + txt +"</li>");
     }
   };
 }
@@ -105,7 +128,7 @@ const setup_chatter = () => {
 const send_chat = chat => {
   console.log("we received the chat and it is: " + chat);
 
-  let payLoad = {"name": myName, "id": myId, "text": chat}; 
+  let payLoad = {"name": myName, "id": myId, "text": chat, "roomURL": window.location.href}; 
   let jsonObject = { "type": MESSAGE_TYPE.SEND, "payload": payLoad} 
   let jsonString = JSON.stringify(jsonObject)
   conn.send(jsonString); 

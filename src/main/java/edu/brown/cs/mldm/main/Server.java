@@ -36,6 +36,7 @@ public class Server {
 
 	private static Map<UUID, Poll> pollDb = new HashMap<>();
 	private static Map<UUID, List<Answer>> answersDb = new HashMap<>();
+	
 	private static final Gson GSON = new Gson();
 	private static final String YELPKEY = "gKGjR4vy8kXQAyKrBjuPXepYBqladSEtwSTm_NNshaMPebXqQkZsGLIOe6FSUESQIh_l-cSN5lIhxiQ3-mkCnr_orbJARb_cCSr3OlQs0Jxi21D-m8uiqoHJr1jVWnYx";
 
@@ -150,6 +151,9 @@ public class Server {
 			String lng = qm.value("lng");
 			double[] coordinates = { Double.parseDouble(lat), Double.parseDouble(lng) };
 			UUID pollId = UUID.randomUUID();
+			while (pollDb.containsKey(pollId)) {
+				pollId = UUID.randomUUID();
+			}
 			Poll poll = new Poll(pollId, name, title, location, date, msg, coordinates);
 			pollDb.put(pollId, poll);
 			Map<String, Object> variables = ImmutableMap.of("title", "Where2Eat", "pollId", pollId);
@@ -235,6 +239,8 @@ public class Server {
 			YelpApi yelpApi = new YelpApi(YELPKEY);
 			Map<Answer, List<Restaurant>> results = yelpApi.getPossibleRestaurants(answersDb.get(id));
 			Ranker ranker = new Ranker();
+			
+			//TODO: Delete this when we are done
 //			for (List<Restaurant> a : results.values()) {
 //				for (Restaurant r : a) {
 //					System.out.println(r.getName());
@@ -245,6 +251,7 @@ public class Server {
 			for (Restaurant r : restList) {
 				restaurants.add(r.getName());
 			}
+			chatSocket.addRestaurantList(id, restList);
 			
 			String name = qm.value("user");
 			chatSocket.addName(name);

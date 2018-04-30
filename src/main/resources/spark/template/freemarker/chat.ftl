@@ -7,9 +7,10 @@
             <div class=" row border-bottom padding-sm" style="height: 40px;">
             </div>
             <br>
-                <#list restaurants as restaurants>
-                    <li>${restaurants}</li>
-                </#list>
+                <div>
+                    <p>Suggestions</p>
+                    <ul id="suggestions"></ul>
+                </div>
           </div>
         
         <!--=========================================================-->
@@ -35,16 +36,14 @@
                     <template id="right">
                     <li class="right clearfix">
                         <span class="chat-img pull-right">
-                    		<img src="https://api.adorable.io/avatars/50/Mounika@adorable.png" alt="User Avatar">
+                    		<img src="" alt="User Avatar">
                     	</span>
                     	<div class="chat-body clearfix">
                     		<div class="header">
-                    			<strong class="primary-font">Mounika</strong>
-                    			<small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 13 mins ago</small>
+                    			<strong class="primary-font user"></strong>
+                    			<small class="pull-right text-muted"><i class="fa fa-clock-o time"></i></small>
                     		</div>
-                    		<p>
-                    			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales at. 
-                    		</p>
+                    		<p class="msg"></p>
                     	</div>
                     </li> 
                     </template>
@@ -53,7 +52,7 @@
             <div class="chat-box">
             	<div class="input-group bg-white">
                 <form id = "userForm">
-            		<input id="userInput" name="firstInput" class="form-control border no-shadow no-rounded" placeholder="Type your message here">
+            		<input id="userInput" name="firstInput" class="form-control border no-shadow no-rounded" placeholder="Type your message here" autocomplete="off">
                 </form>
             	</div><!-- /input-group -->	
             </div>            
