@@ -115,6 +115,7 @@ $('.goback').click(function() {
 });
 
 $('#signin-form').submit(function(){
+    //TODO: make post request here and fill in the information if the user has signed in before! 
     $(".flip").attr("disabled",false);
 });
 

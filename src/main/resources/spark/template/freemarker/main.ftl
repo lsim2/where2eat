@@ -43,8 +43,8 @@
      <script src="/js/time.js"></script>
 
     <!-- Matt's stuff-->
-    <script src="js/websockets.js"></script>
-    <script src="js/chatroom.js"></script>
+    <script src="/js/websockets.js"></script>
+    <script src="/js/chatroom.js"></script>
   </body>
   <!-- See http://html5boilerplate.com/ for a good place to start
        dealing with real world issues like old browsers.  -->

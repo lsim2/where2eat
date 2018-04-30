@@ -16,7 +16,7 @@ var myMap = new Map();
 // Setup the WebSocket connection for live updating of scores.
 const setup_chatter = () => {
   // TODO Create the WebSocket connection and assign it to `conn`
-  conn = new WebSocket("ws://localhost:1234/chatting"); // only 1 server <-- eveyr client has a connection to that server
+  conn = new WebSocket("ws://localhost:4567/chatting"); // only 1 server <-- eveyr client has a connection to that server
  
   conn.onerror = err => {
     console.log('Connection error:', err);
@@ -62,7 +62,16 @@ const setup_chatter = () => {
           let txtId = myIds[i];
           let txt = myContent[i];
           let nameTxt = myNames[i];
-          $('#chatMsgs').append("<li>" + date + " and id: " + txtId + " & name: "+ nameTxt + " and txt: " + txt +"</li>");
+            let temp = document.getElementById("left");
+            temp.content.querySelector('img').src = 'https://api.adorable.io/avatars/50/'+nameTxt+'@adorable.png';
+            temp.content.querySelector(".user").innerHTML = nameTxt;
+            temp.content.querySelector(".time").innerHTML = " " + date;
+            temp.content.querySelector(".msg").innerHTML = txt;
+            let clone = document.importNode(temp.content, true);
+            document.getElementById("chatMsgs").appendChild(clone);
+            let chatMsg = document.getElementById("chat-message");
+            chatMsg.scrollTop = chatMsg.scrollHeight;
+          //$('#chatMsgs').append("<li>" + date + " and id: " + txtId + " & name: "+ nameTxt + " and txt: " + txt +"</li>");
         }
         break;
       case MESSAGE_TYPE.UPDATE:
@@ -76,7 +85,16 @@ const setup_chatter = () => {
         nameTxt = data.payload.name;
         console.log("received an update msg and the msg is: " + txt);
         console.log("received an update msg and the msg id is: " + txtId);
-        $('#chatMsgs').append("<li>" + date + " and id: " + txtId + " & name: "+ nameTxt + " and txt: " + txt +"</li>");
+        let temp = document.getElementById("left");
+        temp.content.querySelector('img').src = 'https://api.adorable.io/avatars/50/'+nameTxt+'@adorable.png';
+        temp.content.querySelector(".user").innerHTML = nameTxt;
+        temp.content.querySelector(".time").innerHTML = date;
+        temp.content.querySelector(".msg").innerHTML = txt;
+        let clone = document.importNode(temp.content, true);
+        document.getElementById("chatMsgs").appendChild(clone);
+        let chatMsg = document.getElementById("chat-message");
+        chatMsg.scrollTop = chatMsg.scrollHeight;
+       // $('#chatMsgs').append("<li>" + date + " and id: " + txtId + " & name: "+ nameTxt + " and txt: " + txt +"</li>");
     }
   };
 }

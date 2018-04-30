@@ -17,35 +17,22 @@
         <div id="user" hidden>${user}</div>
     	<div class="col-md-8">
             <div class="chat-message" id="chat-message">
-                <ul id="chatList" class="chat">
+                <ul id="chatMsgs" class="chat">
+                    <template id="left">
                     <li class="left clearfix">
                     	<span class="chat-img pull-left">
-                    		<img src="https://api.adorable.io/avatars/50/Diane@adorable.png" alt="User Avatar">
+                    		<img class="avatar" src="" alt="User Avatar">
                     	</span>
                     	<div class="chat-body clearfix">
                     		<div class="header">
-                    			<strong class="primary-font">Diane</strong>
-                    			<small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 12 mins ago</small>
+                    			<strong class="primary-font user"></strong>
+                    			<small class="pull-right text-muted"><i class="fa fa-clock-o time"></i></small>
                     		</div>
-                    		<p>
-                    			Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    		</p>
+                    		<p class="msg"></p>
                     	</div>
                     </li>
-                    <li class="left clearfix">
-                        <span class="chat-img pull-left">
-                    		<img src="https://api.adorable.io/avatars/50/Matthew@adorable.png" alt="User Avatar">
-                    	</span>
-                    	<div class="chat-body clearfix">
-                    		<div class="header">
-                    			<strong class="primary-font">Matthew</strong>
-                    			<small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 12 mins ago</small>
-                    		</div>
-                    		<p>
-                    			Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    		</p>
-                    	</div>
-                    </li>
+                    </template>
+                    <template id="right">
                     <li class="right clearfix">
                         <span class="chat-img pull-right">
                     		<img src="https://api.adorable.io/avatars/50/Mounika@adorable.png" alt="User Avatar">
@@ -59,34 +46,29 @@
                     			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales at. 
                     		</p>
                     	</div>
-                    </li>                    
-                    <li class="left clearfix">
-                        <span class="chat-img pull-left">
-                    		<img src="https://api.adorable.io/avatars/50/Lina@adorable.png" alt="User Avatar">
-                    	</span>
-                    	<div class="chat-body clearfix">
-                    		<div class="header">
-                    			<strong class="primary-font">Lina</strong>
-                    			<small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 12 mins ago</small>
-                    		</div>
-                    		<p>
-                    			Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    		</p>
-                    	</div>
-                    </li>                 
+                    </li> 
+                    </template>
                 </ul>
             </div>
             <div class="chat-box">
             	<div class="input-group bg-white">
-            		<input id="msgbox" class="form-control border no-shadow no-rounded" placeholder="Type your message here">
-            		<span class="input-group-btn">
-            			<button class="btn btn-success no-rounded" type="button">Send</button>
-            		</span>
+                <form id = "userForm">
+            		<input id="userInput" name="firstInput" class="form-control border no-shadow no-rounded" placeholder="Type your message here">
+                </form>
             	</div><!-- /input-group -->	
             </div>            
 		</div>        
 	</div>
 </div>
+<div>
+  	<p>Currently connected users</p>
+  	<ul id="connectedUsrs"></ul>
+	 </div>
 <script src="/js/jquery-3.1.1.js"></script>
-<script src="/js/chat.js"></script>
+
+<script>
+$(document).ready(function() {
+  setup_chatter();
+});
+</script>
 <#include "main.ftl">

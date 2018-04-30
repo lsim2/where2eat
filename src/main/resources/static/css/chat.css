@@ -76,7 +76,7 @@ small, .small {
 .chat-message {
   padding: 60px 20px 11px;
   overflow-y: auto;
-  height: 450px;
+  height: 400px;
 }
 
 .chat {
@@ -194,5 +194,10 @@ img {
 a:hover, a:active, a:focus {
   text-decoration: none;
   outline: 0;
+}
+
+#userInput {
+    width: 750px;
+    height: 20px; 
 }
   

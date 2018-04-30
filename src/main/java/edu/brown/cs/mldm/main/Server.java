@@ -57,8 +57,8 @@ public class Server {
 		Spark.post("/home", new homeSubmitHandler());
 		Spark.get("/date", new dateFrontHandler(), freeMarker);
 		Spark.get("/poll/:id", new pollUniqueHandler(), freeMarker);
-		Spark.get("/chat", new chatFrontHandler(), freeMarker);
-		Spark.post("/chat", new pollResHandler(), freeMarker);
+		//Spark.get("/chat/:id", new chatFrontHandler(), freeMarker);
+		Spark.post("/chat/:id", new pollResHandler(), freeMarker);
 
 	}
 
@@ -127,7 +127,7 @@ public class Server {
 			Poll poll = pollDb.get(UUID.fromString((id)));
 			Map<String, Object> variables = ImmutableMap.<String, Object>builder().put("title", "Where2Eat")
 					.put("name", poll.getAuthor()).put("meal", poll.getMeal()).put("location", poll.getLocation())
-					.put("date", poll.getDate()).put("message", poll.getMsg()).put("key9", "value9").build();
+					.put("date", poll.getDate()).put("message", poll.getMsg()).put("pollId", id).build();
 			return new ModelAndView(variables, "poll.ftl");
 		}
 	}
@@ -235,19 +235,22 @@ public class Server {
 			YelpApi yelpApi = new YelpApi(YELPKEY);
 			Map<Answer, List<Restaurant>> results = yelpApi.getPossibleRestaurants(answersDb.get(id));
 			Ranker ranker = new Ranker();
-			for (List<Restaurant> a : results.values()) {
-				for (Restaurant r : a) {
-					System.out.println(r.getName());
-				}
-			}
+//			for (List<Restaurant> a : results.values()) {
+//				for (Restaurant r : a) {
+//					System.out.println(r.getName());
+//				}
+//			}
 			List<Restaurant> restList = ranker.rank(results);
 			List<String> restaurants = new ArrayList<>();
 			for (Restaurant r : restList) {
 				restaurants.add(r.getName());
 			}
+			
+			String name = qm.value("user");
+			chatSocket.addName(name);
 
 			Map<String, Object> variables = ImmutableMap.of("title", "Where2Eat", "user", user, "restaurants",
-					restaurants);
+					restaurants, "pollId", id);
 			return new ModelAndView(variables, "chat.ftl");
 		}
 	}
