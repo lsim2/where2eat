@@ -79,7 +79,7 @@ const setup_chatter = () => {
             map: map
           });
 
-          let contentString = restaurant.name;
+          let contentString = "<b>" + restaurant.name + "</b></br>" + restaurant.location.display_address ;
           let infowindow = new google.maps.InfoWindow({
             content: contentString
           });
