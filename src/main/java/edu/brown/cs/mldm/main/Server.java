@@ -36,7 +36,7 @@ public class Server {
 
 	private static Map<UUID, Poll> pollDb = new HashMap<>();
 	private static Map<UUID, List<Answer>> answersDb = new HashMap<>();
-	
+
 	private static Map<String, String> cuisinesDb = new HashMap<>();
 	private static Map<String, String> restrictionsDb = new HashMap<>();
 	private static Map<String, String> foodDb = new HashMap<>();
@@ -63,7 +63,6 @@ public class Server {
 		Spark.post("/home", new homeSubmitHandler());
 		Spark.get("/date", new dateFrontHandler(), freeMarker);
 		Spark.get("/poll/:id", new pollUniqueHandler(), freeMarker);
-		// Spark.get("/chat/:id", new chatFrontHandler(), freeMarker);
 		Spark.post("/chat/:id", new pollResHandler(), freeMarker);
 
 	}
@@ -79,7 +78,7 @@ public class Server {
 		}
 		return new FreeMarkerEngine(config);
 	}
-	
+
 	private void readFiles() {
 		Reader reader = new Reader();
 		reader.readFiles("data/cuisines.txt", cuisinesDb);
@@ -141,13 +140,11 @@ public class Server {
 			Poll poll = pollDb.get(UUID.fromString((id)));
 			Map<String, Object> variables = ImmutableMap.<String, Object>builder().put("title", "Where2Eat")
 					.put("name", poll.getAuthor()).put("meal", poll.getMeal()).put("location", poll.getLocation())
-					.put("date", poll.getDate()).put("message", poll.getMsg())
-					.put("pollId", id).put("cuisines", cuisinesDb)
-					.put("restrictions", restrictionsDb).put("food", foodDb).build();
+					.put("date", poll.getDate()).put("message", poll.getMsg()).put("pollId", id)
+					.put("cuisines", cuisinesDb).put("restrictions", restrictionsDb).put("food", foodDb).build();
 			return new ModelAndView(variables, "poll.ftl");
 		}
 	}
-
 
 	/**
 	 * Handle requests to the front page of our Autocorrect website.
@@ -234,18 +231,22 @@ public class Server {
 			// System.out.println(r.getName());
 			// }
 			// }
-			List<Restaurant> restList = ranker.rank(results);
+			List<Restaurant> restList = new ArrayList<Restaurant>(ranker.rank(results));
 			List<String> restaurants = new ArrayList<>();
 			for (Restaurant r : restList) {
 				restaurants.add(r.getName());
 			}
-			chatSocket.addRestaurantList(id, restList);
+
+			// changed to include sortedLists
+			chatSocket.addRestaurantList(id, restList, ranker.sortRests("price", restList, ans),
+					ranker.sortRests("distance", restList, ans));
 
 			String name = qm.value("user");
 			chatSocket.addName(name);
 
 			Map<String, Object> variables = ImmutableMap.of("title", "Where2Eat", "user", user, "restaurants",
 					restaurants, "pollId", id);
+			System.out.println("WEREWRE");
 			return new ModelAndView(variables, "chat.ftl");
 		}
 	}
