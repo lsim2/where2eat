@@ -8,7 +8,7 @@ body {
 }
 
 .bg-white {
-  padding: 5px; 
+  padding: 5px;
   background-color: #fff;
 }
 
@@ -43,7 +43,7 @@ margin-left: -40px;
   background-color: #f1f5fc;
 }
 
-.friend-list li a .friend-name, 
+.friend-list li a .friend-name,
 .friend-list li a .friend-name:hover {
   color: #777;
 }
@@ -195,8 +195,14 @@ a:hover, a:active, a:focus {
 
 #userInput {
     width: 350px;
-    height: 20px; 
+    height: 20px;
 }
+
+.col-md-5 {
+  width: 380px;
+  height: 480px;
+}
+
 .rankers {
     background-color: #50C9C3; /* Green */
     border: white;
@@ -211,3 +217,4 @@ a:hover, a:active, a:focus {
 .rankers:hover{
   background-color: #009688;
 }
+

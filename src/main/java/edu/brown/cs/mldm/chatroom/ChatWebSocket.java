@@ -88,14 +88,17 @@ public class ChatWebSocket {
 		}
 
 		JsonArray suggestions = new JsonArray();
+		JsonArray rests = new JsonArray();
 
 		List<Restaurant> restaurantList = getRestaurantList(receivedRoomURL);
 		for (Restaurant r : restaurantList) {
 			suggestions.add(r.getName());
+			rests.add(GSON.toJson(r));
 		}
 
 		jObject.add("uniqueNames", uniqueNames);
 		jObject.add("suggestions", suggestions);
+		jObject.add("rests", rests);
 
 		// broadcasting to every1 (in the room) that there's a new user - and we should
 		// handle it
@@ -147,10 +150,13 @@ public class ChatWebSocket {
 		JsonArray ids = new JsonArray();
 		JsonArray content = new JsonArray();
 		JsonArray suggestions = new JsonArray();
+		JsonArray rests = new JsonArray();
 
 		List<Restaurant> restaurantList = getRestaurantList(receivedRoomURL);
+
 		for (Restaurant r : restaurantList) {
 			suggestions.add(r.getName());
+			rests.add(GSON.toJson(r));
 		}
 
 		// we're adding all previous msgs (in the room) to the payload
@@ -175,6 +181,7 @@ public class ChatWebSocket {
 		payLoadObject.add("names", names);
 		payLoadObject.add("content", content);
 		payLoadObject.add("suggestions", suggestions);
+		payLoadObject.add("rests", rests);
 
 		// TODO: repeated code!
 
@@ -243,10 +250,12 @@ public class ChatWebSocket {
 		JsonObject payLoadObject = new JsonObject();
 
 		JsonArray suggestions = new JsonArray();
+		JsonArray rests = new JsonArray();
 
 		List<Restaurant> restaurantList = getRestaurantList(receivedRoomURL);
 		for (Restaurant r : restaurantList) {
 			suggestions.add(r.getName());
+			rests.add(GSON.toJson(r));
 		}
 
 		payLoadObject.addProperty("id", receivedId);
@@ -254,6 +263,7 @@ public class ChatWebSocket {
 		payLoadObject.addProperty("date", date);
 		payLoadObject.addProperty("name", receivedName);
 		payLoadObject.add("suggestions", suggestions);
+		payLoadObject.add("rests", rests);
 
 		updatedObject.add("payload", payLoadObject);
 		Queue<Session> myQueue = urlToQueueOfSessions.get(receivedRoomURL);

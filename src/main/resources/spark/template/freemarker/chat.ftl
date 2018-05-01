@@ -14,14 +14,38 @@
                     <ul id="suggestions"></ul>
                 </div>
           </div>
-        
+
         <!--=========================================================-->
         <!-- selected chat -->
         <div id="user" hidden>${user}</div>
-        <div class="col-md-5">MAPS GO HERE!</div>
+        <div class="col-md-5" id='map'>
+        <!--stuff i added -->
+        MAPS GO HERE!
+
+    <script src="/js/maps.js"></script>
+      <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwQc3YSCaD2g-U32PUbY4ZtoM2VocxYB8&callback=initMap">
+      </script>
+
+    <!--stuff i added -->
+
+        </div>
     	<div class="col-md-4">
             <div class="chat-message" id="chat-message">
                 <ul id="chatMsgs" class="chat">
+                <li class="left clearfix">
+                <span class="chat-img pull-left">
+                    		<img src="https://api.adorable.io/avatars/50/Foodbot@adorable.png" alt="User Avatar">
+                    	</span>
+                    	<div class="chat-body clearfix">
+                    		<div class="header">
+                    			<strong class="primary-font">FoodBot</strong>
+                    		</div>
+                    		<p>
+                    			Welcome to Where2Eat! Chat here to talk to your fellow fooders!
+                    		</p>
+                    	</div>
+                        </li>
                     <template id="left">
                     <li class="left clearfix">
                     	<span class="chat-img pull-left">
@@ -48,7 +72,7 @@
                     		</div>
                     		<p class="msg"></p>
                     	</div>
-                    </li> 
+                    </li>
                     </template>
                 </ul>
             </div>
@@ -57,9 +81,9 @@
                 <form id = "userForm">
             		<input id="userInput" name="firstInput" class="form-control border no-shadow no-rounded" placeholder="Type your message here" autocomplete="off">
                 </form>
-            	</div><!-- /input-group -->	
-            </div>            
-		</div>        
+            	</div><!-- /input-group -->
+            </div>
+		</div>
 	</div>
 </div>
 <div>
