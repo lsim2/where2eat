@@ -47,7 +47,7 @@ public class Ranker {
 	 *
 	 *         Test the lack of duplicates in
 	 */
-	public Set<Restaurant> rank(Map<Answer, List<Restaurant>> suggestions) {
+	public List<Restaurant> rank(Map<Answer, List<Restaurant>> suggestions) {
 		// keep track of duplicate rests.
 		List<Restaurant> allRests = new ArrayList<Restaurant>();
 		List<Restaurant> dupls = new ArrayList<Restaurant>();
@@ -63,8 +63,8 @@ public class Ranker {
 					if (nRest != null) {
 						suggestions.get(key).remove(currRest);
 						nRest.incrementScore();
-						suggestions.get(key).add(nRest);
-						dupls.add(nRest);
+						//suggestions.get(key).add(nRest);
+						//dupls.add(nRest);
 					}
 				}
 				// ensures it was not emptied by iteration
@@ -119,7 +119,7 @@ public class Ranker {
 	 * @param bestRests
 	 *            the list of everyone's restaurant
 	 */
-	private Set<Restaurant> rankBestMatches(Map<Answer, List<Restaurant>> suggestions, List<Restaurant> dupls) {
+	private List<Restaurant> rankBestMatches(Map<Answer, List<Restaurant>> suggestions, List<Restaurant> dupls) {
 
 		Set<Restaurant> bestMatches = new HashSet<Restaurant>();
 		Set<Entry<Answer, List<Restaurant>>> suggs = suggestions.entrySet();
@@ -138,20 +138,25 @@ public class Ranker {
 				bestMatches.add(curr);
 			}
 		}
-		for (Restaurant curr : dupls) {
-			if (isInList(bestMatches, curr) == null) {
-				// just for testing
-				bestMatches.add(curr);
-			}
-		}
+//		for (Restaurant curr : dupls) {
+//			if (isInList(bestMatches, curr) == null) {
+//				// just for testing
+//				bestMatches.add(curr);
+//			}
+//		}
 		List<Restaurant> finalMatches = new ArrayList<Restaurant>(bestMatches);
 
 		// make sure that the scores are actually being incremented
 		finalMatches.sort(new ScoreComparator());
-		Set<Restaurant> ret = new HashSet<Restaurant>();
+		for(Restaurant rest: finalMatches){
+			System.out.println(rest.getName() + " " + rest.getScore());
+		}
+		List<Restaurant> ret = new ArrayList<Restaurant>();
 		for (int a = 0; a < finalMatches.size() && a < 5; a++) {
 			ret.add(finalMatches.get(a));
 		}
+		
+		
 		return ret;
 
 	}
