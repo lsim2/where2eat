@@ -237,7 +237,7 @@ $("#pRanker").click( function() {
     // let link = window.location.href;
     // let actLink = link.substring(21, link.length);
     console.log(priceSuggestions);
-   // $("#suggestions").empty();
+   $("#suggestions").empty();
         for (let i = 0; i < priceSuggestions.length; i++) {
             let currRest = priceSuggestions[i];
              $('#suggestions').append("<li>" + currRest + "</li>");
@@ -251,7 +251,7 @@ $("#distRanker").click( function() {
     // let link = window.location.href;
     // let actLink = link.substring(21, link.length);
     console.log(distSuggestions);
-   // $("#suggestions").empty();
+   $("#suggestions").empty();
         for (let i = 0; i < distSuggestions.length; i++) {
             let currRest = distSuggestions[i];
              $('#suggestions').append("<li>" + currRest + "</li>");

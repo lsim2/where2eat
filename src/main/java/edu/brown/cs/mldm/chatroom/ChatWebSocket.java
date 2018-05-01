@@ -107,9 +107,9 @@ public class ChatWebSocket {
 		for (Restaurant rest : uuidToDistRestaurants.get(getUuid(receivedRoomURL))) {
 			distSuggestions.add(rest.getName());
 		}
-		System.out.println("Suggestions" + suggestions);
-		// jObject.add("priceSuggestions", priceSuggestions);
-		// jObject.add("distSuggestions", distSuggestions);
+		System.out.println("Suggestions" + distSuggestions);
+		jObject.add("priceSuggestions", priceSuggestions);
+		jObject.add("distSuggestions", distSuggestions);
 		jObject.add("uniqueNames", uniqueNames);
 		jObject.add("suggestions", suggestions);
 		jObject.add("rests", rests);

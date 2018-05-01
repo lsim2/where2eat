@@ -159,7 +159,7 @@ public class Ranker {
 	/**
 	 * Method removes all restaurants in a person's top restaurants which do not
 	 * cater to their dietary restrictions, thus allowing a person's top 3 to only
-	 * include those in the top 3.
+	 * include those in the top 5.
 	 * 
 	 * @param allRests
 	 *            all the person's restaurants
