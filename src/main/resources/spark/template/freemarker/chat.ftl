@@ -7,6 +7,8 @@
             <div class=" row border-bottom padding-sm" style="height: 40px;">
             </div>
             <br>
+                <button type="button" id="pRanker" class="rankers">Rank by price</button>
+                <button type="button" id="distRanker" class="rankers">Rank by distance</button>
                 <div>
                     <p>Suggestions</p>
                     <ul id="suggestions"></ul>
@@ -65,7 +67,7 @@
   	<ul id="connectedUsrs"></ul>
 	 </div>
 <script src="/js/jquery-3.1.1.js"></script>
-
+<script src="/js/chat.js"
 <script>
 $(document).ready(function() {
   setup_chatter();

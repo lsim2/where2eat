@@ -58,7 +58,6 @@ public class Server {
 		Spark.post("/home", new homeSubmitHandler());
 		Spark.get("/date", new dateFrontHandler(), freeMarker);
 		Spark.get("/poll/:id", new pollUniqueHandler(), freeMarker);
-		// Spark.get("/chat/:id", new chatFrontHandler(), freeMarker);
 		Spark.post("/chat/:id", new pollResHandler(), freeMarker);
 
 	}
