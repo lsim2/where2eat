@@ -140,7 +140,7 @@ const setup_chatter = () => {
         break;
 
       case MESSAGE_TYPE.CONNECT:
-        alert("CONNECTING COOKIE IS : " + document.cookie);
+        //alert("CONNECTING COOKIE IS : " + document.cookie);
           // do get request (and the get request should end up with the server verifiying us
           // if we signed in before ) and the
 
