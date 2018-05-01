@@ -11,7 +11,8 @@ const MESSAGE_TYPE = {
 let conn;
 let myId = -1;
 let myName;
-
+let priceSuggestions;
+let distSuggestions;
 var myMap = new Map();
 
 // Setup the WebSocket connection for live updating of scores.
@@ -27,6 +28,7 @@ const setup_chatter = () => {
   //There are two possible types of messages: CONNECT and UPDATE
   conn.onmessage = msg => {
     const data = JSON.parse(msg.data);
+    console.log("WTFFFF");
     switch (data.type) {
       default:
         console.log('Unknown message type!', data.type);
@@ -51,6 +53,9 @@ const setup_chatter = () => {
         $('#suggestions').empty();
         // update all uniqque users in chat
         let suggestions = data.suggestions;
+        priceSuggestions = data.priceSuggestions;
+        distSuggestions = data.distSuggestions;
+        console.log(suggestions + "sugggestsionssssssssdf");
         for (let i = 0; i < suggestions.length; i++) {
           let restaurant = suggestions[i];
           $('#suggestions').append("<li>" + restaurant + "</li>");
@@ -81,6 +86,7 @@ const setup_chatter = () => {
 
       case MESSAGE_TYPE.CONNECT:
         // sending our info to the server, so the server can put us in the right room
+        console.log("werw");
         myId = data.payload.id;
         myName = data.payload.myName;
         let payLoad = {"name": myName, "id": myId, "roomURL": window.location.href};
@@ -167,3 +173,35 @@ function initMap() {
     map: map
   });
 }
+
+
+
+
+$("#pRanker").click( function() {
+    console.log("price ranking");
+    // const postParameters = {suggestions: document.getElementById("suggestions").value, 
+    // rank_type: "distance"};
+    // let link = window.location.href;
+    // let actLink = link.substring(21, link.length);
+    console.log(priceSuggestions);
+   // $("#suggestions").empty();
+        for (let i = 0; i < priceSuggestions.length; i++) {
+            let currRest = priceSuggestions[i];
+             $('#suggestions').append("<li>" + currRest + "</li>");
+        }
+    //})
+});
+$("#distRanker").click( function() {
+    console.log("price ranking");
+    // const postParameters = {suggestions: document.getElementById("suggestions").value, 
+    // rank_type: "distance"};
+    // let link = window.location.href;
+    // let actLink = link.substring(21, link.length);
+    console.log(distSuggestions);
+   // $("#suggestions").empty();
+        for (let i = 0; i < distSuggestions.length; i++) {
+            let currRest = distSuggestions[i];
+             $('#suggestions').append("<li>" + currRest + "</li>");
+        }
+    //})
+});

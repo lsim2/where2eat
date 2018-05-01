@@ -34,7 +34,8 @@ public class ChatWebSocket {
 	private Map<Session, Integer> sessionToId = new HashMap<Session, Integer>();
 	private Map<Session, String> sessionToURL = new HashMap<Session, String>();
 	private static Map<UUID, List<Restaurant>> uuidToRestaurants = new HashMap<>();
-
+	private static Map<UUID, List<Restaurant>> uuidToPriceRestaurants = new HashMap<>();
+	private static Map<UUID, List<Restaurant>> uuidToDistRestaurants = new HashMap<>();
 	private Map<String, List<Message>> urlToMsgs = new HashMap<String, List<Message>>();
 	private Map<String, Queue<Session>> urlToQueueOfSessions = new HashMap<String, Queue<Session>>();
 
@@ -48,8 +49,11 @@ public class ChatWebSocket {
 	}
 
 	// called in server
-	public void addRestaurantList(UUID id, List<Restaurant> restaurants) {
+	public void addRestaurantList(UUID id, List<Restaurant> restaurants, List<Restaurant> priceList,
+			List<Restaurant> distList) {
 		uuidToRestaurants.put(id, restaurants);
+		uuidToPriceRestaurants.put(id, priceList);
+		uuidToDistRestaurants.put(id, distList);
 	}
 
 	@OnWebSocketConnect
@@ -95,7 +99,17 @@ public class ChatWebSocket {
 			suggestions.add(r.getName());
 			rests.add(GSON.toJson(r));
 		}
-
+		JsonArray priceSuggestions = new JsonArray();
+		for (Restaurant rest : uuidToPriceRestaurants.get(getUuid(receivedRoomURL))) {
+			priceSuggestions.add(rest.getName());
+		}
+		JsonArray distSuggestions = new JsonArray();
+		for (Restaurant rest : uuidToDistRestaurants.get(getUuid(receivedRoomURL))) {
+			distSuggestions.add(rest.getName());
+		}
+		System.out.println("Suggestions" + suggestions);
+		// jObject.add("priceSuggestions", priceSuggestions);
+		// jObject.add("distSuggestions", distSuggestions);
 		jObject.add("uniqueNames", uniqueNames);
 		jObject.add("suggestions", suggestions);
 		jObject.add("rests", rests);
@@ -176,6 +190,7 @@ public class ChatWebSocket {
 			names.add(stringName);
 			content.add(stringContent);
 		}
+		System.out.println("addPreviousMessages Called" + suggestions);
 		payLoadObject.add("ids", ids);
 		payLoadObject.add("dates", dates);
 		payLoadObject.add("names", names);
@@ -262,6 +277,8 @@ public class ChatWebSocket {
 		payLoadObject.addProperty("text", userText);
 		payLoadObject.addProperty("date", date);
 		payLoadObject.addProperty("name", receivedName);
+		// might have to do something here?
+		System.out.println(suggestions + "wesdfasdfsd");
 		payLoadObject.add("suggestions", suggestions);
 		payLoadObject.add("rests", rests);
 
@@ -280,4 +297,13 @@ public class ChatWebSocket {
 
 		return uuidToRestaurants.get(id);
 	}
+
+	// added to ease adding the restaurants
+	private UUID getUuid(String receivedRoomURL) {
+		int index = receivedRoomURL.lastIndexOf('?') + 1;
+		String uuidString = receivedRoomURL.substring(index, receivedRoomURL.length());
+		UUID id = UUID.fromString(uuidString);
+		return id;
+	}
+
 }

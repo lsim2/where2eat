@@ -40,35 +40,3 @@
 //         }
 //     }
 // );
-$("#distRanker").click( function() {
-    console.log("distance ranking");
-    const postParameters = {suggestions: document.getElementById("suggestions").value, 
-    rank_type: "distance"};
-    let link = window.location.href;
-    let actLink = link.substring(21, link.length);
-    "#suggestions".empty();
-    $.post(actLink, postParameters, responseJSON => {
-        const responseObject = JSON.parse(responseJSON);
-        let newSuggs = responseObject.suggestions;
-        for (let i = 0; i < newSuggs.length; i++) {
-            let currRest = newSuggs[i];
-             $('#suggestions').append("<li>" + currRest + "</li>");
-        }
-    })
-});
-$("#pRanker").click( function() {
-    console.log("distance ranking");
-    const postParameters = {suggestions: document.getElementById("suggestions").value, 
-    rank_type: "price"};
-    let link = window.location.href;
-    let actLink = link.substring(21, link.length);
-    $.post(actLink, postParameters, responseJSON => {
-        const responseObject = JSON.parse(responseJSON);
-        let newSuggs = responseObject.suggestions;
-        "#suggestions".empty();
-        for (let i = 0; i < newSuggs.length; i++) {
-            let currRest = newSuggs[i];
-             $('#suggestions').append("<li>" + currRest + "</li>");
-        }
-    })
-});
