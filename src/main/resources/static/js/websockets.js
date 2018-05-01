@@ -65,23 +65,77 @@ const setup_chatter = () => {
         let centerLng = parseFloat(JSON.parse(data.rests[0]).coordinates.longitude);
 
         let center = {lat: centerLat, lng: centerLng};
+
         let map = new google.maps.Map(document.getElementById('map'), {
           zoom: 18,
           center: center
         });
-            
-        let bounds = new google.maps.LatLngBounds();
 
+
+
+        let bounds = new google.maps.LatLngBounds();
         for(let i=0;i<data.rests.length;i++){
           const restaurant = JSON.parse(data.rests[i]);
           let pos = {lat: parseFloat(restaurant.coordinates.latitude), lng: parseFloat(restaurant.coordinates.longitude)};
           let marker = new google.maps.Marker({
+            title: restaurant.name,
             position: new google.maps.LatLng(pos.lat, pos.lng),
+            animation: google.maps.Animation.DROP,
             map: map
+          });
+
+          let contentString = "<b>" + restaurant.name + "</b></br>" + restaurant.location.display_address ;
+          let infowindow = new google.maps.InfoWindow({
+            content: contentString
+          });
+
+          marker.addListener('click', function() {
+            infowindow.open(map, marker);
+            marker.setAnimation(google.maps.Animation.BOUNCE);
+            setTimeout(function () {
+              marker.setAnimation(null);
+            }, 500);
+
           });
           bounds.extend(marker.position);
         }
         map.fitBounds(bounds);
+
+
+        let infoWindow = new google.maps.InfoWindow;
+        if (navigator.geolocation) {
+         navigator.geolocation.getCurrentPosition(function(position) {
+           let pos = {
+             lat: position.coords.latitude,
+             lng: position.coords.longitude
+           };
+
+           let marker = new google.maps.Marker({
+             title: "You!",
+             position: new google.maps.LatLng(pos.lat, pos.lng),
+             animation: google.maps.Animation.DROP,
+             map: map,
+             icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+           });
+
+            bounds.extend(marker.position);
+            map.fitBounds(bounds);
+
+
+           // infoWindow.setPosition(pos);
+           // infoWindow.setContent('Location found.');
+           // infoWindow.open(map);
+           //map.setCenter(pos);
+         }, function() {
+           handleLocationError(true, infoWindow, map.getCenter());
+         });
+       } else {
+         // Browser doesn't support Geolocation
+         handleLocationError(false, infoWindow, map.getCenter());
+       }
+
+
+
         break;
 
       case MESSAGE_TYPE.CONNECT:
@@ -176,7 +230,6 @@ function initMap() {
 
 
 
-
 $("#pRanker").click( function() {
     console.log("price ranking");
     // const postParameters = {suggestions: document.getElementById("suggestions").value, 
@@ -205,3 +258,11 @@ $("#distRanker").click( function() {
         }
     //})
 });
+
+function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(browserHasGeolocation ?
+                              'Error: The Geolocation service failed.' :
+                              'Error: Your browser doesn\'t support geolocation.');
+        infoWindow.open(map);
+}
