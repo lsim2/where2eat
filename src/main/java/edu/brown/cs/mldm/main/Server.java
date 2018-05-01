@@ -37,10 +37,15 @@ public class Server {
   private static Map<UUID, Poll> pollDb = new HashMap<>();
   private static Map<UUID, List<Answer>> answersDb = new HashMap<>();
 
+  private static Map<String, String> cuisinesDb = new HashMap<>();
+  private static Map<String, String> restrictionsDb = new HashMap<>();
+  private static Map<String, String> foodDb = new HashMap<>();
+
   private static final Gson GSON = new Gson();
   private static final String YELPKEY = "gKGjR4vy8kXQAyKrBjuPXepYBqladSEtwSTm_NNshaMPebXqQkZsGLIOe6FSUESQIh_l-cSN5lIhxiQ3-mkCnr_orbJARb_cCSr3OlQs0Jxi21D-m8uiqoHJr1jVWnYx";
 
   void runSparkServer(int port) {
+    readFiles();
     chatSocket = new ChatWebSocket();
     Spark.webSocket("/chatting", chatSocket);
 
@@ -52,14 +57,12 @@ public class Server {
 
     // note: there should NOT be a chatroom get handler
     Spark.post("/chatroom", new ChatroomPostHandler(), freeMarker);
-    Spark.post("/setCookies", new ChatroomSetCookieHandler());
     Spark.get("/name", new NameGetHandler(), freeMarker);
-
+    Spark.post("/setCookies", new ChatroomSetCookieHandler());
     Spark.get("/home", new homeFrontHandler(), freeMarker);
     Spark.post("/home", new homeSubmitHandler());
     Spark.get("/date", new dateFrontHandler(), freeMarker);
     Spark.get("/poll/:id", new pollUniqueHandler(), freeMarker);
-    // Spark.get("/chat/:id", new chatFrontHandler(), freeMarker);
     Spark.post("/chat/:id", new pollResHandler(), freeMarker);
 
   }
@@ -88,6 +91,13 @@ public class Server {
           "useless_thing_that_is_never_used");
       return GSON.toJson(variables);
     }
+  }
+
+  private void readFiles() {
+    Reader reader = new Reader();
+    reader.readFiles("data/cuisines.txt", cuisinesDb);
+    reader.readFiles("data/food.txt", foodDb);
+    reader.readFiles("data/restrictions.txt", restrictionsDb);
   }
 
   /**
@@ -139,15 +149,17 @@ public class Server {
   private static class pollUniqueHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(Request req, Response res) {
-      System.out.println("poll unique handler fired");
       String id = req.raw().getQueryString();
+      System.out.println("my id: " + id);
       Poll poll = pollDb.get(UUID.fromString((id)));
       Map<String, Object> variables = ImmutableMap.<String, Object>builder()
           .put("title", "Where2Eat")
           .put("name", poll.getAuthor()).put("meal", poll.getMeal())
           .put("location", poll.getLocation())
           .put("date", poll.getDate()).put("message", poll.getMsg())
-          .put("pollId", id).build();
+          .put("pollId", id)
+          .put("cuisines", cuisinesDb).put("restrictions", restrictionsDb)
+          .put("food", foodDb).build();
       return new ModelAndView(variables, "poll.ftl");
     }
   }
@@ -186,12 +198,26 @@ public class Server {
    *
    * @author lsim2
    */
+  private static class chatFrontHandler implements TemplateViewRoute {
+
+    @Override
+    public ModelAndView handle(Request req, Response res) {
+      Map<String, Object> variables = ImmutableMap.of("title", "Where2Eat",
+          "user", "John", "restaurants", "");
+      return new ModelAndView(variables, "chat.ftl");
+    }
+  }
+
+  /**
+   * Handle requests to the front page of our Autocorrect website.
+   *
+   * @author lsim2
+   */
   private static class pollResHandler implements TemplateViewRoute {
 
     @SuppressWarnings("unchecked")
     @Override
     public ModelAndView handle(Request req, Response res) {
-      System.out.println("pollResHandler cookies is: " + req.cookies());
       // Getting information from frontend
       QueryParamsMap qm = req.queryMap();
       int price = Integer.parseInt(qm.value("price"));
@@ -230,18 +256,25 @@ public class Server {
       // System.out.println(r.getName());
       // }
       // }
-      List<Restaurant> restList = ranker.rank(results);
+      List<Restaurant> restList = new ArrayList<Restaurant>(
+          ranker.rank(results));
       List<String> restaurants = new ArrayList<>();
       for (Restaurant r : restList) {
         restaurants.add(r.getName());
       }
-      chatSocket.addRestaurantList(id, restList);
+
+      // changed to include sortedLists
+      chatSocket.addRestaurantList(id, restList,
+          ranker.sortRests("price", restList, ans),
+          ranker.sortRests("distance", restList, ans));
 
       String name = qm.value("user");
+      chatSocket.addName(name);
 
       Map<String, Object> variables = ImmutableMap.of("title", "Where2Eat",
           "user", user, "restaurants",
           restaurants, "pollId", id);
+      System.out.println("WEREWRE");
       return new ModelAndView(variables, "chat.ftl");
     }
   }

@@ -59,21 +59,18 @@
 <div class="ranking">
 <p><b>Cuisine preferences (choose up to 3)</b>:</p>
     <select id="cuisine" class="select" multiple>
-      <option value="chinese">Chinese</option>
-      <option value="indpak">Indian</option>
-      <option value="mexican">Mexican</option>
-      <option value="korean">Korean</option>
-      <option value="italian">Italian</option>
+      <#list cuisines?keys as id>
+            <option value="${cuisines[id]}">${id}</option>
+      </#list>
     </select>
 </div>
 <div class="ranking">
 <p><b>Any dietary restrictions?</b></p>
     <select id="restrictions" class="select" multiple>
-      <option value="vegan">Vegan</option>
-      <option value="vegetarian">Vegetarian</option>
-      <option value="kosher">Kosher</option>
-      <option value="halal">Halal</option>
-      <option value="gluten_free">Gluten-Free</option>
+     <#list restrictions?keys as id>
+            <li>${id}</li>
+            <option value="${restrictions[id]}">${id}</option>
+      </#list>
     </select>
 </div>
 <div class="ranking">
@@ -83,9 +80,9 @@
 <div class="ranking">
 <p><b>Any additional preferences?</b></p>
     <select id="misc" class="select" multiple>
-      <option value="pizza">Pizza</option>
-      <option value="wraps">Wraps</option>
-      <option value="noodles">Noodles</option>
+      <#list food?keys as id>
+            <option value="${food[id]}">${id}</option>
+      </#list>
     </select>
 </div>
 <div class="ranking">

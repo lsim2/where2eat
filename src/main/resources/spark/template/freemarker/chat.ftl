@@ -1,4 +1,5 @@
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
 <link rel="stylesheet" href="/css/chat.css">
 <br><br>
 <div class="container bootstrap snippet">
@@ -7,18 +8,45 @@
             <div class=" row border-bottom padding-sm" style="height: 40px;">
             </div>
             <br>
+                <button type="button" id="pRanker" class="rankers">Rank by price</button>
+                <button type="button" id="distRanker" class="rankers">Rank by distance</button>
                 <div>
                     <p>Suggestions</p>
                     <ul id="suggestions"></ul>
                 </div>
           </div>
-        
+
         <!--=========================================================-->
         <!-- selected chat -->
         <div id="user" hidden>${user}</div>
-    	<div class="col-md-8">
+        <div class="col-md-5" id='map'>
+        <!--stuff i added -->
+        MAPS GO HERE!
+
+    <script src="/js/maps.js"></script>
+      <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwQc3YSCaD2g-U32PUbY4ZtoM2VocxYB8&callback=initMap">
+      </script>
+
+    <!--stuff i added -->
+
+        </div>
+    	<div class="col-md-4">
             <div class="chat-message" id="chat-message">
                 <ul id="chatMsgs" class="chat">
+                <li class="left clearfix">
+                <span class="chat-img pull-left">
+                    		<img src="https://api.adorable.io/avatars/50/Foodbot@adorable.png" alt="User Avatar">
+                    	</span>
+                    	<div class="chat-body clearfix">
+                    		<div class="header">
+                    			<strong class="primary-font">FoodBot</strong>
+                    		</div>
+                    		<p>
+                    			Welcome to Where2Eat! Chat here to talk to your fellow fooders!
+                    		</p>
+                    	</div>
+                        </li>
                     <template id="left">
                     <li class="left clearfix">
                     	<span class="chat-img pull-left">
@@ -45,7 +73,7 @@
                     		</div>
                     		<p class="msg"></p>
                     	</div>
-                    </li> 
+                    </li>
                     </template>
                 </ul>
             </div>
@@ -54,15 +82,23 @@
                 <form id = "userForm">
             		<input id="userInput" name="firstInput" class="form-control border no-shadow no-rounded" placeholder="Type your message here" autocomplete="off">
                 </form>
-            	</div><!-- /input-group -->	
-            </div>            
-		</div>        
+            	</div><!-- /input-group -->
+            </div>
+		</div>
 	</div>
 </div>
 <div>
   	<p>Currently connected users</p>
   	<ul id="connectedUsrs"></ul>
 	 </div>
+     
+<!--<div class="card" style="width: 18rem; height: 13rem;">-->
+ <!--<img class="card-img-left" src="https://s3-media2.fl.yelpcdn.com/bphoto/DXJzI0x5cz9Yy1zyNqEi4g/o.jpg" alt="Card image cap" height="120" width="180">-->
+  <!--<div class="card-body">
+    <h5 class="card-title">Yan's Cuisine</h5>
+    <a href="#" class="btn btn-primary">Upvote</a>
+  </div>
+</div>-->
 <script src="/js/jquery-3.1.1.js"></script>
 
 <script>

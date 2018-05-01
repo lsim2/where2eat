@@ -27,6 +27,7 @@ import edu.brown.cs.mldm.yelp.Restaurant;
 //TODO: ask why this annotation is necessary <-- what does it even do?
 @WebSocket
 public class ChatWebSocket {
+
   private static final Gson GSON = new Gson();
   private static final Queue<Session> sessions = new ConcurrentLinkedQueue<>();
   private static int nextId = 0;
@@ -34,7 +35,8 @@ public class ChatWebSocket {
   private Map<Session, Integer> sessionToId = new HashMap<Session, Integer>();
   private Map<Session, String> sessionToURL = new HashMap<Session, String>();
   private static Map<UUID, List<Restaurant>> uuidToRestaurants = new HashMap<>();
-
+  private static Map<UUID, List<Restaurant>> uuidToPriceRestaurants = new HashMap<>();
+  private static Map<UUID, List<Restaurant>> uuidToDistRestaurants = new HashMap<>();
   private Map<String, List<Message>> urlToMsgs = new HashMap<String, List<Message>>();
   private Map<String, Queue<Session>> urlToQueueOfSessions = new HashMap<String, Queue<Session>>();
 
@@ -48,8 +50,12 @@ public class ChatWebSocket {
   }
 
   // called in server
-  public void addRestaurantList(UUID id, List<Restaurant> restaurants) {
+  public void addRestaurantList(UUID id, List<Restaurant> restaurants,
+      List<Restaurant> priceList,
+      List<Restaurant> distList) {
     uuidToRestaurants.put(id, restaurants);
+    uuidToPriceRestaurants.put(id, priceList);
+    uuidToDistRestaurants.put(id, distList);
   }
 
   @OnWebSocketConnect
@@ -89,14 +95,29 @@ public class ChatWebSocket {
     }
 
     JsonArray suggestions = new JsonArray();
+    JsonArray rests = new JsonArray();
 
     List<Restaurant> restaurantList = getRestaurantList(receivedRoomURL);
     for (Restaurant r : restaurantList) {
       suggestions.add(r.getName());
+      rests.add(GSON.toJson(r));
     }
-
+    JsonArray priceSuggestions = new JsonArray();
+    for (Restaurant rest : uuidToPriceRestaurants
+        .get(getUuid(receivedRoomURL))) {
+      priceSuggestions.add(rest.getName());
+    }
+    JsonArray distSuggestions = new JsonArray();
+    for (Restaurant rest : uuidToDistRestaurants
+        .get(getUuid(receivedRoomURL))) {
+      distSuggestions.add(rest.getName());
+    }
+    System.out.println("Suggestions" + distSuggestions);
+    jObject.add("priceSuggestions", priceSuggestions);
+    jObject.add("distSuggestions", distSuggestions);
     jObject.add("uniqueNames", uniqueNames);
     jObject.add("suggestions", suggestions);
+    jObject.add("rests", rests);
 
     // broadcasting to every1 (in the room) that there's a new user - and we
     // should
@@ -152,11 +173,13 @@ public class ChatWebSocket {
     JsonArray ids = new JsonArray();
     JsonArray content = new JsonArray();
     JsonArray suggestions = new JsonArray();
+    JsonArray rests = new JsonArray();
 
     List<Restaurant> restaurantList = getRestaurantList(receivedRoomURL);
+
     for (Restaurant r : restaurantList) {
       suggestions.add(r.getName());
-      System.out.println(GSON.toJson(r));
+      rests.add(GSON.toJson(r));
     }
 
     // we're adding all previous msgs (in the room) to the payload
@@ -176,11 +199,13 @@ public class ChatWebSocket {
       names.add(stringName);
       content.add(stringContent);
     }
+    System.out.println("addPreviousMessages Called" + suggestions);
     payLoadObject.add("ids", ids);
     payLoadObject.add("dates", dates);
     payLoadObject.add("names", names);
     payLoadObject.add("content", content);
     payLoadObject.add("suggestions", suggestions);
+    payLoadObject.add("rests", rests);
 
     // TODO: repeated code!
 
@@ -224,6 +249,7 @@ public class ChatWebSocket {
     }
 
     // could have just directly asked for the name to
+
     assert msgType == MESSAGE_TYPE.SEND.ordinal();
 
     String userText = receivedPayload.get("text").getAsString();
@@ -250,17 +276,22 @@ public class ChatWebSocket {
     JsonObject payLoadObject = new JsonObject();
 
     JsonArray suggestions = new JsonArray();
+    JsonArray rests = new JsonArray();
 
     List<Restaurant> restaurantList = getRestaurantList(receivedRoomURL);
     for (Restaurant r : restaurantList) {
       suggestions.add(r.getName());
+      rests.add(GSON.toJson(r));
     }
 
     payLoadObject.addProperty("id", receivedId);
     payLoadObject.addProperty("text", userText);
     payLoadObject.addProperty("date", date);
     payLoadObject.addProperty("name", receivedName);
+    // might have to do something here?
+    System.out.println(suggestions + "wesdfasdfsd");
     payLoadObject.add("suggestions", suggestions);
+    payLoadObject.add("rests", rests);
 
     updatedObject.add("payload", payLoadObject);
     Queue<Session> myQueue = urlToQueueOfSessions.get(receivedRoomURL);
@@ -279,4 +310,14 @@ public class ChatWebSocket {
 
     return uuidToRestaurants.get(id);
   }
+
+  // added to ease adding the restaurants
+  private UUID getUuid(String receivedRoomURL) {
+    int index = receivedRoomURL.lastIndexOf('?') + 1;
+    String uuidString = receivedRoomURL.substring(index,
+        receivedRoomURL.length());
+    UUID id = UUID.fromString(uuidString);
+    return id;
+  }
+
 }

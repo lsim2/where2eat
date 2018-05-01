@@ -1,18 +1,18 @@
 
 <head>
   <meta charset="UTF-8">
-  
-  
-  
+
+
+
       <link rel="stylesheet" href="css/home.css">
 
-  
+
 </head>
 
 <body>
 
   <body>
-  
+
   <div id="container"></div>
   <script id="template">
     <div id="flip" class="flip-card">Clear form</div>
@@ -56,9 +56,9 @@
           <div class="front paper"></div>
         </div>
       </div>
-    
+
   </script>
-  
+
   <a class="btn" data-popup-open="popup-1" href="#" style="display:none">Open Popup #1</a>
 <div class="popup" data-popup="popup-1">
 <div class="popup-inner">
@@ -71,11 +71,11 @@
 <a class="popup-close" data-popup-close="popup-1">x</a>
 </div>
 </div>
-  
+
 </body>
   <script src='https://cdn.jsdelivr.net/npm/ractive@0.9'></script>
   <script src="/js/jquery-3.1.1.js"></script>
-  
+
       <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLgFAXSqI8kWNeYgYQw3jv3llyRSQy9z0&libraries=places&callback=initAutocomplete"
   type="text/javascript"></script>
       <script  src="js/home.js"></script>
