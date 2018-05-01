@@ -1,4 +1,5 @@
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
 <link rel="stylesheet" href="/css/chat.css">
 <br><br>
 <div class="container bootstrap snippet">
@@ -88,6 +89,14 @@
   	<p>Currently connected users</p>
   	<ul id="connectedUsrs"></ul>
 	 </div>
+     
+<!--<div class="card" style="width: 18rem; height: 13rem;">-->
+ <!--<img class="card-img-left" src="https://s3-media2.fl.yelpcdn.com/bphoto/DXJzI0x5cz9Yy1zyNqEi4g/o.jpg" alt="Card image cap" height="120" width="180">-->
+  <!--<div class="card-body">
+    <h5 class="card-title">Yan's Cuisine</h5>
+    <a href="#" class="btn btn-primary">Upvote</a>
+  </div>
+</div>-->
 <script src="/js/jquery-3.1.1.js"></script>
 
 <script>

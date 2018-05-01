@@ -69,6 +69,7 @@ const setup_chatter = () => {
 
         for(let i=0;i<data.rests.length;i++){
           const restaurant = JSON.parse(data.rests[i]);
+          console.log(restaurant);
           let pos = {lat: parseFloat(restaurant.coordinates.latitude), lng: parseFloat(restaurant.coordinates.longitude)};
           let marker = new google.maps.Marker({
             position: new google.maps.LatLng(pos.lat, pos.lng),
