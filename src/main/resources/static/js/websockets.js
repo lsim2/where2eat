@@ -58,6 +58,10 @@ const setup_chatter = () => {
         break;
 
       case MESSAGE_TYPE.CONNECT:
+        alert("CONNECTING COOKIE IS : " + document.cookie);
+          // do get request (and the get request should end up with the server verifiying us
+          // if we signed in before ) and the
+
         // sending our info to the server, so the server can put us in the right room
         myId = data.payload.id;
         myName = data.payload.myName;

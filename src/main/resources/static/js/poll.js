@@ -91,6 +91,14 @@ $('.flip').click(function() {
     if ($('#sign-in').val()=="") {
         alert("Please sign in first!");
     } else {
+        alert("BEFORE COOKIE IS: " + document.cookie);
+        $.post('/setCookies', responseJSON => {
+            alert("SUCCESSFULYL SENT : "+ document.cookie);
+        });
+        alert("AFTER SENT : "+ document.cookie);
+        // send post reuqest to back-end...
+
+
         currentUser = $('#sign-in').val();
         preferences.user = currentUser;
         $('#username').html("Hello " + $('#sign-in').val() + "! ");
@@ -115,6 +123,7 @@ $('.goback').click(function() {
 });
 
 $('#signin-form').submit(function(){
+    console.log("sign in here form here");
     //TODO: make post request here and fill in the information if the user has signed in before! 
     $(".flip").attr("disabled",false);
 });
