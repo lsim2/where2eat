@@ -246,6 +246,7 @@ public class Server {
 
 			Map<String, Object> variables = ImmutableMap.of("title", "Where2Eat", "user", user, "restaurants",
 					restaurants, "pollId", id);
+			System.out.println("WEREWRE");
 			return new ModelAndView(variables, "chat.ftl");
 		}
 	}
