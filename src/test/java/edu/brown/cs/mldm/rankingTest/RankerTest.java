@@ -40,7 +40,7 @@ public class RankerTest {
 		List<Answer> answers = new ArrayList<Answer>();
 		answers.add(testAns);
 		Map<Answer, List<Restaurant>> possRest = testApi.getPossibleRestaurants(answers);
-		List<Restaurant> res = testRk.rank(possRest);
+		Set<Restaurant> res = testRk.rank(possRest);
 		assertTrue(res.size() == 5);
 	}
 
@@ -54,8 +54,8 @@ public class RankerTest {
 		answers.add(test2);
 		answers.add(test3);
 		Map<Answer, List<Restaurant>> possRest = testApi.getPossibleRestaurants(answers);
-		List<Restaurant> res = testRk.rank(possRest);
-		RankerTest.resPrinter(res);
+		Set<Restaurant> res = testRk.rank(possRest);
+		//RankerTest.resPrinter(res);
 		assertTrue(res.size() == 5);
 	}
 
@@ -69,8 +69,8 @@ public class RankerTest {
 		answers.add(test2);
 		answers.add(test3);
 		Map<Answer, List<Restaurant>> possRest = testApi.getPossibleRestaurants(answers);
-		List<Restaurant> res = testRk.rank(possRest);
-		RankerTest.resPrinter(res);
+		Set<Restaurant> res = testRk.rank(possRest);
+//		RankerTest.resPrinter(res);
 		assertTrue(res.size() == 5);
 	}
 
