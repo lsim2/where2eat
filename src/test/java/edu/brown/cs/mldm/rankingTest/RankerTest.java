@@ -25,7 +25,7 @@ public class RankerTest {
 			+ "SRpC-aO-cXuQ_8O2O8TM-RohICpxPAzXuTekf-T7i2Ktym" + "LLCUTwTyEqJKsLm3XzmuWTSKPbzLdWnYx");
 	private Ranker testRk = new Ranker();
 
-	@Test
+	//@Test
 	public void testOnceAnswer() {
 
 		List<String> cuisine = new ArrayList<String>();
@@ -44,7 +44,7 @@ public class RankerTest {
 		assertTrue(res.size() == 5);
 	}
 
-	@Test
+	//@Test
 	public void testMultiple() {
 		Answer testAns = createAnswer("sandwiches", 3, new ArrayList<String>());
 		Answer test2 = createAnswer("chinese", 2, new ArrayList<String>());
@@ -59,7 +59,7 @@ public class RankerTest {
 		assertTrue(res.size() == 5);
 	}
 
-	@Test
+	//@Test
 	public void testMultiple1() {
 		Answer testAns = createAnswer("sandwiches", 3, new ArrayList<String>());
 		Answer test2 = createAnswer("chinese", 2, new ArrayList<String>());

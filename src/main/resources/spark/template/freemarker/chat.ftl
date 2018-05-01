@@ -91,8 +91,8 @@
   	<ul id="connectedUsrs"></ul>
 	 </div>
 <script src="/js/jquery-3.1.1.js"></script>
-<script src="/js/websockets.js"
-</script>
+
+<script>
 $(document).ready(function() {
   setup_chatter();
 });
