@@ -91,11 +91,11 @@ $('.flip').click(function() {
     if ($('#sign-in').val()=="") {
         alert("Please sign in first!");
     } else {
-        alert("BEFORE COOKIE IS: " + document.cookie);
-        $.post('/setCookies', responseJSON => {
-            alert("SUCCESSFULYL SENT : "+ document.cookie);
-        });
-        alert("AFTER SENT : "+ document.cookie);
+        // alert("BEFORE COOKIE IS: " + document.cookie);
+        // $.post('/setCookies', responseJSON => {
+        //     alert("SUCCESSFULYL SENT : "+ document.cookie);
+        // });
+        // alert("AFTER SENT : "+ document.cookie);
         // send post reuqest to back-end...
 
 
