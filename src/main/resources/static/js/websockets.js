@@ -13,7 +13,7 @@ let myId = -1;
 let myName;
 let priceSuggestions;
 let distSuggestions;
-var myMap = new Map();
+let myMap = new Map();
 
 // Setup the WebSocket connection for live updating of scores.
 const setup_chatter = () => {

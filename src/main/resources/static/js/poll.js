@@ -1,4 +1,4 @@
-let preferences = {user:"", cuisine:JSON.stringify([]), restrictions:JSON.stringify([]), misc:JSON.stringify([]), price: 1, startTime: '2pm', endTime: '4pm', distance: 12}; 
+let preferences = {user:"", cuisine:JSON.stringify([]), restrictions:JSON.stringify([]), misc:JSON.stringify([]), price: 1, startTime: '2pm', endTime: '4pm', distance: 12};
 $(function() {
   $('#cuisine').selectize({
       plugins: ['remove_button'],
@@ -12,7 +12,7 @@ $(function() {
   });
 });
 
-$.extend( $.ui.slider.prototype.options, { 
+$.extend( $.ui.slider.prototype.options, {
     animate: 300
 });
 
@@ -24,12 +24,12 @@ $("#flat-slider")
         min: 0,
         range: true,
         values: [0, 4],
-    change: function(event, ui) { 
-         document.getElementById("starttime").innerHTML = times[ui.values[0]]; 
+    change: function(event, ui) {
+         document.getElementById("starttime").innerHTML = times[ui.values[0]];
         document.getElementById("endtime").innerHTML = times[ui.values[1]];
         preferences.startTime = times[ui.values[0]];
         preferences.endTime = times[ui.values[1]];
-    } 
+    }
     })
     .slider("pips", {
         rest: "label",
@@ -44,9 +44,9 @@ $("#flat-slider-vertical-1")
         min: 0,
         range: "min",
         value: 0,
-     change: function(event, ui) { 
+     change: function(event, ui) {
         preferences.price = ui.value;
-    } 
+    }
     })
     .slider("pips", {
         rest: "label",
@@ -59,10 +59,10 @@ $("#flat-slider-vertical-1")
         min: 1,
         range: "min",
         value: 12,
-        change: function(event, ui) { 
-            document.getElementById("dist").innerHTML = ui.value; 
+        change: function(event, ui) {
+            document.getElementById("dist").innerHTML = ui.value;
             preferences.distance = ui.value;
-        } 
+        }
     }) .slider("pips", {
         first: "pip",
         last: "pip"
@@ -70,11 +70,11 @@ $("#flat-slider-vertical-1")
     .slider("float");
 
 
-let currentUser = $('#sign-in').val(); 
+let currentUser = $('#sign-in').val();
 $(document).keydown(
     function(e)
-    {    
-        if (e.keyCode == 13) { 
+    {
+        if (e.keyCode == 13) {
             e.preventDefault();
         if ($('#sign-in').val()=="") {
             alert("Please sign in first!");
@@ -115,7 +115,7 @@ $('.goback').click(function() {
 });
 
 $('#signin-form').submit(function(){
-    //TODO: make post request here and fill in the information if the user has signed in before! 
+    //TODO: make post request here and fill in the information if the user has signed in before!
     $(".flip").attr("disabled",false);
 });
 
@@ -124,8 +124,8 @@ $('#toResults').click(function() {
     if ($("#restrictions").val() != null) {preferences.restrictions = JSON.stringify($("#restrictions").val());}
     if ($("#misc").val() != null) {preferences.misc = JSON.stringify($("#misc").val());}
     preferences.url = window.location.href;
-    for (var key in preferences) {
+    for (let key in preferences) {
       $('#form').append("<input name='" + key +"' value='" + preferences[key] +"' type='hidden'/>");
     }
-    $("#form").submit(); 
+    $("#form").submit();
 });
