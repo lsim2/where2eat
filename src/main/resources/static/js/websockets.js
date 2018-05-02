@@ -221,7 +221,6 @@ const setup_chatter = () => {
         document.getElementById("chatMsgs").appendChild(clone);
         let chatMsg = document.getElementById("chat-message");
         chatMsg.scrollTop = chatMsg.scrollHeight;
-       // $('#chatMsgs').append("<li>" + date + " and id: " + txtId + " & name: "+ nameTxt + " and txt: " + txt +"</li>");
     }
   };
 }
@@ -253,32 +252,18 @@ function initMap() {
 
 
 $("#pRanker").click( function() {
-    console.log("price ranking");
-    // const postParameters = {suggestions: document.getElementById("suggestions").value, 
-    // rank_type: "distance"};
-    // let link = window.location.href;
-    // let actLink = link.substring(21, link.length);
-    console.log(priceSuggestions);
    $("#suggestions").empty();
         for (let i = 0; i < priceSuggestions.length; i++) {
             let currRest = priceSuggestions[i];
              $('#suggestions').append("<li>" + currRest + "</li>");
         }
-    //})
 });
 $("#distRanker").click( function() {
-    console.log("price ranking");
-    // const postParameters = {suggestions: document.getElementById("suggestions").value, 
-    // rank_type: "distance"};
-    // let link = window.location.href;
-    // let actLink = link.substring(21, link.length);
-    console.log(distSuggestions);
    $("#suggestions").empty();
         for (let i = 0; i < distSuggestions.length; i++) {
             let currRest = distSuggestions[i];
              $('#suggestions').append("<li>" + currRest + "</li>");
         }
-    //})
 });
 
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
