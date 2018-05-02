@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 public class Restaurant {
@@ -132,9 +133,17 @@ public class Restaurant {
 	 * @param obj
 	 * @return
 	 */
-	public boolean equals(Restaurant rest) {
-		return this.getCoordinates()[0] == rest.getCoordinates()[0]
-				&& this.getCoordinates()[1] == rest.getCoordinates()[1];
+	@Override
+	public boolean equals(Object rest) {
+	
+//		return this.getCoordinates()[0] == rest.getCoordinates()[0]
+//				&& this.getCoordinates()[1] == rest.getCoordinates()[1];
+		return this.getId().equals(((Restaurant)rest).getId());
+	}
+	
+	@Override
+	public int hashCode(){
+		return Objects.hash(this.getId());
 	}
 
 	/**
@@ -180,5 +189,7 @@ public class Restaurant {
 	public String getImageUrl() {
 		return image_url;
 	}
+	
+	
 
 }

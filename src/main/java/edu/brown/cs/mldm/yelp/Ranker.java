@@ -63,8 +63,8 @@ public class Ranker {
 					if (nRest != null) {
 						suggestions.get(key).remove(currRest);
 						nRest.incrementScore();
-						suggestions.get(key).add(nRest);
-						dupls.add(nRest);
+						//suggestions.get(key).add(nRest);
+						//dupls.add(nRest);
 					}
 				}
 				// ensures it was not emptied by iteration
@@ -138,20 +138,25 @@ public class Ranker {
 				bestMatches.add(curr);
 			}
 		}
-		for (Restaurant curr : dupls) {
-			if (isInList(bestMatches, curr) == null) {
-				// just for testing
-				bestMatches.add(curr);
-			}
-		}
+//		for (Restaurant curr : dupls) {
+//			if (isInList(bestMatches, curr) == null) {
+//				// just for testing
+//				bestMatches.add(curr);
+//			}
+//		}
 		List<Restaurant> finalMatches = new ArrayList<Restaurant>(bestMatches);
 
 		// make sure that the scores are actually being incremented
 		finalMatches.sort(new ScoreComparator());
+		for(Restaurant rest: finalMatches){
+			System.out.println(rest.getName() + " " + rest.getScore());
+		}
 		List<Restaurant> ret = new ArrayList<Restaurant>();
 		for (int a = 0; a < finalMatches.size() && a < 5; a++) {
 			ret.add(finalMatches.get(a));
 		}
+		
+		
 		return ret;
 
 	}
@@ -159,7 +164,7 @@ public class Ranker {
 	/**
 	 * Method removes all restaurants in a person's top restaurants which do not
 	 * cater to their dietary restrictions, thus allowing a person's top 3 to only
-	 * include those in the top 3.
+	 * include those in the top 5.
 	 * 
 	 * @param allRests
 	 *            all the person's restaurants
@@ -196,7 +201,8 @@ public class Ranker {
 
 	}
 
-	private Restaurant isInList(Collection<Restaurant> restaurants, Restaurant rest) {
+	// potentially change this..
+	public Restaurant isInList(Collection<Restaurant> restaurants, Restaurant rest) {
 		for (Restaurant rst : restaurants) {
 			if (rst.equals(rest)) {
 				return rst;
@@ -244,6 +250,20 @@ public class Ranker {
 				}
 			}
 		}
+	}
+
+	// called in server
+	public List<Restaurant> sortRests(String sort_type, List<Restaurant> rests, Answer ans) {
+		if (sort_type.equals("price")) {
+			List<Restaurant> ret = new ArrayList<Restaurant>(rests);
+			ret.sort(new PriceComparator());
+			return ret;
+		} else if (sort_type.equals("distance")) {
+			List<Restaurant> ret = new ArrayList<Restaurant>(rests);
+			ret.sort(new DistComparator(ans));
+			return ret;
+		}
+		return rests;
 	}
 
 }
