@@ -56,7 +56,7 @@ $("#flat-slider-vertical-1")
     $("#flat-slider-vertical-2")
     .slider({
         max: 25,
-        min: 0,
+        min: 1,
         range: "min",
         value: 12,
         change: function(event, ui) { 

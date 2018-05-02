@@ -74,7 +74,7 @@
     </select>
 </div>
 <div class="ranking">
-<p><b>I'm willing to travel <i><span id="dist">12</span></i> miles.</b></p>
+<p><b>I'm willing to travel <i><span id="dist">12</span></i> mile(s).</b></p>
 <div id="flat-slider-vertical-2"></div>
 </div>
 <div class="ranking">
