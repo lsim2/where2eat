@@ -33,9 +33,9 @@ public class ChatWebSocket {
 	private Map<Integer, String> idsToName = new HashMap<Integer, String>();
 	private Map<Session, Integer> sessionToId = new HashMap<Session, Integer>();
 	private Map<Session, String> sessionToURL = new HashMap<Session, String>();
-	private static Map<UUID, List<Restaurant>> uuidToRestaurants = new HashMap<>();
-	private static Map<UUID, List<Restaurant>> uuidToPriceRestaurants = new HashMap<>();
-	private static Map<UUID, List<Restaurant>> uuidToDistRestaurants = new HashMap<>();
+	private Map<UUID, List<Restaurant>> uuidToRestaurants = new HashMap<>();
+	private Map<UUID, List<Restaurant>> uuidToPriceRestaurants = new HashMap<>();
+	private Map<UUID, List<Restaurant>> uuidToDistRestaurants = new HashMap<>();
 	private Map<String, List<Message>> urlToMsgs = new HashMap<String, List<Message>>();
 	private Map<String, Queue<Session>> urlToQueueOfSessions = new HashMap<String, Queue<Session>>();
 
