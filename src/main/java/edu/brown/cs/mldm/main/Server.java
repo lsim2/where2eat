@@ -64,6 +64,7 @@ public class Server {
 		Spark.get("/date", new dateFrontHandler(), freeMarker);
 		Spark.get("/poll/:id", new pollUniqueHandler(), freeMarker);
 		Spark.post("/chat/:id", new pollResHandler(), freeMarker);
+		Spark.get("/chat/:id", new pollUniqueHandler(), freeMarker);
 
 	}
 
@@ -224,13 +225,7 @@ public class Server {
 			YelpApi yelpApi = new YelpApi(YELPKEY);
 			Map<Answer, List<Restaurant>> results = yelpApi.getPossibleRestaurants(answersDb.get(id));
 			Ranker ranker = new Ranker();
-
-			// TODO: Delete this when we are done
-			// for (List<Restaurant> a : results.values()) {
-			// for (Restaurant r : a) {
-			// System.out.println(r.getName());
-			// }
-			// }
+			
 			List<Restaurant> restList = new ArrayList<Restaurant>(ranker.rank(results));
 			List<String> restaurants = new ArrayList<>();
 			for (Restaurant r : restList) {
@@ -246,7 +241,6 @@ public class Server {
 
 			Map<String, Object> variables = ImmutableMap.of("title", "Where2Eat", "user", user, "restaurants",
 					restaurants, "pollId", id);
-			System.out.println("WEREWRE");
 			return new ModelAndView(variables, "chat.ftl");
 		}
 	}
