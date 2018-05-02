@@ -188,7 +188,7 @@ public class Ranker {
 	private class ScoreComparator implements Comparator<Restaurant> {
 		@Override
 		public int compare(Restaurant r1, Restaurant r2) {
-			return Double.compare(r1.getScore(), r2.getScore());
+			return Double.compare(r2.getScore(), r1.getScore());
 		}
 	}
 

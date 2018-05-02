@@ -49,8 +49,6 @@ const setup_chatter = () => {
           console.log("unique name is: " + uniqueName);
           $('#connectedUsrs').append("<li>" + uniqueName + "</li>");
         }
-<<<<<<< HEAD
-=======
 
         $('#suggestions').empty();
         // update all uniqque users in chat
@@ -64,82 +62,105 @@ const setup_chatter = () => {
         }
 
         let centerLat = parseFloat(JSON.parse(data.rests[0]).coordinates.latitude);
-        let centerLng = parseFloat(JSON.parse(data.rests[0]).coordinates.longitude);
+      let centerLng = parseFloat(JSON.parse(data.rests[0]).coordinates.longitude);
 
-        let center = {lat: centerLat, lng: centerLng};
+      let center = {lat: centerLat, lng: centerLng};
 
-        let map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 18,
-          center: center
+      let map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 18,
+        center: center
+      });
+
+      let bounds = new google.maps.LatLngBounds();
+      for(let i=0;i<data.rests.length;i++){
+        const restaurant = JSON.parse(data.rests[i]);
+        console.log(restaurant);
+        let pos = {lat: parseFloat(restaurant.coordinates.latitude), lng: parseFloat(restaurant.coordinates.longitude)};
+        let marker = new google.maps.Marker({
+          title: restaurant.name,
+          position: new google.maps.LatLng(pos.lat, pos.lng),
+          animation: google.maps.Animation.DROP,
+          map: map,
+          clicked: false
         });
 
+        let contentString = "<b>" + restaurant.name + "</b></br>" + restaurant.location.display_address ;
+        let infowindow = new google.maps.InfoWindow({
+          content: contentString
+        });
+
+        google.maps.event.addListener(infowindow,'closeclick',
+          function() {
+            marker.clicked = false;
+          })
+        marker.addListener('click', function() {
+          marker.clicked = true;
+          infowindow.open(map, marker);
+          marker.setAnimation(google.maps.Animation.BOUNCE);
+          setTimeout(function () {
+            marker.setAnimation(null);
+          }, 500);
+        });
+
+        marker.addListener('mouseover', function() {
+          infowindow.open(map, marker);
+        });
+        marker.addListener('mouseout', function() {
+          if(marker.clicked == false){
+            infowindow.close();
+          }
 
 
-        let bounds = new google.maps.LatLngBounds();
-        for(let i=0;i<data.rests.length;i++){
-          const restaurant = JSON.parse(data.rests[i]);
-          console.log(restaurant);
-          let pos = {lat: parseFloat(restaurant.coordinates.latitude), lng: parseFloat(restaurant.coordinates.longitude)};
-          let marker = new google.maps.Marker({
-            title: restaurant.name,
-            position: new google.maps.LatLng(pos.lat, pos.lng),
-            animation: google.maps.Animation.DROP,
-            map: map
-          });
-
-          let contentString = "<b>" + restaurant.name + "</b></br>" + restaurant.location.display_address ;
-          let infowindow = new google.maps.InfoWindow({
-            content: contentString
-          });
-
-          marker.addListener('click', function() {
-            infowindow.open(map, marker);
-            marker.setAnimation(google.maps.Animation.BOUNCE);
-            setTimeout(function () {
-              marker.setAnimation(null);
-            }, 500);
-
-          });
-          bounds.extend(marker.position);
-        }
-        map.fitBounds(bounds);
+        });
+        bounds.extend(marker.position);
+      }
+      map.fitBounds(bounds);
 
 
-        let infoWindow = new google.maps.InfoWindow;
-        if (navigator.geolocation) {
-         navigator.geolocation.getCurrentPosition(function(position) {
-           let pos = {
-             lat: position.coords.latitude,
-             lng: position.coords.longitude
-           };
 
-           let marker = new google.maps.Marker({
-             title: "You!",
-             position: new google.maps.LatLng(pos.lat, pos.lng),
-             animation: google.maps.Animation.DROP,
-             map: map,
-             icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
-           });
+      let contentString = "You are here!" ;
+      let herewindow = new google.maps.InfoWindow({
+        content: contentString
+      });
+      if (navigator.geolocation) {
 
-            bounds.extend(marker.position);
-            map.fitBounds(bounds);
+       navigator.geolocation.getCurrentPosition(function(position) {
+         let pos = {
+           lat: position.coords.latitude,
+           lng: position.coords.longitude
+         };
 
-
-           // infoWindow.setPosition(pos);
-           // infoWindow.setContent('Location found.');
-           // infoWindow.open(map);
-           //map.setCenter(pos);
-         }, function() {
-           handleLocationError(true, infoWindow, map.getCenter());
+         let marker = new google.maps.Marker({
+           title: "You!",
+           position: new google.maps.LatLng(pos.lat, pos.lng),
+           animation: google.maps.Animation.DROP,
+           map: map,
+           icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
          });
-       } else {
-         // Browser doesn't support Geolocation
-         handleLocationError(false, infoWindow, map.getCenter());
-       }
+
+          bounds.extend(marker.position);
+          map.fitBounds(bounds);
+
+          marker.addListener('mouseover', function() {
+            herewindow.open(map, marker);
+          });
+          marker.addListener('mouseout', function() {
+
+              herewindow.close();
+
+          });
+
+         //map.setCenter(pos);
+       }, function() {
+         handleLocationError(true, infoWindow, map.getCenter());
+       });
+     } else {
+       // Browser doesn't support Geolocation
+       handleLocationError(false, infoWindow, map.getCenter());
+     }
 
 
 
->>>>>>> 9e6895fe9abaa5cd68edeb92afbc2a3037cf9e87
         break;
 
       case MESSAGE_TYPE.CONNECT:
@@ -151,21 +172,13 @@ const setup_chatter = () => {
         console.log("werw");
         myId = data.payload.id;
         myName = data.payload.myName;
-<<<<<<< HEAD
 
         let payLoad = {"name": myName, "id": myId, "roomURL": window.location.href}; 
         let jsonObject = { "type": MESSAGE_TYPE.ADDTOROOM, "payload": payLoad} 
-=======
-        let payLoad = {"name": myName, "id": myId, "roomURL": window.location.href};
-        let jsonObject = { "type": MESSAGE_TYPE.ADDTOROOM, "payload": payLoad}
->>>>>>> 9e6895fe9abaa5cd68edeb92afbc2a3037cf9e87
         let jsonString = JSON.stringify(jsonObject)
         conn.send(jsonString);
         break;
-<<<<<<< HEAD
-=======
 
->>>>>>> 9e6895fe9abaa5cd68edeb92afbc2a3037cf9e87
       case MESSAGE_TYPE.ADDTOROOM:
         console.log("connected and my id is: " + data.payload.id);
 
@@ -194,10 +207,6 @@ const setup_chatter = () => {
           //$('#chatMsgs').append("<li>" + date + " and id: " + txtId + " & name: "+ nameTxt + " and txt: " + txt +"</li>");
         }
         break;
-<<<<<<< HEAD
-=======
-
->>>>>>> 9e6895fe9abaa5cd68edeb92afbc2a3037cf9e87
       case MESSAGE_TYPE.UPDATE:
         let txt;
         let txtId;
