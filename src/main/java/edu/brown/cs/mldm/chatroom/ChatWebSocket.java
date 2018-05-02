@@ -75,12 +75,12 @@ public class ChatWebSocket {
 		nextId++;
 	}
 
-	public void addUniqueNames(Session session, String receivedRoomURL) throws IOException {
+	public void addNamesInRoom(Session session, String receivedRoomURL) throws IOException {
 		System.out.println("add unique names called");
 		JsonObject jObject = new JsonObject();
 		jObject.addProperty("type", MESSAGE_TYPE.UPDATEALLNAMES.ordinal());
 
-		JsonArray uniqueNames = new JsonArray();
+		JsonArray allNamesInRoom = new JsonArray();
 
 		Queue<Session> myQueue = urlToQueueOfSessions.get(receivedRoomURL);
 
@@ -88,7 +88,7 @@ public class ChatWebSocket {
 		for (Session sesh : myQueue) {
 			Integer personId = sessionToId.get(sesh);
 			String myName = idsToName.get(personId);
-			uniqueNames.add(myName);
+			allNamesInRoom.add(myName);
 		}
 
 		JsonArray suggestions = new JsonArray();
@@ -110,7 +110,7 @@ public class ChatWebSocket {
 		System.out.println("Suggestions" + distSuggestions);
 		jObject.add("priceSuggestions", priceSuggestions);
 		jObject.add("distSuggestions", distSuggestions);
-		jObject.add("uniqueNames", uniqueNames);
+		jObject.add("namesInRoom", allNamesInRoom);
 		jObject.add("suggestions", suggestions);
 		jObject.add("rests", rests);
 
@@ -200,7 +200,7 @@ public class ChatWebSocket {
 
 		// TODO: repeated code!
 
-		addUniqueNames(session, receivedRoomURL); // helper func: THIS ADDS ALL THE UNIQUE USERS
+		addNamesInRoom(session, receivedRoomURL); // helper func: THIS ADDS ALL THE names of the users within a room
 
 		jObject.add("payload", payLoadObject);
 		session.getRemote().sendString(GSON.toJson(jObject));
