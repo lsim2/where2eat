@@ -60,15 +60,15 @@ public class YelpApi {
 
 		StringBuilder url = new StringBuilder();
 
-		if (!answer.getFoodTerms().isEmpty()) {
-			for (String term : answer.getFoodTerms()) {
-				terms = terms + "," + term;
-			}
-
-			if (terms.charAt(terms.length() - 1) == ',') {
-				terms = terms.substring(0, terms.length() - 1);
-			}
-		}
+//		if (!answer.getFoodTerms().isEmpty()) {
+//			for (String term : answer.getFoodTerms()) {
+//				terms = terms + "," + term;
+//			}
+//
+//			if (terms.charAt(terms.length() - 1) == ',') {
+//				terms = terms.substring(0, terms.length() - 1);
+//			}
+//		}
 
 		url.append("term=" + terms);
 		url.append("&latitude=" + coordinates[0] + "&longitude=" + coordinates[1]);
@@ -100,6 +100,13 @@ public class YelpApi {
 				for (String category : answer.getRestrictions()) {
 					categories = categories + category + ",";
 				}
+			}
+			
+			if (!answer.getFoodTerms().isEmpty()) {
+				for (String term : answer.getFoodTerms()) {
+					categories = categories + term + ",";
+				}
+				
 			}
 
 			if (categories.charAt(categories.length() - 1) == ',') {
