@@ -42,13 +42,21 @@ const setup_chatter = () => {
       case MESSAGE_TYPE.UPDATEALLNAMES:
         console.log("update all names called");
         $('#connectedUsrs').empty();
-        // update all uniqque users in chat
-        let uniqueNamesOfUsrs = data.uniqueNames;
-        for (let i = 0; i < uniqueNamesOfUsrs.length; i++) {
-          let uniqueName = uniqueNamesOfUsrs[i];
+        // update all unique users in chat
+        let namesOfUsrsInRoom = data.namesInRoom;
+
+        let uniqueNames = [];
+        $.each(namesOfUsrsInRoom, function(i, el){
+            if($.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
+        });
+        //TODO: trim names too <-- so spaces in names don't count..
+        for (let i = 0; i < uniqueNames.length; i++) {
+          let uniqueName = uniqueNames[i];
           console.log("unique name is: " + uniqueName);
           $('#connectedUsrs').append("<li>" + uniqueName + "</li>");
         }
+
+        //TODO:add actual unique users
 
         $('#suggestions').empty();
         // update all uniqque users in chat
