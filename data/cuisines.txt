@@ -7,7 +7,6 @@ Asian Fusion asianfusion
 Barbeque bbq
 Breakfast & Brunch breakfast_brunch
 British british
-Cambodian cambodian
 Caribbean caribbean
 Chinese chinese
 Fast Food hotdogs
