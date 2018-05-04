@@ -63,11 +63,6 @@ const setup_chatter = () => {
         let suggestions = data.suggestions;
         priceSuggestions = data.priceSuggestions;
         distSuggestions = data.distSuggestions;
-        console.log(suggestions + "sugggestsionssssssssdf");
-        for (let i = 0; i < suggestions.length; i++) {
-          let restaurant = suggestions[i];
-          $('#suggestions').append("<li>" + restaurant + "</li>");
-        }
 
         let centerLat = parseFloat(JSON.parse(data.rests[0]).coordinates.latitude);
       let centerLng = parseFloat(JSON.parse(data.rests[0]).coordinates.longitude);
@@ -83,6 +78,17 @@ const setup_chatter = () => {
       for(let i=0;i<data.rests.length;i++){
         const restaurant = JSON.parse(data.rests[i]);
         console.log(restaurant);
+          let temp = document.getElementById("suggestion");
+            temp.content.querySelector('.food').src = restaurant.image_url;
+            temp.content.querySelector(".restaurant-name").innerHTML = restaurant.name;
+            if (restaurant.categories.length < 2) {
+                 temp.content.querySelector(".categories").innerHTML = restaurant.categories[0].title;
+            } else{
+                temp.content.querySelector(".categories").innerHTML = restaurant.categories[0].title + ", " + restaurant.categories[1].title;  
+            }
+            let clone = document.importNode(temp.content, true);
+            console.log(clone);
+            $('#suggestions').append(clone);
         let pos = {lat: parseFloat(restaurant.coordinates.latitude), lng: parseFloat(restaurant.coordinates.longitude)};
         let marker = new google.maps.Marker({
           title: restaurant.name,
