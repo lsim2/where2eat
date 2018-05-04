@@ -30,6 +30,11 @@ $("#submit").click(function(e) {
           return;
         }
     }
+    if(postParameter.lat == null || postParameter.lng == null){
+        alert("Please enter a valid location");
+        ractive.toggle( 'flipCard' );
+      return ;
+    }
     // let valid = false;
     // for(let place in places){
     //   console.log(places[place]);

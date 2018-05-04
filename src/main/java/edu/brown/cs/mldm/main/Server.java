@@ -169,8 +169,11 @@ public class Server {
       UUID pollId = UUID.randomUUID();
       String lat = qm.value("lat");
       String lng = qm.value("lng");
+      
       double[] coordinates = { Double.parseDouble(lat),
           Double.parseDouble(lng) };
+      
+      
       Poll poll = new Poll(pollId, name, title, location, date, msg,
           coordinates);
       pollDb.put(pollId, poll);
