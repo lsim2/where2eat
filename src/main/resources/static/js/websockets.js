@@ -11,8 +11,11 @@ const MESSAGE_TYPE = {
 let conn;
 let myId = -1;
 let myName;
-let priceSuggestions;
-let distSuggestions;
+let regSuggestions;
+//keeps track of all the restaurants displayed on the screen
+let allRests;
+
+let ranking = {}; 
 let myMap = new Map();
 
 // Setup the WebSocket connection for live updating of scores.
@@ -28,7 +31,6 @@ const setup_chatter = () => {
   //There are two possible types of messages: CONNECT and UPDATE
   conn.onmessage = msg => {
     const data = JSON.parse(msg.data);
-    console.log("WTFFFF");
     switch (data.type) {
       default:
         console.log('Unknown message type!', data.type);
@@ -61,8 +63,7 @@ const setup_chatter = () => {
         $('#suggestions').empty();
         // update all uniqque users in chat
         let suggestions = data.suggestions;
-        priceSuggestions = data.priceSuggestions;
-        distSuggestions = data.distSuggestions;
+        regSuggestions = data.suggestions;
 
         let centerLat = parseFloat(JSON.parse(data.rests[0]).coordinates.latitude);
       let centerLng = parseFloat(JSON.parse(data.rests[0]).coordinates.longitude);
@@ -75,20 +76,12 @@ const setup_chatter = () => {
       });
 
       let bounds = new google.maps.LatLngBounds();
-      for(let i=0;i<data.rests.length;i++){
+      allRests = data.rests.slice(0,5);
+      let currRests = data.rests.slice(0,5);
+      for(let i=0;i<currRests.length;i++){
         const restaurant = JSON.parse(data.rests[i]);
-        console.log(restaurant);
-          let temp = document.getElementById("suggestion");
-            temp.content.querySelector('.food').src = restaurant.image_url;
-            temp.content.querySelector(".restaurant-name").innerHTML = restaurant.name;
-            if (restaurant.categories.length < 2) {
-                 temp.content.querySelector(".categories").innerHTML = restaurant.categories[0].title;
-            } else{
-                temp.content.querySelector(".categories").innerHTML = restaurant.categories[0].title + ", " + restaurant.categories[1].title;
-            }
-            let clone = document.importNode(temp.content, true);
-            console.log(clone);
-            $('#suggestions').append(clone);
+        drawRest(restaurant);
+
         let pos = {lat: parseFloat(restaurant.coordinates.latitude), lng: parseFloat(restaurant.coordinates.longitude)};
         let marker = new google.maps.Marker({
           title: restaurant.name,
@@ -206,12 +199,17 @@ const setup_chatter = () => {
         break;
 
       case MESSAGE_TYPE.CONNECT:
+        //alert("CONNECTING COOKIE IS : " + document.cookie);
+          // do get request (and the get request should end up with the server verifiying us
+          // if we signed in before ) and the
+
         // sending our info to the server, so the server can put us in the right room
         console.log("werw");
         myId = data.payload.id;
         myName = data.payload.myName;
-        let payLoad = {"name": myName, "id": myId, "roomURL": window.location.href};
-        let jsonObject = { "type": MESSAGE_TYPE.ADDTOROOM, "payload": payLoad}
+
+        let payLoad = {"name": myName, "id": myId, "roomURL": window.location.href}; 
+        let jsonObject = { "type": MESSAGE_TYPE.ADDTOROOM, "payload": payLoad} 
         let jsonString = JSON.stringify(jsonObject)
         conn.send(jsonString);
         break;
@@ -241,9 +239,9 @@ const setup_chatter = () => {
             document.getElementById("chatMsgs").appendChild(clone);
             let chatMsg = document.getElementById("chat-message");
             chatMsg.scrollTop = chatMsg.scrollHeight;
+          addChatMsg(nameTxt,date,txt);
         }
         break;
-
       case MESSAGE_TYPE.UPDATE:
         let txt;
         let txtId;
@@ -255,18 +253,7 @@ const setup_chatter = () => {
         nameTxt = data.payload.name;
         console.log("received an update msg and the msg is: " + txt);
         console.log("received an update msg and the msg id is: " + txtId);
-        let temp = document.getElementById("left");
-        if (nameTxt == myName) {
-                temp = document.getElementById("right");
-        }
-        temp.content.querySelector('img').src = 'https://api.adorable.io/avatars/50/'+nameTxt+'@adorable.png';
-        temp.content.querySelector(".user").innerHTML = nameTxt;
-        temp.content.querySelector(".time").innerHTML = " " + date;
-        temp.content.querySelector(".msg").innerHTML = txt;
-        let clone = document.importNode(temp.content, true);
-        document.getElementById("chatMsgs").appendChild(clone);
-        let chatMsg = document.getElementById("chat-message");
-        chatMsg.scrollTop = chatMsg.scrollHeight;
+        addChatMsg(nameTxt,date,txt);
     }
   };
 }
@@ -298,38 +285,83 @@ function initMap() {
 
 
 $("#pRanker").click( function() {
-    console.log("price ranking");
-    // const postParameters = {suggestions: document.getElementById("suggestions").value,
-    // rank_type: "distance"};
-    // let link = window.location.href;
-    // let actLink = link.substring(21, link.length);
-    console.log(priceSuggestions);
+  
+  console.log("price ranking");
+  let priceRests = allRests.slice().sort(priceRanker);
    $("#suggestions").empty();
-        for (let i = 0; i < priceSuggestions.length; i++) {
-            let currRest = priceSuggestions[i];
-             $('#suggestions').append("<li>" + currRest + "</li>");
+        for (let i = 0; i < priceRests.length && i < 5; i++) {
+            let currRest = JSON.parse(priceRests[i]);
+            drawRest(currRest);
         }
-    //})
+
 });
 $("#distRanker").click( function() {
-    console.log("price ranking");
-    // const postParameters = {suggestions: document.getElementById("suggestions").value,
-    // rank_type: "distance"};
-    // let link = window.location.href;
-    // let actLink = link.substring(21, link.length);
-    console.log(distSuggestions);
+  console.log("distance ranking");
+  let distRests = allRests.slice().sort(distRanker);
    $("#suggestions").empty();
-        for (let i = 0; i < distSuggestions.length; i++) {
-            let currRest = distSuggestions[i];
-             $('#suggestions').append("<li>" + currRest + "</li>");
+        for (let i = 0; i < distRests.length && i < 5; i++) {
+            let currRest = JSON.parse(distRests[i]);
+            drawRest(currRest);
         }
-    //})
 });
-
+$("#resetOrder").click( function() {
+   $("#suggestions").empty();
+        for (let i = 0; i < allRests.length && i < 5; i++) {
+            let currRest = JSON.parse(allRests[i]);
+            drawRest(currRest);
+        }
+});
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
         infoWindow.setPosition(pos);
         infoWindow.setContent(browserHasGeolocation ?
                               'Error: The Geolocation service failed.' :
                               'Error: Your browser doesn\'t support geolocation.');
         infoWindow.open(map);
+}
+
+function priceRanker(r1, r2){
+  let rest1 = JSON.parse(r1);
+  let rest2 = JSON.parse(r2);
+  let dif = parseInt(rest1.intPrice)-parseInt(rest2.intPrice);
+  return dif;
+}
+function distRanker(r1, r2){
+  let rest1 = JSON.parse(r1);
+  let rest2 = JSON.parse(r2);
+  let dif = parseFloat(rest1.dist)-parseFloat(rest2.dist);
+  return dif;
+}
+
+function addChatMsg(nameTxt,date,txt) {
+     let temp = document.getElementById("left");
+        if (nameTxt == myName) {
+                temp = document.getElementById("right");
+        }
+        temp.content.querySelector('img').src = 'https://api.adorable.io/avatars/50/'+nameTxt+'@adorable.png';
+        temp.content.querySelector(".user").innerHTML = nameTxt;
+        temp.content.querySelector(".time").innerHTML = " " + date;
+        temp.content.querySelector(".msg").innerHTML = txt;
+        let clone = document.importNode(temp.content, true);
+        document.getElementById("chatMsgs").appendChild(clone);
+        let chatMsg = document.getElementById("chat-message");
+        chatMsg.scrollTop = chatMsg.scrollHeight;
+}
+
+function drawRest(restaurant){
+        console.log(restaurant);
+          let temp = document.getElementById("suggestion");
+            temp.content.querySelector('.food').src = restaurant.image_url;
+            temp.content.querySelector(".restaurant-name").innerHTML = restaurant.name;
+            if (restaurant.categories.length < 2) {
+                 temp.content.querySelector(".categories").innerHTML = restaurant.categories[0].title;
+            } else{
+                temp.content.querySelector(".categories").innerHTML = restaurant.categories[0].title + ", " + restaurant.categories[1].title;
+            }
+            temp.content.querySelector(".fa.thumb.fa-thumbs-up").classList.add(restaurant.id);
+            temp.content.querySelector(".fa.thumb.fa-thumbs-up").id = restaurant.id;
+            temp.content.querySelector(".fa.thumb.fa-thumbs-down").classList.add(restaurant.id);
+          temp.content.querySelector(".fa.thumb.fa-thumbs-down").id = restaurant.id;
+            let clone = document.importNode(temp.content, true);
+            console.log(clone);
+            $('#suggestions').append(clone);
 }
