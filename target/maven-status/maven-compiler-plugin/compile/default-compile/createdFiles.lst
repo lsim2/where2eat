@@ -21,7 +21,6 @@ edu\brown\cs\mldm\yelp\Answer.class
 edu\brown\cs\mldm\main\Server$homeSubmitHandler.class
 edu\brown\cs\mldm\yelp\Ranker$ScoreComparator.class
 edu\brown\cs\mldm\main\Server$pollUniqueHandler.class
-edu\brown\cs\mldm\main\Server$ChatroomSetCookieHandler.class
 edu\brown\cs\mldm\yelp\Ranker$PriceComparator.class
 edu\brown\cs\mldm\main\Server$ExceptionPrinter.class
 edu\brown\cs\mldm\main\Server$1.class

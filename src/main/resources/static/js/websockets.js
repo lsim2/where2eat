@@ -64,11 +64,6 @@ const setup_chatter = () => {
         // update all uniqque users in chat
         let suggestions = data.suggestions;
         regSuggestions = data.suggestions;
-        console.log(suggestions + "sugggestsionssssssssdf");
-        for (let i = 0; i < suggestions.length && i< 5; i++) {
-          let restaurant = suggestions[i];
-          $('#suggestions').append("<li>" + restaurant + "</li>");
-        }
 
         let centerLat = parseFloat(JSON.parse(data.rests[0]).coordinates.latitude);
       let centerLng = parseFloat(JSON.parse(data.rests[0]).coordinates.longitude);
@@ -82,7 +77,8 @@ const setup_chatter = () => {
 
       let bounds = new google.maps.LatLngBounds();
       allRests = data.rests.slice(0,5);
-      for(let i=0;i<data.rests.length;i++){
+      let currRests = data.rests.slice(0,5);
+      for(let i=0;i<currRests.length;i++){
         const restaurant = JSON.parse(data.rests[i]);
         console.log(restaurant);
           let temp = document.getElementById("suggestion");
