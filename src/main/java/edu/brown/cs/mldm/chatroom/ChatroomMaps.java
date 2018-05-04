@@ -44,7 +44,7 @@ public class ChatroomMaps {
 		return uuidToPriceRestaurants;
 	}
 	
-	public  Map<UUID, List<Restaurant>> uuidToDistRestaurants() {
+	public  Map<UUID, List<Restaurant>> getUuidToDistRestaurants() {
 		return uuidToDistRestaurants;
 	}
 	

@@ -30,14 +30,7 @@ public class ChatWebSocket {
 	private static final Gson GSON = new Gson();
 	private static final Queue<Session> sessions = new ConcurrentLinkedQueue<>();
 	private static int nextId = 0;
-	private Map<Integer, String> idsToName = new HashMap<Integer, String>();
-	private Map<Session, Integer> sessionToId = new HashMap<Session, Integer>();
-	private Map<Session, String> sessionToURL = new HashMap<Session, String>();
-	private Map<UUID, List<Restaurant>> uuidToRestaurants = new HashMap<>();
-	private Map<UUID, List<Restaurant>> uuidToPriceRestaurants = new HashMap<>();
-	private Map<UUID, List<Restaurant>> uuidToDistRestaurants = new HashMap<>();
-	private Map<String, List<Message>> urlToMsgs = new HashMap<String, List<Message>>();
-	private Map<String, Queue<Session>> urlToQueueOfSessions = new HashMap<String, Queue<Session>>();
+	private ChatroomMaps myChatroomMaps = new ChatroomMaps();
 
 	private static enum MESSAGE_TYPE {
 		CONNECT, SEND, UPDATE, DELETE, UPDATEALLNAMES, ADDTOROOM
@@ -45,15 +38,15 @@ public class ChatWebSocket {
 
 	// called in server
 	public void addName(String name) {
-		idsToName.put(nextId, name);
+		myChatroomMaps.getidsToName().put(nextId, name);
 	}
 
 	// called in server
 	public void addRestaurantList(UUID id, List<Restaurant> restaurants, List<Restaurant> priceList,
 			List<Restaurant> distList) {
-		uuidToRestaurants.put(id, restaurants);
-		uuidToPriceRestaurants.put(id, priceList);
-		uuidToDistRestaurants.put(id, distList);
+		myChatroomMaps.getUuidToRestaurants().put(id, restaurants);
+		myChatroomMaps.getUuidToPriceRestaurants().put(id, priceList);
+		myChatroomMaps.getUuidToDistRestaurants().put(id, distList);
 	}
 
 	@OnWebSocketConnect
@@ -66,10 +59,10 @@ public class ChatWebSocket {
 
 		JsonObject payLoadObject = new JsonObject();
 		payLoadObject.addProperty("id", nextId);
-		payLoadObject.addProperty("myName", idsToName.get(nextId));
+		payLoadObject.addProperty("myName", myChatroomMaps.getidsToName().get(nextId));
 
 		jObject.add("payload", payLoadObject);
-		sessionToId.put(session, nextId);
+		myChatroomMaps.getSessionToId().put(session, nextId);
 		// TODO: update connect on client
 		session.getRemote().sendString(GSON.toJson(jObject));
 		nextId++;
@@ -82,12 +75,12 @@ public class ChatWebSocket {
 
 		JsonArray allNamesInRoom = new JsonArray();
 
-		Queue<Session> myQueue = urlToQueueOfSessions.get(receivedRoomURL);
+		Queue<Session> myQueue = myChatroomMaps.getUrlToQueueOfSessions().get(receivedRoomURL);
 
 		// need to add unique names
 		for (Session sesh : myQueue) {
-			Integer personId = sessionToId.get(sesh);
-			String myName = idsToName.get(personId);
+			Integer personId = myChatroomMaps.getSessionToId().get(sesh);
+			String myName = myChatroomMaps.getidsToName().get(personId);
 			allNamesInRoom.add(myName);
 		}
 
@@ -100,11 +93,11 @@ public class ChatWebSocket {
 			rests.add(GSON.toJson(r));
 		}
 		JsonArray priceSuggestions = new JsonArray();
-		for (Restaurant rest : uuidToPriceRestaurants.get(getUuid(receivedRoomURL))) {
+		for (Restaurant rest : myChatroomMaps.getUuidToPriceRestaurants().get(getUuid(receivedRoomURL))) {
 			priceSuggestions.add(rest.getName());
 		}
 		JsonArray distSuggestions = new JsonArray();
-		for (Restaurant rest : uuidToDistRestaurants.get(getUuid(receivedRoomURL))) {
+		for (Restaurant rest : myChatroomMaps.getUuidToDistRestaurants().get(getUuid(receivedRoomURL))) {
 			distSuggestions.add(rest.getName());
 		}
 		System.out.println("Suggestions" + distSuggestions);
@@ -126,14 +119,14 @@ public class ChatWebSocket {
 	@OnWebSocketClose
 	public void closed(Session session, int statusCode, String reason) throws IOException {
 		System.out.println("closing starting");
-		int idSession = sessionToId.get(session);
+		int idSession = myChatroomMaps.getSessionToId().get(session);
 		System.out.println("closing and idsession is: " + idSession);
-		sessionToId.remove(session);
-		String nameOfClosedUser = idsToName.get(idSession);
-		idsToName.remove(idSession);
+		myChatroomMaps.getSessionToId().remove(session);
+		String nameOfClosedUser = myChatroomMaps.getidsToName().get(idSession);
+		myChatroomMaps.getidsToName().remove(idSession);
 
-		String sessionURL = sessionToURL.get(session);
-		Queue<Session> myQueue = urlToQueueOfSessions.get(sessionURL);
+		String sessionURL = myChatroomMaps.getSessionToURL().get(session);
+		Queue<Session> myQueue = myChatroomMaps.getUrlToQueueOfSessions().get(sessionURL);
 		myQueue.remove(session);
 
 		sessions.remove(session);
@@ -157,7 +150,7 @@ public class ChatWebSocket {
 
 		JsonObject payLoadObject = new JsonObject();
 		payLoadObject.addProperty("id", nextId);
-		payLoadObject.addProperty("myName", idsToName.get(nextId));
+		payLoadObject.addProperty("myName", myChatroomMaps.getidsToName().get(nextId));
 
 		JsonArray dates = new JsonArray();
 		JsonArray names = new JsonArray();
@@ -174,7 +167,7 @@ public class ChatWebSocket {
 		}
 
 		// we're adding all previous msgs (in the room) to the payload
-		List<Message> msgsInRoom = urlToMsgs.get(receivedRoomURL);
+		List<Message> msgsInRoom = myChatroomMaps.getUrlToMsgs().get(receivedRoomURL);
 		for (Message msg : msgsInRoom) {
 			Date unParsedDate = msg.getDate();
 			SimpleDateFormat dataFormat = new SimpleDateFormat("h:m a");
@@ -221,16 +214,16 @@ public class ChatWebSocket {
 		// if is a new user
 		if (msgType == MESSAGE_TYPE.ADDTOROOM.ordinal()) {
 
-			sessionToURL.put(session, receivedRoomURL);
-			if (!urlToQueueOfSessions.containsKey(receivedRoomURL)) {
-				urlToQueueOfSessions.put(receivedRoomURL, new ConcurrentLinkedQueue<Session>());
+			myChatroomMaps.getSessionToURL().put(session, receivedRoomURL);
+			if (!myChatroomMaps.getUrlToQueueOfSessions().containsKey(receivedRoomURL)) {
+				myChatroomMaps.getUrlToQueueOfSessions().put(receivedRoomURL, new ConcurrentLinkedQueue<Session>());
 			}
 
-			if (!urlToMsgs.containsKey(receivedRoomURL)) {
-				urlToMsgs.put(receivedRoomURL, new ArrayList<Message>());
+			if (!myChatroomMaps.getUrlToMsgs().containsKey(receivedRoomURL)) {
+				myChatroomMaps.getUrlToMsgs().put(receivedRoomURL, new ArrayList<Message>());
 			}
 
-			Queue<Session> myQueue = urlToQueueOfSessions.get(receivedRoomURL);
+			Queue<Session> myQueue = myChatroomMaps.getUrlToQueueOfSessions().get(receivedRoomURL);
 			myQueue.add(session);
 
 			addPreviousMessages(session, receivedRoomURL);
@@ -252,7 +245,7 @@ public class ChatWebSocket {
 		msg.setDate(now);
 		msg.setSenderId(receivedId);
 		// add the msg to our list of msgs
-		List<Message> msgsInRoom = urlToMsgs.get(receivedRoomURL);
+		List<Message> msgsInRoom = myChatroomMaps.getUrlToMsgs().get(receivedRoomURL);
 		msgsInRoom.add(msg);
 
 		// wanna iterate through all messages and
@@ -283,7 +276,7 @@ public class ChatWebSocket {
 		payLoadObject.add("rests", rests);
 
 		updatedObject.add("payload", payLoadObject);
-		Queue<Session> myQueue = urlToQueueOfSessions.get(receivedRoomURL);
+		Queue<Session> myQueue = myChatroomMaps.getUrlToQueueOfSessions().get(receivedRoomURL);
 		// tell all sessions (which share the same url) about the new msg we received
 		for (Session sesh : myQueue) {
 			sesh.getRemote().sendString(GSON.toJson(updatedObject));
@@ -295,7 +288,7 @@ public class ChatWebSocket {
 		String uuidString = receivedRoomURL.substring(index, receivedRoomURL.length());
 		UUID id = UUID.fromString(uuidString);
 
-		return uuidToRestaurants.get(id);
+		return myChatroomMaps.getUuidToRestaurants().get(id);
 	}
 
 	// added to ease adding the restaurants
