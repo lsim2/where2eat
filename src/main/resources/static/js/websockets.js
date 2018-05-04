@@ -84,7 +84,7 @@ const setup_chatter = () => {
             if (restaurant.categories.length < 2) {
                  temp.content.querySelector(".categories").innerHTML = restaurant.categories[0].title;
             } else{
-                temp.content.querySelector(".categories").innerHTML = restaurant.categories[0].title + ", " + restaurant.categories[1].title;  
+                temp.content.querySelector(".categories").innerHTML = restaurant.categories[0].title + ", " + restaurant.categories[1].title;
             }
             temp.content.querySelector(".fa.thumb.fa-thumbs-up").classList.add(restaurant.id);
             temp.content.querySelector(".fa.thumb.fa-thumbs-up").id = restaurant.id;
@@ -167,6 +167,34 @@ const setup_chatter = () => {
               herewindow.close();
 
           });
+          let directionsDisplay;
+            let directionsService = new google.maps.DirectionsService();
+
+            directionsDisplay = new google.maps.DirectionsRenderer(
+              {
+                suppressMarkers: true,
+                preserveViewport: true
+              });
+
+
+            directionsDisplay.setMap(map);
+            let r = JSON.parse(data.rests[0]);
+            //let endPos = {lat: parseFloat(r.coordinates.latitude), lng: parseFloat(r.coordinates.longitude)};
+            let endPos = new google.maps.LatLng(parseFloat(r.coordinates.latitude), parseFloat(r.coordinates.longitude));
+            let start = marker.position;
+            let end = endPos;
+            console.log(start);
+            console.log(end);
+            let request = {
+                origin:start,
+                destination:end,
+                travelMode: google.maps.DirectionsTravelMode.DRIVING
+            };
+            directionsService.route(request, function(response, status) {
+                if (status === google.maps.DirectionsStatus.OK) {
+                    directionsDisplay.setDirections(response);
+                }
+            });
 
          //map.setCenter(pos);
        }, function() {
