@@ -40,12 +40,9 @@ public class ChatWebSocket {
   }
 
   // called in server
-  public void addRestaurantList(UUID id, List<Restaurant> restaurants,
-      List<Restaurant> priceList,
-      List<Restaurant> distList) {
+  public void addRestaurantList(UUID id, List<Restaurant> restaurants) {
     myChatroomMaps.getUuidToRestaurants().put(id, restaurants);
-    myChatroomMaps.getUuidToPriceRestaurants().put(id, priceList);
-    myChatroomMaps.getUuidToDistRestaurants().put(id, distList);
+
   }
 
   @OnWebSocketConnect
@@ -94,19 +91,7 @@ public class ChatWebSocket {
       suggestions.add(r.getName());
       rests.add(GSON.toJson(r));
     }
-    JsonArray priceSuggestions = new JsonArray();
-    for (Restaurant rest : myChatroomMaps.getUuidToPriceRestaurants()
-        .get(getUuid(receivedRoomURL))) {
-      priceSuggestions.add(rest.getName());
-    }
-    JsonArray distSuggestions = new JsonArray();
-    for (Restaurant rest : myChatroomMaps.getUuidToDistRestaurants()
-        .get(getUuid(receivedRoomURL))) {
-      distSuggestions.add(rest.getName());
-    }
-    System.out.println("Suggestions" + distSuggestions);
-    jObject.add("priceSuggestions", priceSuggestions);
-    jObject.add("distSuggestions", distSuggestions);
+
     jObject.add("namesInRoom", allNamesInRoom);
     jObject.add("suggestions", suggestions);
     jObject.add("rests", rests);
@@ -288,8 +273,6 @@ public class ChatWebSocket {
     payLoadObject.addProperty("text", userText);
     payLoadObject.addProperty("date", date);
     payLoadObject.addProperty("name", receivedName);
-    // might have to do something here?
-    System.out.println(suggestions + "wesdfasdfsd");
     payLoadObject.add("suggestions", suggestions);
     payLoadObject.add("rests", rests);
 

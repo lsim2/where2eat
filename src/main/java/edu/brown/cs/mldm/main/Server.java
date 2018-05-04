@@ -246,9 +246,7 @@ public class Server {
       }
 
       // changed to include sortedLists
-      chatSocket.addRestaurantList(id, restList,
-          ranker.sortRests("price", restList, ans),
-          ranker.sortRests("distance", restList, ans));
+      chatSocket.addRestaurantList(id, restList);
 
       String name = qm.value("user");
       chatSocket.addName(name);

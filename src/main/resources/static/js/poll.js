@@ -1,4 +1,4 @@
-let preferences = {user:"", cuisine:JSON.stringify([]), restrictions:JSON.stringify([]), misc:JSON.stringify([]), price: 1, startTime: '2pm', endTime: '4pm', distance: 12};
+let preferences = {user:"", cuisine:JSON.stringify([]), restrictions:JSON.stringify([]), misc:JSON.stringify([]), price: 1, startTime: '2pm', endTime: '4pm', distance: 12, pollURL: window.location.href};
 $(function() {
   $('#cuisine').selectize({
       plugins: ['remove_button'],
@@ -123,8 +123,8 @@ $('.goback').click(function() {
 });
 
 $('#signin-form').submit(function(){
-    console.log("sign in here form here");
-    //TODO: make post request here and fill in the information if the user has signed in before! 
+    //TODO: make post request here and fill in the information if the user has signed in before!
+
     $(".flip").attr("disabled",false);
 });
 

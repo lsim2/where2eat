@@ -80,22 +80,8 @@ const setup_chatter = () => {
       let currRests = data.rests.slice(0,5);
       for(let i=0;i<currRests.length;i++){
         const restaurant = JSON.parse(data.rests[i]);
-        console.log(restaurant);
-          let temp = document.getElementById("suggestion");
-            temp.content.querySelector('.food').src = restaurant.image_url;
-            temp.content.querySelector(".restaurant-name").innerHTML = restaurant.name;
-            if (restaurant.categories.length < 2) {
-                 temp.content.querySelector(".categories").innerHTML = restaurant.categories[0].title;
-            } else{
-                temp.content.querySelector(".categories").innerHTML = restaurant.categories[0].title + ", " + restaurant.categories[1].title;
-            }
-            temp.content.querySelector(".fa.thumb.fa-thumbs-up").classList.add(restaurant.id);
-            temp.content.querySelector(".fa.thumb.fa-thumbs-up").id = restaurant.id;
-            temp.content.querySelector(".fa.thumb.fa-thumbs-down").classList.add(restaurant.id);
-          temp.content.querySelector(".fa.thumb.fa-thumbs-down").id = restaurant.id;
-            let clone = document.importNode(temp.content, true);
-            console.log(clone);
-            $('#suggestions').append(clone);
+        drawRest(restaurant);
+
         let pos = {lat: parseFloat(restaurant.coordinates.latitude), lng: parseFloat(restaurant.coordinates.longitude)};
         let marker = new google.maps.Marker({
           title: restaurant.name,
@@ -253,7 +239,6 @@ const setup_chatter = () => {
             document.getElementById("chatMsgs").appendChild(clone);
             let chatMsg = document.getElementById("chat-message");
             chatMsg.scrollTop = chatMsg.scrollHeight;
-          //$('#chatMsgs').append("<li>" + date + " and id: " + txtId + " & name: "+ nameTxt + " and txt: " + txt +"</li>");
           addChatMsg(nameTxt,date,txt);
         }
         break;
@@ -302,29 +287,28 @@ function initMap() {
 $("#pRanker").click( function() {
   
   console.log("price ranking");
-  let priceRests = allRests.sort(priceRanker);
-
+  let priceRests = allRests.slice().sort(priceRanker);
    $("#suggestions").empty();
         for (let i = 0; i < priceRests.length && i < 5; i++) {
-            let currRest = String(JSON.parse(priceRests[i]).name);
-             $('#suggestions').append("<li>" + currRest + "</li>");
+            let currRest = JSON.parse(priceRests[i]);
+            drawRest(currRest);
         }
 
 });
 $("#distRanker").click( function() {
   console.log("distance ranking");
-  let distRests = allRests.sort(distRanker);
+  let distRests = allRests.slice().sort(distRanker);
    $("#suggestions").empty();
         for (let i = 0; i < distRests.length && i < 5; i++) {
-            let currRest = String(JSON.parse(distRests[i]).name);
-             $('#suggestions').append("<li>" + currRest + "</li>");
+            let currRest = JSON.parse(distRests[i]);
+            drawRest(currRest);
         }
 });
 $("#resetOrder").click( function() {
    $("#suggestions").empty();
-        for (let i = 0; i < regSuggestions.length && i < 5; i++) {
-            let currRest = regSuggestions[i];
-             $('#suggestions').append("<li>" + currRest + "</li>");
+        for (let i = 0; i < allRests.length && i < 5; i++) {
+            let currRest = JSON.parse(allRests[i]);
+            drawRest(currRest);
         }
 });
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
@@ -363,3 +347,21 @@ function addChatMsg(nameTxt,date,txt) {
         chatMsg.scrollTop = chatMsg.scrollHeight;
 }
 
+function drawRest(restaurant){
+        console.log(restaurant);
+          let temp = document.getElementById("suggestion");
+            temp.content.querySelector('.food').src = restaurant.image_url;
+            temp.content.querySelector(".restaurant-name").innerHTML = restaurant.name;
+            if (restaurant.categories.length < 2) {
+                 temp.content.querySelector(".categories").innerHTML = restaurant.categories[0].title;
+            } else{
+                temp.content.querySelector(".categories").innerHTML = restaurant.categories[0].title + ", " + restaurant.categories[1].title;
+            }
+            temp.content.querySelector(".fa.thumb.fa-thumbs-up").classList.add(restaurant.id);
+            temp.content.querySelector(".fa.thumb.fa-thumbs-up").id = restaurant.id;
+            temp.content.querySelector(".fa.thumb.fa-thumbs-down").classList.add(restaurant.id);
+          temp.content.querySelector(".fa.thumb.fa-thumbs-down").id = restaurant.id;
+            let clone = document.importNode(temp.content, true);
+            console.log(clone);
+            $('#suggestions').append(clone);
+}

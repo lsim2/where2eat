@@ -7,6 +7,7 @@ let pollId = "";
 let postParameter = {};
 let places;
 
+let linkText;
 
 $("#flip").click(function(e){
     document.getElementById('name').value = "";
@@ -52,7 +53,7 @@ $("#submit").click(function(e) {
         document.getElementById('pollTitle').innerHTML = "Poll for " + title + " at " + location + " on " + date;
         document.getElementById('pollInfo').innerHTML = 'This is your URL:  ';
         let a = document.createElement('a');
-        let linkText = document.createTextNode('localhost:4567/poll/:id?'+pollId);
+        linkText = document.createTextNode('localhost:4567/poll/:id?'+pollId);
         a.appendChild(linkText);
         a.title = 'localhost:4567/poll/:id?'+pollId;
         a.href = '/poll/:id?'+pollId;
