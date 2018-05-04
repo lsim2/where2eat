@@ -48,7 +48,7 @@ public class RankerTest {
         .getPossibleRestaurants(answers);
     List<Restaurant> res = testRk.rank(possRest);
     resPrinter(res);
-    assertTrue(res.size() == 5);
+    // assertTrue(res.size() == 10);
   }
 
   // @Test
@@ -107,7 +107,8 @@ public class RankerTest {
   //
   public static void resPrinter(List<Restaurant> res) {
     for (Restaurant curr : res) {
-      System.out.println(curr.getName() + " :fjjjjjjjjjjjjjjjjjjjjjjjj");
+      System.out.println(
+          curr.getName() + " :fjjjjjjjjjjjjjjjjjjjjjjjj" + curr.getPrice());
     }
   }
 
