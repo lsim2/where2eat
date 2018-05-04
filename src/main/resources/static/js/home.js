@@ -5,6 +5,8 @@ let ractive = new Ractive({
 });
 let pollId = "";
 let postParameter = {};
+let places;
+
 
 $("#flip").click(function(e){
     document.getElementById('name').value = "";
@@ -27,6 +29,19 @@ $("#submit").click(function(e) {
           return;
         }
     }
+    // let valid = false;
+    // for(let place in places){
+    //   console.log(places[place]);
+    //   console.log(postParameter.location);
+    //   if(postParameter.location == places[place].location){
+    //     valid == true;
+    //     break;
+    //   }
+    // }
+    // if(valid == false){
+    //   console.log("falsity");
+    // }
+
     console.log(postParameter);
     $.post("/home", postParameter, response => {
         const responseObject = JSON.parse(response);
@@ -70,11 +85,11 @@ $("#update").click(function(e){
 function initAutocomplete() {
   let input = document.getElementById('location');
   let searchBox = new google.maps.places.SearchBox(input);
+
   // Listen for the event fired when the user selects a prediction and retrieve
   // more details for that place.
   searchBox.addListener('places_changed', function() {
-    let places = searchBox.getPlaces();
-
+    places = searchBox.getPlaces();
     if (places.length == 0) {
       return;
     }

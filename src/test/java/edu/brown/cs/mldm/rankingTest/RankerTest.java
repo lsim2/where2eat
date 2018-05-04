@@ -29,7 +29,7 @@ public class RankerTest {
   private Ranker testRk = new Ranker();
 
   //
-  @Test
+  //@Test
   public void testOnceAnswer() {
 
     List<String> cuisine = new ArrayList<String>();
