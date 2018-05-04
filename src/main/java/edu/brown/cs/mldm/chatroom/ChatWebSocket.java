@@ -177,9 +177,9 @@ public class ChatWebSocket {
 
     List<Restaurant> restaurantList = getRestaurantList(receivedRoomURL);
 
-    for (Restaurant r : restaurantList) {
-      suggestions.add(r.getName());
-      rests.add(GSON.toJson(r));
+    for (int i = 0; i < restaurantList.size(); i++) {
+      suggestions.add(restaurantList.get(i).getName());
+      rests.add(GSON.toJson(restaurantList.get(i)));
     }
 
     // we're adding all previous msgs (in the room) to the payload

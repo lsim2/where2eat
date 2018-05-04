@@ -241,8 +241,8 @@ public class Server {
       List<Restaurant> restList = new ArrayList<Restaurant>(
           ranker.rank(results));
       List<String> restaurants = new ArrayList<>();
-      for (Restaurant r : restList) {
-        restaurants.add(r.getName());
+      for (int a = 0; a < restList.size(); a++) {
+        restaurants.add(restList.get(a).getName());
       }
 
       // changed to include sortedLists

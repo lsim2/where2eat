@@ -14,7 +14,9 @@ let myName;
 let priceSuggestions;
 let distSuggestions;
 var myMap = new Map();
-
+let regSuggestions;
+//keeps track of all the restaurants displayed on the screen
+let allRests;
 // Setup the WebSocket connection for live updating of scores.
 const setup_chatter = () => {
   // TODO Create the WebSocket connection and assign it to `conn`
@@ -53,10 +55,11 @@ const setup_chatter = () => {
         $('#suggestions').empty();
         // update all uniqque users in chat
         let suggestions = data.suggestions;
+        regSuggestions = data.suggestions;
         priceSuggestions = data.priceSuggestions;
         distSuggestions = data.distSuggestions;
         console.log(suggestions + "sugggestsionssssssssdf");
-        for (let i = 0; i < suggestions.length; i++) {
+        for (let i = 0; i < suggestions.length && i< 5; i++) {
           let restaurant = suggestions[i];
           $('#suggestions').append("<li>" + restaurant + "</li>");
         }
@@ -72,6 +75,7 @@ const setup_chatter = () => {
       });
 
       let bounds = new google.maps.LatLngBounds();
+      allRests = data.rests.slice(0,5);
       for(let i=0;i<data.rests.length;i++){
         const restaurant = JSON.parse(data.rests[i]);
         console.log(restaurant);
@@ -261,24 +265,51 @@ function initMap() {
 
 
 $("#pRanker").click( function() {
+  
+  console.log("price ranking");
+  let priceRests = allRests.sort(priceRanker);
+  // for(let i =0; i< restsss.length ; i++){
+  //   console.log(restsss[i] );
+  // }
    $("#suggestions").empty();
-        for (let i = 0; i < priceSuggestions.length; i++) {
-            let currRest = priceSuggestions[i];
+        for (let i = 0; i < priceRests.length && i < 5; i++) {
+            let currRest = String(JSON.parse(priceRests[i]).name);
              $('#suggestions').append("<li>" + currRest + "</li>");
         }
+
 });
 $("#distRanker").click( function() {
+  console.log("distance ranking");
+  let distRests = allRests.sort(distRanker);
    $("#suggestions").empty();
-        for (let i = 0; i < distSuggestions.length; i++) {
-            let currRest = distSuggestions[i];
+        for (let i = 0; i < distRests.length && i < 5; i++) {
+            let currRest = String(JSON.parse(distRests[i]).name);
              $('#suggestions').append("<li>" + currRest + "</li>");
         }
 });
-
+$("#resetOrder").click( function() {
+   $("#suggestions").empty();
+        for (let i = 0; i < regSuggestions.length && i < 5; i++) {
+            let currRest = regSuggestions[i];
+             $('#suggestions').append("<li>" + currRest + "</li>");
+        }
+});
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
         infoWindow.setPosition(pos);
         infoWindow.setContent(browserHasGeolocation ?
                               'Error: The Geolocation service failed.' :
                               'Error: Your browser doesn\'t support geolocation.');
         infoWindow.open(map);
+}
+function priceRanker(r1, r2){
+  let rest1 = JSON.parse(r1);
+  let rest2 = JSON.parse(r2);
+  let dif = parseInt(rest1.intPrice)-parseInt(rest2.intPrice);
+  return dif;
+}
+function distRanker(r1, r2){
+  let rest1 = JSON.parse(r1);
+  let rest2 = JSON.parse(r2);
+  let dif = parseFloat(rest1.dist)-parseFloat(rest2.dist);
+  return dif;
 }

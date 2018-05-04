@@ -8,8 +8,9 @@
             <div class=" row border-bottom padding-sm" style="height: 40px;">
             </div>
             <br>
-                <button type="button" id="pRanker" class="rankers">Rank by price</button>
-                <button type="button" id="distRanker" class="rankers">Rank by distance</button>
+                <button type="button" id="pRanker" class="rankers">Order by price</button>
+                <button type="button" id="distRanker" class="rankers">Order by distance</button>
+                <button type="button" id="resetOrder" class="rankers">Reset to initial order</button>
                 <div>
                     <p>Suggestions</p>
                     <ul id="suggestions"></ul>
