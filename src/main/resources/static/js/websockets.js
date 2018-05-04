@@ -13,6 +13,7 @@ let myId = -1;
 let myName;
 let priceSuggestions;
 let distSuggestions;
+let ranking = {}; 
 let myMap = new Map();
 
 // Setup the WebSocket connection for live updating of scores.
@@ -28,7 +29,6 @@ const setup_chatter = () => {
   //There are two possible types of messages: CONNECT and UPDATE
   conn.onmessage = msg => {
     const data = JSON.parse(msg.data);
-    console.log("WTFFFF");
     switch (data.type) {
       default:
         console.log('Unknown message type!', data.type);
@@ -86,6 +86,10 @@ const setup_chatter = () => {
             } else{
                 temp.content.querySelector(".categories").innerHTML = restaurant.categories[0].title + ", " + restaurant.categories[1].title;  
             }
+            temp.content.querySelector(".fa.thumb.fa-thumbs-up").classList.add(restaurant.id);
+            temp.content.querySelector(".fa.thumb.fa-thumbs-up").id = restaurant.id;
+            temp.content.querySelector(".fa.thumb.fa-thumbs-down").classList.add(restaurant.id);
+          temp.content.querySelector(".fa.thumb.fa-thumbs-down").id = restaurant.id;
             let clone = document.importNode(temp.content, true);
             console.log(clone);
             $('#suggestions').append(clone);
@@ -201,18 +205,7 @@ const setup_chatter = () => {
           let txtId = myIds[i];
           let txt = myContent[i];
           let nameTxt = myNames[i];
-            let temp = document.getElementById("left");
-            if (nameTxt == myName) {
-                temp = document.getElementById("right");
-            }
-            temp.content.querySelector('img').src = 'https://api.adorable.io/avatars/50/'+nameTxt+'@adorable.png';
-            temp.content.querySelector(".user").innerHTML = nameTxt;
-            temp.content.querySelector(".time").innerHTML = " " + date;
-            temp.content.querySelector(".msg").innerHTML = txt;
-            let clone = document.importNode(temp.content, true);
-            document.getElementById("chatMsgs").appendChild(clone);
-            let chatMsg = document.getElementById("chat-message");
-            chatMsg.scrollTop = chatMsg.scrollHeight;
+          addChatMsg(nameTxt,date,txt);
         }
         break;
 
@@ -227,18 +220,7 @@ const setup_chatter = () => {
         nameTxt = data.payload.name;
         console.log("received an update msg and the msg is: " + txt);
         console.log("received an update msg and the msg id is: " + txtId);
-        let temp = document.getElementById("left");
-        if (nameTxt == myName) {
-                temp = document.getElementById("right");
-        }
-        temp.content.querySelector('img').src = 'https://api.adorable.io/avatars/50/'+nameTxt+'@adorable.png';
-        temp.content.querySelector(".user").innerHTML = nameTxt;
-        temp.content.querySelector(".time").innerHTML = " " + date;
-        temp.content.querySelector(".msg").innerHTML = txt;
-        let clone = document.importNode(temp.content, true);
-        document.getElementById("chatMsgs").appendChild(clone);
-        let chatMsg = document.getElementById("chat-message");
-        chatMsg.scrollTop = chatMsg.scrollHeight;
+        addChatMsg(nameTxt,date,txt);
     }
   };
 }
@@ -305,3 +287,19 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
                               'Error: Your browser doesn\'t support geolocation.');
         infoWindow.open(map);
 }
+
+function addChatMsg(nameTxt,date,txt) {
+     let temp = document.getElementById("left");
+        if (nameTxt == myName) {
+                temp = document.getElementById("right");
+        }
+        temp.content.querySelector('img').src = 'https://api.adorable.io/avatars/50/'+nameTxt+'@adorable.png';
+        temp.content.querySelector(".user").innerHTML = nameTxt;
+        temp.content.querySelector(".time").innerHTML = " " + date;
+        temp.content.querySelector(".msg").innerHTML = txt;
+        let clone = document.importNode(temp.content, true);
+        document.getElementById("chatMsgs").appendChild(clone);
+        let chatMsg = document.getElementById("chat-message");
+        chatMsg.scrollTop = chatMsg.scrollHeight;
+}
+
