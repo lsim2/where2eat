@@ -11,12 +11,12 @@ const MESSAGE_TYPE = {
 let conn;
 let myId = -1;
 let myName;
-let priceSuggestions;
-let distSuggestions;
-var myMap = new Map();
 let regSuggestions;
 //keeps track of all the restaurants displayed on the screen
 let allRests;
+
+let myMap = new Map();
+
 // Setup the WebSocket connection for live updating of scores.
 const setup_chatter = () => {
   // TODO Create the WebSocket connection and assign it to `conn`
@@ -44,20 +44,26 @@ const setup_chatter = () => {
       case MESSAGE_TYPE.UPDATEALLNAMES:
         console.log("update all names called");
         $('#connectedUsrs').empty();
-        // update all uniqque users in chat
-        let uniqueNamesOfUsrs = data.uniqueNames;
-        for (let i = 0; i < uniqueNamesOfUsrs.length; i++) {
-          let uniqueName = uniqueNamesOfUsrs[i];
+        // update all unique users in chat
+        let namesOfUsrsInRoom = data.namesInRoom;
+
+        let uniqueNames = [];
+        $.each(namesOfUsrsInRoom, function(i, el){
+            if($.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
+        });
+        //TODO: trim names too <-- so spaces in names don't count..
+        for (let i = 0; i < uniqueNames.length; i++) {
+          let uniqueName = uniqueNames[i];
           console.log("unique name is: " + uniqueName);
           $('#connectedUsrs').append("<li>" + uniqueName + "</li>");
         }
+
+        //TODO:add actual unique users
 
         $('#suggestions').empty();
         // update all uniqque users in chat
         let suggestions = data.suggestions;
         regSuggestions = data.suggestions;
-        priceSuggestions = data.priceSuggestions;
-        distSuggestions = data.distSuggestions;
         console.log(suggestions + "sugggestsionssssssssdf");
         for (let i = 0; i < suggestions.length && i< 5; i++) {
           let restaurant = suggestions[i];
@@ -79,6 +85,17 @@ const setup_chatter = () => {
       for(let i=0;i<data.rests.length;i++){
         const restaurant = JSON.parse(data.rests[i]);
         console.log(restaurant);
+          let temp = document.getElementById("suggestion");
+            temp.content.querySelector('.food').src = restaurant.image_url;
+            temp.content.querySelector(".restaurant-name").innerHTML = restaurant.name;
+            if (restaurant.categories.length < 2) {
+                 temp.content.querySelector(".categories").innerHTML = restaurant.categories[0].title;
+            } else{
+                temp.content.querySelector(".categories").innerHTML = restaurant.categories[0].title + ", " + restaurant.categories[1].title;
+            }
+            let clone = document.importNode(temp.content, true);
+            console.log(clone);
+            $('#suggestions').append(clone);
         let pos = {lat: parseFloat(restaurant.coordinates.latitude), lng: parseFloat(restaurant.coordinates.longitude)};
         let marker = new google.maps.Marker({
           title: restaurant.name,
@@ -153,6 +170,34 @@ const setup_chatter = () => {
               herewindow.close();
 
           });
+          let directionsDisplay;
+            let directionsService = new google.maps.DirectionsService();
+
+            directionsDisplay = new google.maps.DirectionsRenderer(
+              {
+                suppressMarkers: true,
+                preserveViewport: true
+              });
+
+
+            directionsDisplay.setMap(map);
+            let r = JSON.parse(data.rests[0]);
+            //let endPos = {lat: parseFloat(r.coordinates.latitude), lng: parseFloat(r.coordinates.longitude)};
+            let endPos = new google.maps.LatLng(parseFloat(r.coordinates.latitude), parseFloat(r.coordinates.longitude));
+            let start = marker.position;
+            let end = endPos;
+            console.log(start);
+            console.log(end);
+            let request = {
+                origin:start,
+                destination:end,
+                travelMode: google.maps.DirectionsTravelMode.DRIVING
+            };
+            directionsService.route(request, function(response, status) {
+                if (status === google.maps.DirectionsStatus.OK) {
+                    directionsDisplay.setDirections(response);
+                }
+            });
 
          //map.setCenter(pos);
        }, function() {
@@ -268,9 +313,7 @@ $("#pRanker").click( function() {
   
   console.log("price ranking");
   let priceRests = allRests.sort(priceRanker);
-  // for(let i =0; i< restsss.length ; i++){
-  //   console.log(restsss[i] );
-  // }
+
    $("#suggestions").empty();
         for (let i = 0; i < priceRests.length && i < 5; i++) {
             let currRest = String(JSON.parse(priceRests[i]).name);

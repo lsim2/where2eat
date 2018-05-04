@@ -19,9 +19,9 @@
 jQuery.fn.flexdatalist = function (_option, _value) {
     'use strict';
 
-    var destroy = function ($flex, clear) {
+    let destroy = function ($flex, clear) {
         $flex.each(function () {
-            var $this = $(this),
+            let $this = $(this),
                 data = $this.data(),
                 options = data.flexdatalist,
                 $aliascontainer = data.aliascontainer;
@@ -41,7 +41,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
     // Callable stuff
     if (typeof _option === 'string' && _option !== 'reset') {
         if (typeof this[0].fvalue !== 'undefined') {
-            var target = this[0];
+            let target = this[0];
             if (_option === 'destroy') {
                 destroy(this, _value);
             // Get/Set value
@@ -91,7 +91,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
         destroy(this);
     }
 
-    var _options = $.extend({
+    let _options = $.extend({
         url: null,
         data: [],
         params: {},
@@ -132,10 +132,10 @@ jQuery.fn.flexdatalist = function (_option, _value) {
     }, _option);
 
     return this.each(function (id) {
-        var $this = $(this),
+        let $this = $(this),
             _this = this,
             _searchTimeout = null,
-            _selectedValues = [], 
+            _selectedValues = [],
             fid = 'flex' + id,
             $alias = null,
             $multiple = null;
@@ -144,7 +144,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
      * Initialization
      */
         this.init = function () {
-            var options = this.options.init();
+            let options = this.options.init();
             this.set.up();
 
             $alias
@@ -208,14 +208,14 @@ jQuery.fn.flexdatalist = function (_option, _value) {
          * Add value on comma or enter keypress.
          */
             keypressValue: function (event, keyCode) {
-                var key = _this.keyNum(event),
+                let key = _this.keyNum(event),
                     val = $alias[0].value,
                     options = _this.options.get();
                 if (val.length > 0
                     && key === keyCode
                     && !options.selectionRequired
                     && options.multiple) {
-                        var val = $alias[0].value;
+                        let val = $alias[0].value;
                         event.preventDefault();
                         _this.fvalue.extract(val);
                         _this.results.remove();
@@ -225,7 +225,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
          * Check if keypress is valid.
          */
             keypressSearch: function (event) {
-                var key = _this.keyNum(event),
+                let key = _this.keyNum(event),
                     keyword = $alias.val(),
                     length = keyword.length,
                     options = _this.options.get();
@@ -247,7 +247,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
          * Redo search if input get's back on focus and no value selected.
          */
             redoSearchFocus: function (event) {
-                var val = _this.fvalue.get(),
+                let val = _this.fvalue.get(),
                     options = _this.options.get(),
                     alias = $alias.val();
                 if (options.redoSearchOnFocus && ((alias.length > 0 && options.multiple) || (alias.length > 0 && val.length === 0))) {
@@ -259,7 +259,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
          */
             copyValue: function (event) {
                 if (_this.keyNum(event) !== 13) {
-                    var keyword = $alias.val(),
+                    let keyword = $alias.val(),
                         val = _this.fvalue.get(true),
                         options = _this.options.get();
                     if (!options.multiple && !options.selectionRequired && keyword.length !== val.length) {
@@ -271,9 +271,9 @@ jQuery.fn.flexdatalist = function (_option, _value) {
          * Remove value on backspace key (multiple input only).
          */
             backSpaceKeyRemove: function (event) {
-                var options = _this.options.get();
+                let options = _this.options.get();
                 if (options.removeOnBackspace && options.multiple) {
-                    var val = $alias.val(),
+                    let val = $alias.val(),
                         $remove = $alias.data('_remove');
                     if (_this.keyNum(event) === 8) {
                         if (val.length === 0) {
@@ -294,7 +294,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
          * Show all results if minLength option is 0.
          */
             showAllResults: function (event) {
-                var val = $alias.val();
+                let val = $alias.val();
                 val = $.trim(val);
                 if (val === '' && _this.options.get('minLength') === 0) {
                     _this.data.load(function (data) {
@@ -306,9 +306,9 @@ jQuery.fn.flexdatalist = function (_option, _value) {
          * Calculate input width by number of characters.
          */
             inputWidth: function (event) {
-                var options = _this.options.get();
+                let options = _this.options.get();
                 if (options.multiple) {
-                    var keyword = $alias.val(),
+                    let keyword = $alias.val(),
                         fontSize = parseInt($alias.css('fontSize').replace('px', '')),
                         minWidth = 40,
                         maxWidth = $this.innerWidth(),
@@ -323,7 +323,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
          * Clear text/alias input when criteria is met.
          */
             clearText: function (event) {
-                var val = _this.fvalue.get(),
+                let val = _this.fvalue.get(),
                     options = _this.options.get();
 
                 if (!options.multiple && options.selectionRequired && val.length === 0) {
@@ -334,7 +334,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
          * Clear value when criteria is met.
          */
             clearValue: function (event) {
-                var val = _this.fvalue.get(),
+                let val = _this.fvalue.get(),
                     keyword = $alias.val(),
                     options = _this.options.get();
 
@@ -346,7 +346,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
          * Remove results when criteria is met.
          */
             removeResults: function (event) {
-                var val = _this.fvalue.get(),
+                let val = _this.fvalue.get(),
                     keyword = $alias.val(),
                     options = _this.options.get();
                 if (options.minLength > 0 && keyword.length < options.minLength) {
@@ -381,7 +381,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
                 }).attr('tabindex', -1);
 
                 // update input label with alias id
-                var inputId = $this.attr('id'),
+                let inputId = $this.attr('id'),
                     aliasId = $alias.attr('id');
                 $('label[for="' + inputId + '"]').attr('for', aliasId);
 
@@ -391,8 +391,8 @@ jQuery.fn.flexdatalist = function (_option, _value) {
          * Single value input.
          */
             alias: function () {
-                var aliasid = ($this.attr('id') ? $this.attr('id') + '-flexdatalist' : fid);
-                var $alias = $('<input type="text">')
+                let aliasid = ($this.attr('id') ? $this.attr('id') + '-flexdatalist' : fid);
+                let $alias = $('<input type="text">')
                     .attr({
                         'class': $this.attr('class'),
                         'name': ($this.attr('name') ? 'flexdatalist-' + $this.attr('name') : null),
@@ -431,11 +431,11 @@ jQuery.fn.flexdatalist = function (_option, _value) {
          * Chained inputs handling.
          */
             chained: function () {
-                var options = _this.options.get();
+                let options = _this.options.get();
                 if (options.relatives && options.chainedRelatives) {
-                    var toggle = function (init) {
+                    let toggle = function (init) {
                         options.relatives.each(function () {
-                            var emptyRelative = _this.isEmpty($(this).val()),
+                            let emptyRelative = _this.isEmpty($(this).val()),
                                 empty = _this.isEmpty(_this.value);
                             // If disabling, clear all values
                             if (emptyRelative || !empty) {
@@ -460,7 +460,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
          * Get value(s).
          */
             get: function (asString) {
-                var val = _this.value,
+                let val = _this.value,
                     options = _this.options.get();
                 if ((options.multiple || this.isJSON()) && !asString) {
                     return this.toObj(val);
@@ -505,16 +505,16 @@ jQuery.fn.flexdatalist = function (_option, _value) {
                 if (!_this.fdisabled()) {
                     val = this.toObj(val);
                     $this.trigger('before:flexdatalist.remove', [val]);
-                    var result = [];
+                    let result = [];
                     if ($.isArray(val)) {
                         $.each(val, function (i, value) {
-                            var removed = _this.fvalue.multiple.remove(value);
+                            let removed = _this.fvalue.multiple.remove(value);
                             if (removed) {
                                 result.push(removed);
                             }
                         });
                     } else {
-                        var _result = this.multiple.remove(val);
+                        let _result = this.multiple.remove(val);
                         if (_result) {
                             result.push(_result);
                         }
@@ -530,7 +530,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
          * Load (remote?) value(s).
          */
             _load: function (values, callback, init) {
-                var options = _this.options.get(),
+                let options = _this.options.get(),
                     valueProp = options.valueProperty,
                     _values = this.toStr(values),
                     _val = this.get(true);
@@ -556,13 +556,13 @@ jQuery.fn.flexdatalist = function (_option, _value) {
                         } else if (!$.isArray(values)) {
                             values = [values];
                         }
-                        var found = [];
-                        for (var idxv = 0; idxv < values.length; idxv++) {
-                            var value = values[idxv];
-                            for (var i = 0; i < data.length; i++) {
-                                var item = data[i];
-                                for (var idx = 0; idx < valueProp.length; idx++) {
-                                    var prop = valueProp[idx],
+                        let found = [];
+                        for (let idxv = 0; idxv < values.length; idxv++) {
+                            let value = values[idxv];
+                            for (let i = 0; i < data.length; i++) {
+                                let item = data[i];
+                                for (let idx = 0; idx < valueProp.length; idx++) {
+                                    let prop = valueProp[idx],
                                     value = _this.isDefined(value, prop) ? value[prop] : value;
                                     if (_this.isDefined(item, prop) && value === item[prop]) {
                                         found.push(item);
@@ -584,7 +584,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
          * Extract value and text.
          */
             extract: function (values, init) {
-                var options = _this.options.get(),
+                let options = _this.options.get(),
                     result = [];
 
                 if (!init) {
@@ -610,7 +610,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
          * @inherited.
          */
             _extract: function (val) {
-                var txt = this.text(val),
+                let txt = this.text(val),
                     value = this.value(val),
                     current = _this.value,
                     options = _this.options.get();
@@ -647,7 +647,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
              * Add value and item on list.
              */
                 add: function (val, txt) {
-                    var _multiple = this,
+                    let _multiple = this,
                         $li = this.li(val, txt),
                         options = _this.options.get();
 
@@ -667,7 +667,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
              * Push value to input.
              */
                 push: function (val, index) {
-                    var current = _this.fvalue.get();
+                    let current = _this.fvalue.get();
                     val = _this.fvalue.toObj(val);
                     current.push(val);
                     val = _this.fvalue.toStr(current);
@@ -677,13 +677,13 @@ jQuery.fn.flexdatalist = function (_option, _value) {
              * Toggle value.
              */
                 toggle: function (val) {
-                    var options = _this.options.get();
+                    let options = _this.options.get();
                     if (!options.toggleSelected) {
                         return;
                     }
-                    var $li = this.findLi(val);
+                    let $li = this.findLi(val);
                     if ($li) {
-                        var index = $li.index(),
+                        let index = $li.index(),
                             data = $li.data(),
                             action = $li.hasClass('disabled') ? 'enable' : 'disable',
                             current = _this.fvalue.get(),
@@ -692,7 +692,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
                         $this.trigger('before:flexdatalist.toggle', args);
 
                         if (action === 'enable') {
-                            var value = $li.data('value');
+                            let value = $li.data('value');
                             current.splice(index, 0, value);
                             $li.removeClass('disabled');
                         } else {
@@ -713,9 +713,9 @@ jQuery.fn.flexdatalist = function (_option, _value) {
              * Remove value from input.
              */
                 remove: function (val) {
-                    var $li = this.findLi(val);
+                    let $li = this.findLi(val);
                     if ($li) {
-                        var values = _this.fvalue.get(),
+                        let values = _this.fvalue.get(),
                             index = $li.index(),
                             data = $li.data(),
                             options = _this.options.get(),
@@ -737,7 +737,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
              * Remove all.
              */
                 removeAll: function () {
-                    var values = _this.fvalue.get(),
+                    let values = _this.fvalue.get(),
                         options = _this.options.get();
                     $this.trigger('before:flexdatalist.remove.all', [values, options]);
                     $multiple.find('li:not(.input-container)').remove();
@@ -749,7 +749,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
              * Create new item and return it.
              */
                 li: function (val, txt) {
-                    var $inputContainer = $multiple.find('li.input-container')
+                    let $inputContainer = $multiple.find('li.input-container')
                     return $('<li>')
                         .addClass('value' + (_this.options.get('toggleSelected') ? ' toggle' : ''))
                         .append('<span class="text">' + txt + '</span>')
@@ -764,9 +764,9 @@ jQuery.fn.flexdatalist = function (_option, _value) {
              * Create new item and return it.
              */
                 checkLimit: function () {
-                    var limit = _this.options.get('limitOfValues');
+                    let limit = _this.options.get('limitOfValues');
                     if (limit > 0) {
-                        var $input = $multiple.find('li.input-container'),
+                        let $input = $multiple.find('li.input-container'),
                             count = _selectedValues.length;
                         (limit == count ? $input.hide() : $input.show());
                     }
@@ -776,10 +776,10 @@ jQuery.fn.flexdatalist = function (_option, _value) {
              */
                 findLi: function ($li) {
                     if (!($li instanceof jQuery)) {
-                        var val = $li;
+                        let val = $li;
                         $li = null;
                         $multiple.find('li:not(.input-container)').each(function () {
-                            var $_li = $(this);
+                            let $_li = $(this);
                             if ($_li.data('value') === val) {
                                 $li = $_li;
                                 return false;
@@ -801,7 +801,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
          * Get value that will be set on input field.
          */
             value: function (item) {
-                var value = item,
+                let value = item,
                     options = _this.options.get(),
                     valueProperty = options.valueProperty;
 
@@ -809,8 +809,8 @@ jQuery.fn.flexdatalist = function (_option, _value) {
                     if (this.isJSON() || this.isMixed()) {
                         delete item.name_highlight;
                         if ($.isArray(valueProperty)) {
-                            var _value = {};
-                            for (var i = 0; i < valueProperty.length; i++) {
+                            let _value = {};
+                            for (let i = 0; i < valueProperty.length; i++) {
                                 if (_this.isDefined(item, valueProperty[i])) {
                                     _value[valueProperty[i]] = item[valueProperty[i]];
                                 }
@@ -834,7 +834,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
          * Get text that will be shown to user on the alias input field.
          */
             text: function (item) {
-                var text = item,
+                let text = item,
                     options = _this.options.get();
                 if (_this.isObject(item)) {
                     text = item[options.searchIn[0]];
@@ -852,7 +852,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
             placeholders: {
                 replace: function (item, pattern, fallback) {
                     if (_this.isObject(item) && typeof pattern === 'string') {
-                        var properties = this.parse(pattern);
+                        let properties = this.parse(pattern);
                         if (!_this.isEmpty(item) && properties) {
                             $.each(properties, function (string, property) {
                                 if (_this.isDefined(item, property)) {
@@ -865,9 +865,9 @@ jQuery.fn.flexdatalist = function (_option, _value) {
                     return fallback;
                 },
                 parse: function (pattern) {
-                    var matches = pattern.match(/\{.+?\}/g);
+                    let matches = pattern.match(/\{.+?\}/g);
                     if (matches) {
-                        var properties = {};
+                        let properties = {};
                         matches.map(function (string) {
                             properties[string] = string.slice(1, -1);
                         });
@@ -880,7 +880,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
          * Clear input value(s).
          */
             clear: function (alias, init) {
-                var current = _this.value,
+                let current = _this.value,
                     options = _this.options.get();
 
                 if (options.multiple) {
@@ -901,7 +901,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
          */
             toObj: function (val) {
                 if (typeof val !== 'object') {
-                    var options = _this.options.get();
+                    let options = _this.options.get();
                     if (_this.isEmpty(val) || !_this.isDefined(val)) {
                         val = options.multiple ? [] : (this.isJSON() ? {} : '');
                     } else if (this.isCSV()) {
@@ -947,7 +947,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
                     }
                     return (str.indexOf('{') === 0 || str.indexOf('[{') === 0);
                 }
-                var options = _this.options.get(),
+                let options = _this.options.get(),
                     prop = options.valueProperty;
                 return (_this.isObject(prop) || prop === '*');
             },
@@ -955,7 +955,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
          * Is value expected to be JSON (either object or string).
          */
             isMixed: function () {
-                var options = _this.options.get();
+                let options = _this.options.get();
                 return !options.selectionRequired && options.valueProperty === '*';
             },
         /**
@@ -974,7 +974,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
          * Load data from all sources.
          */
             load: function (callback, load) {
-                var __this = this,
+                let __this = this,
                     data = [];
                 $this.trigger('before:flexdatalist.data');
                 // Remote data
@@ -997,11 +997,11 @@ jQuery.fn.flexdatalist = function (_option, _value) {
          * Get static data.
          */
             static: function (callback) {
-                var __this = this,
+                let __this = this,
                     options = _this.options.get();
                 // Remote source
                 if (typeof options.data === 'string') {
-                    var url = options.data,
+                    let url = options.data,
                         cache = _this.cache.read(url, true);
                     if (cache) {
                         callback(cache);
@@ -1026,11 +1026,11 @@ jQuery.fn.flexdatalist = function (_option, _value) {
          * Get datalist values.
          */
             datalist: function (callback) {
-                var list = $this.attr('list'),
+                let list = $this.attr('list'),
                     datalist = [];
                 if (!_this.isEmpty(list)) {
                     $('#' + list).find('option').each(function () {
-                        var $option = $(this),
+                        let $option = $(this),
                             val = $option.val(),
                             label = $option.text();
                         datalist.push({
@@ -1045,7 +1045,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
          * Get remote data.
          */
             url: function (callback, load) {
-                var __this = this,
+                let __this = this,
                     keyword = $alias.val(),
                     options = _this.options.get(),
                     keywordParamName = options.keywordParamName,
@@ -1056,7 +1056,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
                     return callback([]);
                 }
 
-                var _opts = {};
+                let _opts = {};
                 if (options.requestType === 'post') {
                     $.each(options, function (option, value) {
                         if (option.indexOf('_') == 0 || option == 'data') {
@@ -1068,7 +1068,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
                 }
 
                 // Cache
-                var cacheKey = _this.cache.keyGen({
+                let cacheKey = _this.cache.keyGen({
                         relative: relatives,
                         load: load,
                         keyword: keyword,
@@ -1080,7 +1080,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
                     return;
                 }
 
-                var data = $.extend(
+                let data = $.extend(
                     relatives,
                     options.params,
                     {
@@ -1097,7 +1097,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
                     url: options.url,
                     data: data,
                     success: function (_data) {
-                        var _keyword = $alias.val();
+                        let _keyword = $alias.val();
                         // Is this really needed?
                         if (_keyword.length >= keyword.length) {
                             callback(_data);
@@ -1110,7 +1110,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
          * AJAX request.
          */
             remote: function (settings) {
-                var __this = this,
+                let __this = this,
                     options = _this.options.get();
                 // Prevent get data when pressing backspace button
                 if ($this.hasClass('flexdatalist-loading')) {
@@ -1140,7 +1140,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
          * Extract remote data from server response.
          */
             extractRemoteData: function (data) {
-                var options = _this.options.get(),
+                let options = _this.options.get(),
                     _data = _this.isDefined(data, options.resultsProperty) ? data[options.resultsProperty] : data;
 
                 if (typeof _data === 'string' && _data.indexOf('[{') === 0) {
@@ -1158,12 +1158,12 @@ jQuery.fn.flexdatalist = function (_option, _value) {
          * Extract remote data from server response.
          */
             relativesData: function () {
-                var relatives = _this.options.get('relatives'),
+                let relatives = _this.options.get('relatives'),
                     data = {};
                 if (relatives) {
                     data['relatives'] = {};
                     relatives.each(function () {
-                        var $_input = $(this),
+                        let $_input = $(this),
                             name = $_input.attr('name')
                                 .split('][').join('-')
                                 .split(']').join('-')
@@ -1184,18 +1184,18 @@ jQuery.fn.flexdatalist = function (_option, _value) {
          * Search for keywords in data and return matches to given callback.
          */
             get: function (keywords, data, callback) {
-                var __this = this,
+                let __this = this,
                     options = _this.options.get();
 
                 if (!options.searchDisabled) {
-                    var matches = _this.cache.read(keywords);
+                    let matches = _this.cache.read(keywords);
                     if (!matches) {
                         $this.trigger('before:flexdatalist.search', [keywords, data]);
                         if (!_this.isEmpty(keywords)) {
                             matches = [];
-                            var words = __this.split(keywords);
-                            for (var index = 0; index < data.length; index++) {
-                                var item = data[index];
+                            let words = __this.split(keywords);
+                            for (let index = 0; index < data.length; index++) {
+                                let item = data[index];
                                 if (_this.isDup(item)) {
                                     continue;
                                 }
@@ -1217,23 +1217,23 @@ jQuery.fn.flexdatalist = function (_option, _value) {
          * Match against searchable properties.
          */
             matches: function (item, keywords) {
-                var hasMatches = false,
+                let hasMatches = false,
                     _item = $.extend({}, item),
                     found = [],
                     options = _this.options.get(),
                     searchIn = options.searchIn;
 
                 if (keywords.length > 0) {
-                    for (var index = 0; index < searchIn.length; index++) {
-                        var searchProperty = searchIn[index];
+                    for (let index = 0; index < searchIn.length; index++) {
+                        let searchProperty = searchIn[index];
                         if (!_this.isDefined(item, searchProperty) || !item[searchProperty]) {
                             continue;
                         }
-                        var text = item[searchProperty].toString(),
+                        let text = item[searchProperty].toString(),
                             highlight = text,
                             strings = this.split(text);
-                        for (var kwindex = 0; kwindex < keywords.length; kwindex++) {
-                            var keyword = keywords[kwindex];
+                        for (let kwindex = 0; kwindex < keywords.length; kwindex++) {
+                            let keyword = keywords[kwindex];
                             if (this.find(keyword, strings)) {
                                 found.push(keyword);
                                 highlight = this.highlight(keyword, highlight);
@@ -1266,9 +1266,9 @@ jQuery.fn.flexdatalist = function (_option, _value) {
          * Search for keyword(s) in string.
          */
             find: function (keyword, splitted) {
-                var options = _this.options.get();
-                for (var index = 0; index < splitted.length; index++) {
-                    var text = splitted[index];
+                let options = _this.options.get();
+                for (let index = 0; index < splitted.length; index++) {
+                    let text = splitted[index];
                     text = this.normalizeString(text),
                     keyword = this.normalizeString(keyword);
                     if (options.searchEqual) {
@@ -1288,10 +1288,10 @@ jQuery.fn.flexdatalist = function (_option, _value) {
                     keywords = [$.trim(keywords)];
                 }
                 if (_this.options.get('searchByWord')) {
-                    for (var index = 0; index < keywords.length; index++) {
-                        var keyword = $.trim(keywords[index]);
+                    for (let index = 0; index < keywords.length; index++) {
+                        let keyword = $.trim(keywords[index]);
                         if (keyword.indexOf(' ') > 0) {
-                            var words = keyword.split(' ');
+                            let words = keyword.split(' ');
                             $.merge(keywords, words);
                         }
                     }
@@ -1303,7 +1303,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
          */
             normalizeString: function (string) {
                 if (typeof string === 'string') {
-                    var normalizeString = _this.options.get('normalizeString');
+                    let normalizeString = _this.options.get('normalizeString');
                     if (typeof normalizeString === 'function') {
                         string = normalizeString(string);
                     }
@@ -1323,7 +1323,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
          * @param string key Data key string
          */
             show: function (results) {
-                var __this = this,
+                let __this = this,
                     options = _this.options.get();
 
                 this.remove(true);
@@ -1335,17 +1335,17 @@ jQuery.fn.flexdatalist = function (_option, _value) {
                     return;
                 }
 
-                var $ul = this.container();
+                let $ul = this.container();
                 if (!options.groupBy) {
                     this.items(results, $ul);
                 } else {
                     results = this.group(results);
                     Object.keys(results).forEach(function (groupName, index) {
-                        var items = results[groupName],
+                        let items = results[groupName],
                             property = options.groupBy,
                             groupText = _this.results.highlight(items[0], property, groupName);
 
-                        var $li = $('<li>')
+                        let $li = $('<li>')
                                 .addClass('group')
                                 .append($('<span>')
                                     .addClass('group-name')
@@ -1361,9 +1361,9 @@ jQuery.fn.flexdatalist = function (_option, _value) {
                     });
                 }
 
-                var $li = $ul.find('li:not(.group)');
+                let $li = $ul.find('li:not(.group)');
                 $li.on('click', function (event) {
-                    var item = $(this).data('item');
+                    let item = $(this).data('item');
                     if (item) {
                         _this.fvalue.extract(item);
                         __this.remove();
@@ -1387,7 +1387,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
                 if (_this.isEmpty(text)) {
                     return;
                 }
-                var $container = this.container(),
+                let $container = this.container(),
                     keyword = $alias.val();
 
                 text = text.split('{keyword}').join(keyword);
@@ -1400,9 +1400,9 @@ jQuery.fn.flexdatalist = function (_option, _value) {
          * Items iteration.
          */
             items: function (items, $resultsContainer) {
-                var max = _this.options.get('maxShownResults');
+                let max = _this.options.get('maxShownResults');
                 $this.trigger('show:flexdatalist.results', [items]);
-                for (var index = 0; index < items.length; index++) {
+                for (let index = 0; index < items.length; index++) {
                     if (max > 0 && max === index) {
                         break;
                     }
@@ -1414,15 +1414,15 @@ jQuery.fn.flexdatalist = function (_option, _value) {
          * Result item creation.
          */
             item: function (item) {
-                var $li = $('<li>').data('item', item).addClass('item'),
+                let $li = $('<li>').data('item', item).addClass('item'),
                     options = _this.options.get(),
                     visibleProperties = options.visibleProperties;
 
-                for (var index = 0; index < visibleProperties.length; index++) {
-                    var visibleProperty = visibleProperties[index];
+                for (let index = 0; index < visibleProperties.length; index++) {
+                    let visibleProperty = visibleProperties[index];
 
                     if (visibleProperty.indexOf('{') > -1) {
-                        var str = _this.fvalue.placeholders.replace(item, visibleProperty),
+                        let str = _this.fvalue.placeholders.replace(item, visibleProperty),
                             parsed = _this.fvalue.placeholders.parse(visibleProperty);
                         $item = $('<span>')
                             .addClass('item item-' + Object.values(parsed).join('-'))
@@ -1431,14 +1431,14 @@ jQuery.fn.flexdatalist = function (_option, _value) {
                         if (options.groupBy && options.groupBy === visibleProperty || !_this.isDefined(item, visibleProperty)) {
                             continue;
                         }
-                        var $item = {};
+                        let $item = {};
                         if (visibleProperty === options.iconProperty) {
                             // Icon
                             $item = $('<img>')
                                 .addClass('item item-' + visibleProperty)
                                 .attr('src', item[visibleProperty]);
                         } else {
-                            var propertyText = _this.results.highlight(item, visibleProperty);
+                            let propertyText = _this.results.highlight(item, visibleProperty);
                             // Other text properties
                             $item = $('<span>')
                                 .addClass('item item-' + visibleProperty)
@@ -1454,11 +1454,11 @@ jQuery.fn.flexdatalist = function (_option, _value) {
          * Results container
          */
             container: function () {
-                var $target = $this;
+                let $target = $this;
                 if ($multiple) {
                     $target = $multiple;
                 }
-                var $container = $('ul.flexdatalist-results');
+                let $container = $('ul.flexdatalist-results');
                 if ($container.length === 0) {
                     $container = $('<ul>')
                         .addClass('flexdatalist-results ')
@@ -1481,12 +1481,12 @@ jQuery.fn.flexdatalist = function (_option, _value) {
          * Results container
          */
             group: function (results) {
-                var data = [],
+                let data = [],
                     groupProperty = _this.options.get('groupBy');
-                for (var index = 0; index < results.length; index++) {
-                    var _data = results[index];
+                for (let index = 0; index < results.length; index++) {
+                    let _data = results[index];
                     if (_this.isDefined(_data, groupProperty)) {
-                        var propertyValue = _data[groupProperty];
+                        let propertyValue = _data[groupProperty];
                         if (!_this.isDefined(data, propertyValue)) {
                             data[propertyValue] = [];
                         }
@@ -1509,7 +1509,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
          * Remove results
          */
             remove: function (itemsOnly) {
-                var selector = 'ul.flexdatalist-results';
+                let selector = 'ul.flexdatalist-results';
                 if (itemsOnly) {
                     selector = 'ul.flexdatalist-results li';
                 }
@@ -1534,7 +1534,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
             write: function (key, value, lifetime, global) {
                 if (_this.cache.isSupported()) {
                     key = this.keyGen(key, undefined, global);
-                    var object = {
+                    let object = {
                         value: value,
                         // Get current UNIX timestamp
                         timestamp: _this.unixtime(),
@@ -1552,9 +1552,9 @@ jQuery.fn.flexdatalist = function (_option, _value) {
             read: function (key, global) {
                 if (_this.cache.isSupported()) {
                     key = this.keyGen(key, undefined, global);
-                    var data = localStorage.getItem(key);
+                    let data = localStorage.getItem(key);
                     if (data) {
-                        var object = JSON.parse(data);
+                        let object = JSON.parse(data);
                         if (!this.expired(object)) {
                             return object.value;
                         }
@@ -1579,7 +1579,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
          */
             clear: function () {
                 if (_this.cache.isSupported()) {
-                    for (var key in localStorage){
+                    for (let key in localStorage){
                         if (key.indexOf(fid) > -1 || key.indexOf('global') > -1) {
                             localStorage.removeItem(key);
                         }
@@ -1593,9 +1593,9 @@ jQuery.fn.flexdatalist = function (_option, _value) {
         */
             gc: function () {
                 if (_this.cache.isSupported()) {
-                    for (var key in localStorage){
+                    for (let key in localStorage){
                         if (key.indexOf(fid) > -1 || key.indexOf('global') > -1) {
-                            var data = localStorage.getItem(key);
+                            let data = localStorage.getItem(key);
                             data = JSON.parse(data);
                             if (this.expired(data)) {
                                 localStorage.removeItem(key);
@@ -1627,7 +1627,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
         */
             expired: function (object) {
                 if (object.lifetime) {
-                    var diff = (_this.unixtime() - object.timestamp);
+                    let diff = (_this.unixtime() - object.timestamp);
                     return object.lifetime <= diff;
                 }
                 return false;
@@ -1641,7 +1641,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
                 if (typeof str === 'object') {
                     str = JSON.stringify(str);
                 }
-                var i, l,
+                let i, l,
                     hval = (seed === undefined) ? 0x811c9dc5 : seed;
 
                 for (i = 0, l = str.length; i < l; i++) {
@@ -1657,7 +1657,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
      */
         this.options = {
             init: function () {
-                var options = $.extend({},
+                let options = $.extend({},
                     _options,
                     $this.data(),
                     {
@@ -1670,14 +1670,14 @@ jQuery.fn.flexdatalist = function (_option, _value) {
                 return options;
             },
             get: function (option) {
-                var options = $this.data('flexdatalist');
+                let options = $this.data('flexdatalist');
                 if (!option) {
                     return options ? options : {};
                 }
                 return _this.isDefined(options, option) ? options[option] : null;
             },
             set: function (option, value) {
-                var options = this.get();
+                let options = this.get();
                 if (_this.isDefined(options, option) && _this.isDefined(value)) {
                     options[option] = value;
                 } else if (_this.isObject(option)) {
@@ -1702,7 +1702,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
      * Position results below parent element.
      */
         this.position = function () {
-            var $results = $('ul.flexdatalist-results'),
+            let $results = $('ul.flexdatalist-results'),
                 $target = $results.data('target');
             if ($results.length > 0) {
                 // Set some required CSS properties
@@ -1723,7 +1723,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
                 $alias.prop('disabled', disabled);
                 if ($multiple) {
                     $multiple.css('background-color', $this.css('background-color'));
-                    var $btns = $multiple.find('li .fdl-remove'),
+                    let $btns = $multiple.find('li .fdl-remove'),
                         $input = $multiple.find('li.input-container');
                     if (disabled) {
                         $multiple.addClass('disabled');
@@ -1760,7 +1760,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
         }
 
     /**
-     * Is variable empty.
+     * Is letiable empty.
      */
         this.isEmpty = function (value) {
             if (!_this.isDefined(value)) {
@@ -1778,14 +1778,14 @@ jQuery.fn.flexdatalist = function (_option, _value) {
         }
 
     /**
-     * Is variable an object.
+     * Is letiable an object.
      */
         this.isObject = function (value) {
             return (value && typeof value === 'object');
         }
 
     /**
-     * Get length of variable.
+     * Get length of letiable.
      */
         this.length = function (value) {
             if (this.isObject(value)) {
@@ -1797,14 +1797,14 @@ jQuery.fn.flexdatalist = function (_option, _value) {
         }
 
     /**
-     * Check if variable (and optionally property) is defined.
+     * Check if letiable (and optionally property) is defined.
      */
-        this.isDefined = function (variable, property) {
-            var _variable = (typeof variable !== 'undefined');
-            if (_variable && typeof property !== 'undefined') {
-                return (typeof variable[property] !== 'undefined');
+        this.isDefined = function (letiable, property) {
+            let _letiable = (typeof letiable !== 'undefined');
+            if (_letiable && typeof property !== 'undefined') {
+                return (typeof letiable[property] !== 'undefined');
             }
-            return _variable;
+            return _letiable;
         }
 
     /**
@@ -1813,7 +1813,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
      * @return boolean True if supports, false otherwise
      */
         this.unixtime = function (time) {
-            var date = new Date();
+            let date = new Date();
             if (time) {
                 date = new Date(time);
             }
@@ -1834,7 +1834,7 @@ jQuery.fn.flexdatalist = function (_option, _value) {
      * Plugin warnings for debug.
      */
         this.debug = function (msg, data) {
-            var options = _this.options.get();
+            let options = _this.options.get();
             if (!options.debug) {
                 return;
             }
@@ -1856,19 +1856,19 @@ jQuery.fn.flexdatalist = function (_option, _value) {
 }
 
 jQuery(function ($) {
-    var $document = $(document);
+    let $document = $(document);
     // Handle results selection list keyboard shortcuts and events.
     if (!$document.data('flexdatalist')) {
         // Remove results on outside click
         $(document).mouseup(function (event) {
-            var $container = $('.flexdatalist-results'),
+            let $container = $('.flexdatalist-results'),
                 $target = $container.data('target');
             if ((!$target || !$target.is(':focus')) && !$container.is(event.target) && $container.has(event.target).length === 0) {
                 $container.remove();
             }
         // Keyboard navigation
         }).keydown(function (event) {
-            var $ul = $('.flexdatalist-results'),
+            let $ul = $('.flexdatalist-results'),
                 $li = $ul.find('li'),
                 $active = $li.filter('.active'),
                 index = $active.index(),
@@ -1911,7 +1911,7 @@ jQuery(function ($) {
                 $active.trigger('active:flexdatalist.results', [$active.data('item')]);
 
                 // Scroll to
-                var position = ($active.prev().length === 0 ? $active : $active.prev()).position().top;
+                let position = ($active.prev().length === 0 ? $active : $active.prev()).position().top;
                 $ul.animate({
                     scrollTop: position + $ul.scrollTop()
                 }, 100);
@@ -1923,9 +1923,9 @@ jQuery(function ($) {
 });
 
 (function ($) {
-    var jVal = $.fn.val;
+    let jVal = $.fn.val;
     $.fn.val = function (value) {
-        var isFlex = this.length > 0 && typeof this[0].fvalue !== 'undefined';
+        let isFlex = this.length > 0 && typeof this[0].fvalue !== 'undefined';
         if (typeof value === 'undefined') {
             return isFlex ? this[0].fvalue.get(true) : jVal.call(this);
         }
