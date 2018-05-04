@@ -26,18 +26,20 @@
         <!--=========================================================-->
         <!-- selected chat -->
         <div id="user" hidden>${user}</div>
-        <div class="col-md-5" id='map'>
+     <div class="col-md-5" id='map'>
         <!--stuff i added -->
 
-    <script src="/js/maps.js"></script>
-      <script async defer
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwQc3YSCaD2g-U32PUbY4ZtoM2VocxYB8&callback=initMap">
-      </script>
+	    <script src="/js/maps.js"></script>
+	      <script async defer
+	      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwQc3YSCaD2g-U32PUbY4ZtoM2VocxYB8&callback=initMap">
+	      </script>
+	
+	    <!--stuff i added -->
 
-    <!--stuff i added -->
-
-        </div>
+    </div>
     	<div class="col-md-3">
+    			<p><a href="" id="shareURL" target="_blank" style="color: black">Share the Poll URL!</a></p>
+    			<hr>
             <div class="chat-message" id="chat-message">
                 <ul id="chatMsgs" class="chat">
                 <li class="left clearfix">

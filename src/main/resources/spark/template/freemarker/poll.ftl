@@ -46,7 +46,7 @@
 </div>
 </div>
 <div class="back">
-<form id="form" method="POST" action="/chat/:id?${pollId}">
+<form id="form" method="POST" action="${chatURL}">
 <h2 id="title"><span id="username"></span>Choose your preferences</h2><button type="button" class="goback btn">Go back</button>
 <div class="ranking">
 <p><b>My preferred price range is:</b></p><br>

@@ -136,25 +136,28 @@ public class Server {
 	private static class pollUniqueHandler implements TemplateViewRoute {
 		@Override
 		public ModelAndView handle(Request req, Response res) {
+			System.out.println("Poll unique handler called");
 			String id = req.raw().getQueryString();
 			System.out.println("my id: " + id);
 			Poll poll = pollDb.get(UUID.fromString((id)));
+			String chatURL = "/chat/:id?"+ id;
 			Map<String, Object> variables = ImmutableMap.<String, Object>builder().put("title", "Where2Eat")
 					.put("name", poll.getAuthor()).put("meal", poll.getMeal()).put("location", poll.getLocation())
-					.put("date", poll.getDate()).put("message", poll.getMsg()).put("pollId", id)
+					.put("date", poll.getDate()).put("message", poll.getMsg()).put("chatURL", chatURL)
 					.put("cuisines", cuisinesDb).put("restrictions", restrictionsDb).put("food", foodDb).build();
 			return new ModelAndView(variables, "poll.ftl");
 		}
 	}
 
 	/**
-	 * Handle requests to the front page of our Autocorrect website.
+	 * Handle requests to the front page of our Poll website.
 	 *
 	 * @author lsim2
 	 */
 	private static class homeSubmitHandler implements Route {
 		@Override
 		public String handle(Request req, Response res) {
+			System.out.println("home submit handler called");
 			QueryParamsMap qm = req.queryMap();
 			String name = qm.value("name");
 			String title = qm.value("title");
@@ -198,10 +201,15 @@ public class Server {
 		@Override
 		public ModelAndView handle(Request req, Response res) {
 			// Getting information from frontend
+			System.out.println("pol res handler called");
 			QueryParamsMap qm = req.queryMap();
 			int price = Integer.parseInt(qm.value("price"));
 			int distance = Math.min(Integer.parseInt(qm.value("distance")) * 1609, 39999);
 			String user = qm.value("user");
+			
+			String pollURL = qm.value("pollURL");
+			System.out.println("pol res handler pol url is: " + pollURL); 
+			// don't actually need above code, since we can just get poll url on the screen itself
 			String startTime = qm.value("startTime");
 			String endTime = qm.value("endTime");
 			String cuisineString = qm.value("cuisine");
