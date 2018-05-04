@@ -15,6 +15,7 @@ let regSuggestions;
 //keeps track of all the restaurants displayed on the screen
 let allRests;
 
+let ranking = {}; 
 let myMap = new Map();
 
 // Setup the WebSocket connection for live updating of scores.
@@ -30,7 +31,6 @@ const setup_chatter = () => {
   //There are two possible types of messages: CONNECT and UPDATE
   conn.onmessage = msg => {
     const data = JSON.parse(msg.data);
-    console.log("WTFFFF");
     switch (data.type) {
       default:
         console.log('Unknown message type!', data.type);
@@ -93,6 +93,10 @@ const setup_chatter = () => {
             } else{
                 temp.content.querySelector(".categories").innerHTML = restaurant.categories[0].title + ", " + restaurant.categories[1].title;
             }
+            temp.content.querySelector(".fa.thumb.fa-thumbs-up").classList.add(restaurant.id);
+            temp.content.querySelector(".fa.thumb.fa-thumbs-up").id = restaurant.id;
+            temp.content.querySelector(".fa.thumb.fa-thumbs-down").classList.add(restaurant.id);
+          temp.content.querySelector(".fa.thumb.fa-thumbs-down").id = restaurant.id;
             let clone = document.importNode(temp.content, true);
             console.log(clone);
             $('#suggestions').append(clone);
@@ -254,6 +258,7 @@ const setup_chatter = () => {
             let chatMsg = document.getElementById("chat-message");
             chatMsg.scrollTop = chatMsg.scrollHeight;
           //$('#chatMsgs').append("<li>" + date + " and id: " + txtId + " & name: "+ nameTxt + " and txt: " + txt +"</li>");
+          addChatMsg(nameTxt,date,txt);
         }
         break;
       case MESSAGE_TYPE.UPDATE:
@@ -267,18 +272,7 @@ const setup_chatter = () => {
         nameTxt = data.payload.name;
         console.log("received an update msg and the msg is: " + txt);
         console.log("received an update msg and the msg id is: " + txtId);
-        let temp = document.getElementById("left");
-        if (nameTxt == myName) {
-                temp = document.getElementById("right");
-        }
-        temp.content.querySelector('img').src = 'https://api.adorable.io/avatars/50/'+nameTxt+'@adorable.png';
-        temp.content.querySelector(".user").innerHTML = nameTxt;
-        temp.content.querySelector(".time").innerHTML = " " + date;
-        temp.content.querySelector(".msg").innerHTML = txt;
-        let clone = document.importNode(temp.content, true);
-        document.getElementById("chatMsgs").appendChild(clone);
-        let chatMsg = document.getElementById("chat-message");
-        chatMsg.scrollTop = chatMsg.scrollHeight;
+        addChatMsg(nameTxt,date,txt);
     }
   };
 }
@@ -344,6 +338,7 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
                               'Error: Your browser doesn\'t support geolocation.');
         infoWindow.open(map);
 }
+
 function priceRanker(r1, r2){
   let rest1 = JSON.parse(r1);
   let rest2 = JSON.parse(r2);
@@ -356,3 +351,19 @@ function distRanker(r1, r2){
   let dif = parseFloat(rest1.dist)-parseFloat(rest2.dist);
   return dif;
 }
+
+function addChatMsg(nameTxt,date,txt) {
+     let temp = document.getElementById("left");
+        if (nameTxt == myName) {
+                temp = document.getElementById("right");
+        }
+        temp.content.querySelector('img').src = 'https://api.adorable.io/avatars/50/'+nameTxt+'@adorable.png';
+        temp.content.querySelector(".user").innerHTML = nameTxt;
+        temp.content.querySelector(".time").innerHTML = " " + date;
+        temp.content.querySelector(".msg").innerHTML = txt;
+        let clone = document.importNode(temp.content, true);
+        document.getElementById("chatMsgs").appendChild(clone);
+        let chatMsg = document.getElementById("chat-message");
+        chatMsg.scrollTop = chatMsg.scrollHeight;
+}
+

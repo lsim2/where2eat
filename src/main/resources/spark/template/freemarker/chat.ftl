@@ -13,11 +13,11 @@
                 <template id="suggestion">
                 <div class="card">
                   <div class="container">
-                   <img class="food" src="" alt="Food pic" style="width:110px; height: 100px;">
+                   <img class="food" src="https://www.shareicon.net/download/2016/09/02/824429_fork_512x512.png" alt="Food pic" style="width:110px; height: 100px;">
                     <h5 class="restaurant-name"><b>Name</b></h5> 
                     <p class="categories" style="font-size:10px"></p>
-                    <i onclick="myFunction(this)" class="fa thumb fa-thumbs-up"></i>
-                    <i onclick="myFunction(this)" class="fa thumb fa-thumbs-down"></i>
+                    <i onclick="thumbUp(this)" class="fa thumb fa-thumbs-up"></i>
+                    <i onclick="thumbDown(this)" class="fa thumb fa-thumbs-down"></i>
                   </div>
                 </div>
                 </template>
@@ -100,16 +100,6 @@
 	 </div>
      
 <script src="/js/jquery-3.1.1.js"></script>
+<script src="/js/chat.js"></script>
 
-<script>
-$(document).ready(function() {
-  setup_chatter();
-});
-
-function myFunction(x) {
-    event.preventDefault();
-    $('.active').removeClass('active');
-    x.classList.add("active");
-}
-</script>
 <#include "main.ftl">
