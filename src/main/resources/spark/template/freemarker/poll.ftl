@@ -40,6 +40,7 @@
 </div>
 </div>
 <div class="back">
+<div id="modal">
 <form id="form" method="POST" action="/chat/:id?${pollId}">
 <h2 id="title"><button type="button" class="goback btn">Go back</button><span id="username"></span>Choose your preferences</h2>
 <div class="ranking">
@@ -76,6 +77,7 @@
 </div>
 <div class="ranking submitBtn">
 <button type="button" id="toResults" class="btn">Submit</button>
+</div>
 </div>
 </form>
 </div>

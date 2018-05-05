@@ -20,7 +20,7 @@ let myId = -1;
 let myName;
 let regSuggestions;
 //keeps track of all the restaurants displayed on the screen
-let allRests;
+let allRests  = [];
 let restaurants; 
 let votes = {up:[], down:[]}
 let upvotes = {};
@@ -87,11 +87,14 @@ const setup_chatter = () => {
       });
             
       let bounds = new google.maps.LatLngBounds();
-      allRests = data.rests.slice(0,5);
+     // allRests = data.rests.slice(0,5);
       let currRests = data.rests.slice(0,5);
+     allRests = [];
+      // updateCards(allRests);
       for(let i=0;i<currRests.length;i++){
         const restaurant = JSON.parse(data.rests[i]);
         drawRest(restaurant);
+        allRests.push(restaurant);
         let pos = {lat: parseFloat(restaurant.coordinates.latitude), lng: parseFloat(restaurant.coordinates.longitude)};
         let marker = new google.maps.Marker({
           title: restaurant.name,
@@ -131,6 +134,7 @@ const setup_chatter = () => {
         });
         bounds.extend(marker.position);
       }
+      updateCards(allRests);
       map.fitBounds(bounds);
 
 
@@ -244,11 +248,13 @@ const setup_chatter = () => {
       case MESSAGE_TYPE.UPDATERESTS:
         let newRanking = data.payload.ranking;
         let newList = [];
+        
         for (let i = 0; i< newRanking.length; i++) {
             let restaurant = JSON.parse(newRanking[i]);
             newList.push(restaurant);
             restaurants[restaurant.id].voteType = VOTE_TYPE.NONE;
         }
+        allRests = newList;
         updateCards(newList);
         break;
     }
@@ -281,28 +287,18 @@ function initMap() {
 
 $("#pRanker").click( function() {
   let priceRests = allRests.slice().sort(priceRanker);
-   $("#suggestions").empty();
-        for (let i = 0; i < priceRests.length && i < 5; i++) {
-            let currRest = JSON.parse(priceRests[i]);
-            drawRest(currRest);
-        }
+  updateCards(priceRests);
 
 });
 $("#distRanker").click( function() {
   let distRests = allRests.slice().sort(distRanker);
-   $("#suggestions").empty();
-        for (let i = 0; i < distRests.length && i < 5; i++) {
-            let currRest = JSON.parse(distRests[i]);
-            drawRest(currRest);
-        }
+  updateCards(distRests);
 });
 $("#resetOrder").click( function() {
-   $("#suggestions").empty();
-        for (let i = 0; i < allRests.length && i < 5; i++) {
-            let currRest = JSON.parse(allRests[i]);
-            drawRest(currRest);
-        }
+  updateCards(allRests);
+
 });
+
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
         infoWindow.setPosition(pos);
         infoWindow.setContent(browserHasGeolocation ?
@@ -312,15 +308,15 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 }
 
 function priceRanker(r1, r2){
-  let rest1 = JSON.parse(r1);
-  let rest2 = JSON.parse(r2);
-  let dif = parseInt(rest1.intPrice)-parseInt(rest2.intPrice);
+  // let rest1 = JSON.parse(r1);
+  // let rest2 = JSON.parse(r2);
+  let dif = parseInt(r1.intPrice)-parseInt(r2.intPrice);
   return dif;
 }
 function distRanker(r1, r2){
-  let rest1 = JSON.parse(r1);
-  let rest2 = JSON.parse(r2);
-  let dif = parseFloat(rest1.dist)-parseFloat(rest2.dist);
+  // let rest1 = JSON.parse(r1);
+  // let rest2 = JSON.parse(r2);
+  let dif = parseFloat(r1.dist)-parseFloat(r2.dist);
   return dif;
 }
 
@@ -385,13 +381,13 @@ function updateRestList() {
         let id = currRanking[i];
         let restaurant = restaurants[id];
         restListToSend.push(restaurant);
-         
      }
     sendRestUpdateMsg(restListToSend);
 }
 
 function updateCards(currRanking) {
      $("#suggestions").empty();
+     console.log(currRanking.length);
     for(i= 0; i < currRanking.length; i++) {
         let restaurant = currRanking[i];
           let temp = document.getElementById("suggestion");
@@ -419,14 +415,22 @@ function updateCards(currRanking) {
             } else if (votes.down.indexOf(restaurant.id) > -1) {
                 thumbsDown.classList.add("active");
             }
+            console.log(restaurant.upVotes);
+            console.log(downvotes[restaurant.id]);
+            console.log(restaurant.id + "restaurant: "+ restaurant.name);
+
+            let uVotes = restaurant.upVotes;
+            if ((restaurant.id in upvotes)) { uVotes = upvotes[restaurant.id] }
+            let dVotes = restaurant.downVotes;
+            if ((restaurant.id in downvotes)) { dVotes = downvotes[restaurant.id]}
             temp.content.querySelector(".fa-stack-1x.upNum").id = "thumbUp-"+ restaurant.id;
             temp.content.querySelector(".fa-stack-1x.downNum").id = "thumbDown-"+ restaurant.id
 
             let clone = document.importNode(temp.content, true);
             $('#suggestions').append(clone);
-        
-            document.getElementById("thumbUp-"+ restaurant.id).innerHTML = restaurant.upVotes;
-            document.getElementById("thumbDown-"+ restaurant.id).innerHTML = restaurant.downVotes;
+            document.getElementById("thumbUp-"+ restaurant.id).innerHTML = uVotes;
+            document.getElementById("thumbDown-"+ restaurant.id).innerHTML = dVotes;
+
             
         }
 }
@@ -449,9 +453,11 @@ function sendRestUpdateMsg(restListToSend){
 // pass in data.rests as dataList
 function updateRestaurantList(dataList) {
     restaurants = {};
+    allRests =[];
     for (i = 0; i < dataList.length; i++) {
         restaurant = JSON.parse(dataList[i]);
         restaurants[restaurant.id] = restaurant;
+       // allRests.push(restaurant);
     }
 }
 

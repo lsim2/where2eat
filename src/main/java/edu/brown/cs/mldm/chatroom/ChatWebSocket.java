@@ -16,15 +16,12 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import edu.brown.cs.mldm.main.Server;
 import edu.brown.cs.mldm.model.Message;
 import edu.brown.cs.mldm.yelp.Answer;
 import edu.brown.cs.mldm.yelp.Restaurant;
@@ -40,7 +37,7 @@ public class ChatWebSocket {
   private static enum MESSAGE_TYPE {
     CONNECT, SEND, UPDATE, DELETE, UPDATEALLNAMES, ADDTOROOM, UPDATERESTS
   }
-  
+
   private static enum VOTE_TYPE {
     NONE, UP, DOWN
   }
@@ -49,22 +46,22 @@ public class ChatWebSocket {
   public void addName(UUID id, String name, Answer ans) {
     myChatroomMaps.getidsToName().put(nextId, name);
     Map<UUID, Map<String, Answer>> usersDb = myChatroomMaps.getUsersDb();
-    if(!usersDb.containsKey(id)) {
+    if (!usersDb.containsKey(id)) {
       usersDb.put(id, new HashMap<String, Answer>());
     }
     usersDb.get(id).put(name, ans);
-    
+
   }
-  
+
   public Answer getPreviousAns(UUID id, String name) {
     myChatroomMaps.getidsToName().put(nextId, name);
     Map<UUID, Map<String, Answer>> usersDb = myChatroomMaps.getUsersDb();
-    if(!usersDb.containsKey(id) || !usersDb.get(id).containsKey(name)) {
+    if (!usersDb.containsKey(id) || !usersDb.get(id).containsKey(name)) {
       return null;
-    } 
+    }
     return usersDb.get(id).get(name);
   }
-  
+
   public ChatroomMaps getMaps() {
     return this.myChatroomMaps;
   }
@@ -82,7 +79,6 @@ public class ChatWebSocket {
 
     JsonObject jObject = new JsonObject();
     jObject.addProperty("type", MESSAGE_TYPE.CONNECT.ordinal());
-    
 
     JsonObject payLoadObject = new JsonObject();
     payLoadObject.addProperty("id", nextId);
@@ -251,8 +247,9 @@ public class ChatWebSocket {
         myChatroomMaps.getUrlToMsgs().put(receivedRoomURL,
             new ArrayList<Message>());
       }
-      
-      Map<String, Answer> userPreferences = myChatroomMaps.getUsersDb().get(getUuid(receivedRoomURL));
+
+      Map<String, Answer> userPreferences = myChatroomMaps.getUsersDb()
+          .get(getUuid(receivedRoomURL));
       Answer preferences = userPreferences.get(receivedName);
       Date now = new Date();
       Message msg = new Message();
@@ -260,7 +257,7 @@ public class ChatWebSocket {
       msg.setSenderName(receivedName);
       msg.setDate(now);
       msg.setSenderId(receivedId);
-      
+
       Queue<Session> myQueue = myChatroomMaps.getUrlToQueueOfSessions()
           .get(receivedRoomURL);
       myQueue.add(session);
@@ -272,8 +269,8 @@ public class ChatWebSocket {
       addPreviousMessages(session, receivedRoomURL);
       return;
     } else if (msgType == MESSAGE_TYPE.UPDATERESTS.ordinal()) {
-        updateRestaurants(receivedPayload, receivedRoomURL);
-        return;
+      updateRestaurants(receivedPayload, receivedRoomURL);
+      return;
     }
 
     // could have just directly asked for the name to
@@ -329,41 +326,45 @@ public class ChatWebSocket {
       sesh.getRemote().sendString(GSON.toJson(updatedObject));
     }
   }
-  
-  private void updateRestaurants(JsonObject receivedPayload, String receivedRoomURL) throws IOException {
+
+  private void updateRestaurants(JsonObject receivedPayload,
+      String receivedRoomURL) throws IOException {
     JsonElement voteRank = receivedPayload.get("voteRank");
     JsonArray newResList = voteRank.getAsJsonArray();
     List<Restaurant> updatedRestaurantList = new ArrayList<>();
     List<Restaurant> currRestaurantList = getRestaurantList(receivedRoomURL);
     for (JsonElement jsonObj : newResList) {
-        try {
-          Restaurant rest = GSON.fromJson(jsonObj.getAsJsonObject(), Restaurant.class);
-          int index = currRestaurantList.indexOf(rest);
-          Restaurant restFromList = currRestaurantList.get(index);
-          if (rest.getVoteType() == VOTE_TYPE.UP.ordinal()) {
-            restFromList.incrementUpVotes();
-          } else if (rest.getVoteType() == VOTE_TYPE.DOWN.ordinal()) {
-            restFromList.incrementDownVotes();
-          }
-         
-          rest = restFromList;
-          rest.resetVote();
-          updatedRestaurantList.add(rest);
-        } catch (Exception e) {
-          e.printStackTrace();
+      try {
+        Restaurant rest = GSON.fromJson(jsonObj.getAsJsonObject(),
+            Restaurant.class);
+        int index = currRestaurantList.indexOf(rest);
+        Restaurant restFromList = currRestaurantList.get(index);
+        if (rest.getVoteType() == VOTE_TYPE.UP.ordinal()) {
+          restFromList.incrementUpVotes();
+        } else if (rest.getVoteType() == VOTE_TYPE.DOWN.ordinal()) {
+          restFromList.incrementDownVotes();
         }
-        
+
+        rest = restFromList;
+        rest.resetVote();
+        updatedRestaurantList.add(rest);
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+
     }
 
-    updatedRestaurantList.sort((r1, r2) -> Integer.compare(r2.getNetVotes(),r1.getNetVotes()));
-    
-    myChatroomMaps.getUuidToRestaurants().put(getUuid(receivedRoomURL), updatedRestaurantList);
+    updatedRestaurantList
+        .sort((r1, r2) -> Integer.compare(r2.getNetVotes(), r1.getNetVotes()));
+
+    myChatroomMaps.getUuidToRestaurants().put(getUuid(receivedRoomURL),
+        updatedRestaurantList);
     JsonArray updatedJsonResList = new JsonArray();
-    
+
     for (Restaurant r : updatedRestaurantList) {
       updatedJsonResList.add(GSON.toJson(r));
     }
-    
+
     JsonObject updatedObject = new JsonObject();
     JsonObject payLoadObject = new JsonObject();
     updatedObject.addProperty("type", MESSAGE_TYPE.UPDATERESTS.ordinal());
