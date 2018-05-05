@@ -81,6 +81,10 @@ $(document).keydown(
         } else {
             currentUser = $('#sign-in').val();
             oldUser(currentUser);
+            preferences.user = currentUser;
+            $('#username').html("Hello " + $('#sign-in').val() + "! ");
+            $('.flip-container .flipper').closest('.flip-container').toggleClass('hover');
+            $('.flip-container .flipper').css('transform, rotateY(180deg)');
         }
         }
     });
@@ -90,6 +94,10 @@ $('.flip').click(function() {
     } else {
         currentUser = $('#sign-in').val();
         oldUser(currentUser);
+        preferences.user = currentUser;
+        $('#username').html("Hello " + $('#sign-in').val() + "! ");
+        $('.flip-container .flipper').closest('.flip-container').toggleClass('hover');
+        $('.flip-container .flipper').css('transform, rotateY(180deg)');
     }
 });
 
@@ -126,6 +134,7 @@ $('#toResults').click(function() {
 
 function oldUser(currentUser) {
     const postParameter = {"user": currentUser, "url": window.location.href};
+    console.log(postParameter);
     $.post("/validate", postParameter, response => {
         const responseObject = JSON.parse(response);
         console.log(responseObject);
@@ -148,11 +157,6 @@ function oldUser(currentUser) {
               $('#form').append("<input name='" + key +"' value='" + preferences[key] +"' type='hidden'/>");
             }
             $("#form").submit();
-        } else {
-            preferences.user = currentUser;
-            $('#username').html("Hello " + $('#sign-in').val() + "! ");
-            $('.flip-container .flipper').closest('.flip-container').toggleClass('hover');
-            $('.flip-container .flipper').css('transform, rotateY(180deg)');
         }
     });
 }

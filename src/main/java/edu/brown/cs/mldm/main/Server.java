@@ -55,17 +55,14 @@ public class Server {
     FreeMarkerEngine freeMarker = createEngine();
 
     // note: there should NOT be a chatroom get handler
-    Spark.post("/chatroom", new ChatroomPostHandler(), freeMarker);
     Spark.get("/name", new NameGetHandler(), freeMarker);
 
     Spark.get("/home", new homeFrontHandler(), freeMarker);
     Spark.post("/home", new homeSubmitHandler());
-    Spark.get("/date", new dateFrontHandler(), freeMarker);
     Spark.get("/poll/:id", new pollUniqueHandler(), freeMarker);
+    Spark.post("/validate", new resignInHandler());
     Spark.post("/chat/:id", new pollResHandler(), freeMarker);
     Spark.get("/chat/:id", new pollUniqueHandler(), freeMarker);
-    Spark.post("/validate", new resignInHandler());
-
   }
 
   private static FreeMarkerEngine createEngine() {
@@ -88,19 +85,6 @@ public class Server {
     reader.readFiles("data/restrictions.txt", restrictionsDb);
   }
 
-  /**
-   * Handles requests to the starting query page.
-   */
-  private static class ChatroomPostHandler implements TemplateViewRoute {
-    @Override
-    public ModelAndView handle(Request req, Response response) {
-      QueryParamsMap qm = req.queryMap();
-      String name = qm.value("user");
-      System.out.println("the name is: " + name);
-      Map<String, Object> variables = ImmutableMap.of("title", "Chatroom");
-      return new ModelAndView(variables, "chatroom/chatroom.ftl");
-    }
-  }
 
   /**
    * Handle requests to the front page of our Stars website.
@@ -115,18 +99,6 @@ public class Server {
     }
   }
 
-  /**
-   * Handle requests to the front page of our Autocorrect website.
-   *
-   * @author lsim2
-   */
-  private static class dateFrontHandler implements TemplateViewRoute {
-    @Override
-    public ModelAndView handle(Request req, Response res) {
-      Map<String, Object> variables = ImmutableMap.of("title", "Where2Eat");
-      return new ModelAndView(variables, "date.ftl");
-    }
-  }
 
   /**
    * Handle requests to the front page of our Autocorrect website.
@@ -137,7 +109,6 @@ public class Server {
     @Override
     public ModelAndView handle(Request req, Response res) {
       String id = req.raw().getQueryString();
-      System.out.println("my id: " + id);
       Poll poll = pollDb.get(UUID.fromString((id)));
       Map<String, Object> variables = ImmutableMap.<String, Object>builder()
           .put("title", "Where2Eat")
@@ -238,6 +209,7 @@ public class Server {
       YelpApi yelpApi = new YelpApi(YELPKEY);
       Map<Answer, List<Restaurant>> results = yelpApi
           .getPossibleRestaurants(answersDb.get(id));
+      
       Ranker ranker = new Ranker();
 
       List<Restaurant> restList = new ArrayList<Restaurant>(

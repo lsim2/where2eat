@@ -53,7 +53,7 @@ public class Answer {
 		return restrictions;
 	}
 	
-	public String toString() {
+	public String toHTML() {
 	  StringBuilder sb = new StringBuilder();
 	  sb.append("<h5>" + userId + "'s Preferences:</h5>");
 	  sb.append("<b>Price</b>: " + priceSigns[price] + "<br>");

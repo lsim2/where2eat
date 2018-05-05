@@ -182,8 +182,6 @@ const setup_chatter = () => {
             let endPos = new google.maps.LatLng(parseFloat(r.coordinates.latitude), parseFloat(r.coordinates.longitude));
             let start = marker.position;
             let end = endPos;
-            console.log(start);
-            console.log(end);
             let request = {
                 origin:start,
                 destination:end,
@@ -209,12 +207,7 @@ const setup_chatter = () => {
         break;
 
       case MESSAGE_TYPE.CONNECT:
-        //alert("CONNECTING COOKIE IS : " + document.cookie);
-          // do get request (and the get request should end up with the server verifiying us
-          // if we signed in before ) and the
-
         // sending our info to the server, so the server can put us in the right room
-        console.log("werw");
         myId = data.payload.id;
         myName = data.payload.myName;
         let payLoad = {"name": myName, "id": myId, "roomURL": window.location.href}; 
@@ -224,8 +217,6 @@ const setup_chatter = () => {
         break;
 
       case MESSAGE_TYPE.ADDTOROOM:
-        console.log("connected and my id is: " + data.payload.id);
-
         let myDates = data.payload.dates;
         let myIds = data.payload.ids;
         let myContent = data.payload.content;
@@ -248,8 +239,6 @@ const setup_chatter = () => {
         txt = data.payload.text;
         date = data.payload.date;
         nameTxt = data.payload.name;
-        console.log("received an update msg and the msg is: " + txt);
-        console.log("received an update msg and the msg id is: " + txtId);
         addChatMsg(nameTxt,date,txt);
         break;
       case MESSAGE_TYPE.UPDATERESTS:
@@ -270,8 +259,6 @@ const setup_chatter = () => {
 
 
 const send_chat = chat => {
-  console.log("we received the chat and it is: " + chat);
-
   let payLoad = {"name": myName, "id": myId, "text": chat, "roomURL": window.location.href};
   let jsonObject = { "type": MESSAGE_TYPE.SEND, "payload": payLoad}
   let jsonString = JSON.stringify(jsonObject)
@@ -293,8 +280,6 @@ function initMap() {
 
 
 $("#pRanker").click( function() {
-  
-  console.log("price ranking");
   let priceRests = allRests.slice().sort(priceRanker);
    $("#suggestions").empty();
         for (let i = 0; i < priceRests.length && i < 5; i++) {
@@ -304,7 +289,6 @@ $("#pRanker").click( function() {
 
 });
 $("#distRanker").click( function() {
-  console.log("distance ranking");
   let distRests = allRests.slice().sort(distRanker);
    $("#suggestions").empty();
         for (let i = 0; i < distRests.length && i < 5; i++) {
@@ -472,8 +456,8 @@ function updateRestaurantList(dataList) {
 }
 
 function drawRest(restaurant){
-        console.log(restaurant);
           let temp = document.getElementById("suggestion");
+            ranking[restaurant.id] = 0;
             temp.content.querySelector('.food').src = restaurant.image_url;
             temp.content.querySelector(".restaurant-name").innerHTML = restaurant.name;
             if (restaurant.categories.length < 2) {
@@ -486,6 +470,5 @@ function drawRest(restaurant){
             temp.content.querySelector(".fa.thumb.fa-thumbs-down").classList.add(restaurant.id);
           temp.content.querySelector(".fa.thumb.fa-thumbs-down").id = restaurant.id;
             let clone = document.importNode(temp.content, true);
-            console.log(clone);
             $('#suggestions').append(clone);
 }

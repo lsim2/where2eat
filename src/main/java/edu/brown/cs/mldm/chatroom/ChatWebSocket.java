@@ -200,7 +200,6 @@ public class ChatWebSocket {
       names.add(stringName);
       content.add(stringContent);
     }
-    System.out.println("addPreviousMessages Called" + suggestions);
     payLoadObject.add("ids", ids);
     payLoadObject.add("dates", dates);
     payLoadObject.add("names", names);
@@ -248,7 +247,7 @@ public class ChatWebSocket {
       Answer preferences = userPreferences.get(receivedName);
       Date now = new Date();
       Message msg = new Message();
-      msg.setContent(preferences.toString());
+      msg.setContent(preferences.toHTML());
       msg.setSenderName(receivedName);
       msg.setDate(now);
       msg.setSenderId(receivedId);
@@ -323,13 +322,10 @@ public class ChatWebSocket {
   }
   
   private void updateRestaurants(JsonObject receivedPayload, String receivedRoomURL) throws IOException {
-    JsonObject upVotes = receivedPayload.getAsJsonObject("upvotes");
-    JsonObject downVotes = receivedPayload.getAsJsonObject("downvotes");
     JsonElement voteRank = receivedPayload.get("voteRank");
     JsonArray newResList = voteRank.getAsJsonArray();
     List<Restaurant> updatedRestaurantList = new ArrayList<>();
     List<Restaurant> currRestaurantList = getRestaurantList(receivedRoomURL);
-    
     for (JsonElement jsonObj : newResList) {
         try {
           Restaurant rest = GSON.fromJson(jsonObj.getAsJsonObject(), Restaurant.class);
