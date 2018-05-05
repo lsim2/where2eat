@@ -20,6 +20,7 @@ public class Answer {
 	public Answer(String userId, List<String> cuisine, List<String> restrictions, List<String> foodTerms, int price,
 			double[] coordinates, int radius/* , int rating */) {
 		// this.rating = rating;
+	    this.userId = userId; 
 		this.price = price;
 		this.cuisine = cuisine;
 		this.radius = radius;
@@ -54,8 +55,8 @@ public class Answer {
 	
 	public String toString() {
 	  StringBuilder sb = new StringBuilder();
-	  sb.append("<h5>My Preferences:</h5>");
-	  sb.append("<b>Pric</b>: " + priceSigns[price] + "<br>");
+	  sb.append("<h5>" + userId + "'s Preferences:</h5>");
+	  sb.append("<b>Price</b>: " + priceSigns[price] + "<br>");
 	  sb.append("<b>Distance</b>: " + (int) (radius/1609.34+1) + " miles<br>");
 	  addToHTML(sb, cuisine, "Cuisines", Server.getCuisinesMap());
 	  addToHTML(sb, restrictions, "Food Restrictions", Server.getRestrictionsMap());

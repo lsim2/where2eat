@@ -2,6 +2,8 @@ package edu.brown.cs.mldm.lsim2.frontend;
 
 import java.util.UUID;
 
+import edu.brown.cs.mldm.yelp.Answer;
+
 /** Class representing a registered user. */
 public class User {
   private final UUID id;
