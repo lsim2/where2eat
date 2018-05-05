@@ -1,12 +1,7 @@
 
 <head>
   <meta charset="UTF-8">
-
-
-
       <link rel="stylesheet" href="css/home.css">
-
-
 </head>
 
 <body>
@@ -58,20 +53,23 @@
       </div>
 
   </script>
-
   <a class="btn" data-popup-open="popup-1" href="#" style="display:none">Open Popup #1</a>
-<div class="popup" data-popup="popup-1">
-<div class="popup-inner">
-<h2>Poll created!</h2>
-	<h3 id="pollTitle"></h3>
-	<p id="pollInfo"></p>
-	<div class="submit">
-	  <a id="update" class="submit-card">Change poll information</a>
-</div>
-<a class="popup-close" data-popup-close="popup-1">x</a>
-</div>
-</div>
-
+	<div class="popup" data-popup="popup-1">
+		<div class="popup-inner">
+			<h3>Poll created!</h3>
+			<h4 id="pollTitle"></h4>
+			<br>
+			<div id = "urlInfo" style="text-align: center">
+				<p> This is your URL </p>
+				<h4 id="pollInfo"></h4>
+			</div>
+			<br>
+			<div class="submit" style="text-align: right">
+				<a id="update" class="submit-card">Change poll information</a>
+			</div>
+			<a class="popup-close" data-popup-close="popup-1">x</a>
+		</div>
+	</div>
 </body>
   <script src='https://cdn.jsdelivr.net/npm/ractive@0.9'></script>
   <script src="/js/jquery-3.1.1.js"></script>

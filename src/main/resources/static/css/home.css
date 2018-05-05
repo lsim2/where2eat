@@ -13,36 +13,49 @@ body {
 #name {
 	background-color: white;
 	border-radius: 5px;
-	padding: 4px;
+	padding: 3px;
 	color: #737173;
 }
 
 #title {
 	background-color: white;
 	border-radius: 5px;
-	padding: 4px;
+	padding: 3px;
 	color: #737173;
 }
 
 #location {
 	background-color: white;
 	border-radius: 5px;
-	padding: 4px;
+	padding: 3px;
 	color: #737173;
 }
 
 #date-format {
 	background-color: white;
 	border-radius: 5px;
-	padding: 4px;
+	padding: 3px;
 	color: #737173;
 }
 
 #message {
 	background-color: white;
 	border-radius: 5px;
-	padding: 4px;
+	padding: 3px;
 	color: 	#737173;
+}
+
+#urlInfo {
+	background-color: #FFF0F5;
+	padding: 10px;
+	border-radius: 5px;
+}
+
+
+#pollInfo {
+/*	background-color: #FFF0F5;
+	padding: 10px;
+	border-radius: 5px;*/
 }
 .contact-wrapper {
 	 position: absolute;
