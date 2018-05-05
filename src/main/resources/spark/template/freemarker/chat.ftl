@@ -1,6 +1,14 @@
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
+<link rel='stylesheet prefetch' href='http://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.8.5/css/selectize.default.css'>
+<link rel='stylesheet prefetch' href='https://simeydotme.github.io/jQuery-ui-Slider-Pips/dist/css/jqueryui.min.css'>
+<link rel='stylesheet prefetch' href='https://simeydotme.github.io/jQuery-ui-Slider-Pips/dist/css/jquery-ui-slider-pips.min.css'>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.0/css/bootstrap-slider.css" />
 <link rel="stylesheet" href="/css/chat.css">
+<link rel="stylesheet" href="/css/form.css">
+
 <br><br>
 <div class="container bootstrap snippet">
     <div class="row">
@@ -36,6 +44,7 @@
         <!--=========================================================-->
         <!-- selected chat -->
         <div id="user" hidden>${user}</div>
+        <div id="prevAns" hidden>${prevAns}</div>
      <div class="col-md-5" id='map'>
         <!--stuff i added -->
 
@@ -109,8 +118,57 @@
   	<p hidden>Currently connected users</p>
   	<ul id="connectedUsrs" hidden></ul>
 	 </div>
+<button class="btn" data-popup-open="popup-1" onclick="myF()">Change my preferences</button>
+<div class="popup" data-popup="popup-1">
+<div class="popup-inner">
+<h3 id="pollTitle"></h3>
+<p id="pollInfo"></p>
+<div class="submit">
+<form id="form" method="POST" action="/chat/:id?${pollId}">
+<h2 id="title"><button type="button" class="goback btn">Go back</button><span id="username"></span>Choose your preferences</h2>
+<div class="ranking">
+<p><b>I'm willing to travel <i><span id="dist">12</span></i> mile(s).</b></p><br>
+<div id="flat-slider-vertical-2"></div>
+</div>
+<div class="ranking">
+<p><b>My preferred price range is:</b></p><br>
+<div id="flat-slider-vertical-1"></div>
+</div>
+<div class="ranking">
+<p><b>Any dietary restrictions?</b></p>
+    <select id="restrictions" class="select" multiple>
+     <#list restrictions?keys as id>
+            <option value="${id}">${restrictions[id]}</option>
+      </#list>
+    </select>
+</div>
+<div class="ranking">
+<p><b>Cuisine preferences (choose up to 3)</b>:</p>
+    <select id="cuisine" class="select" multiple>
+      <#list cuisines?keys as id>
+            <option value="${id}">${cuisines[id]}</option>
+      </#list>
+    </select>
+</div>
+<div class="ranking">
+<p><b>Any additional preferences?</b></p>
+    <select id="misc" class="select" multiple>
+      <#list food?keys as id>
+            <option value="${id}">${food[id]}</option>
+      </#list>
+    </select>
+</div>
+<div class="ranking submitBtn">
+<button type="button" id="toResults" class="btn">Submit</button>
+</div>
+</form>
+</div>
+<a class="popup-close" data-popup-close="popup-1">x</a>
+</div>
+</div>
      
-<script src="/js/jquery-3.1.1.js"></script>
+<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+<script src='https://simeydotme.github.io/jQuery-ui-Slider-Pips/dist/js/jquery-plus-ui.min.js'></script>
+<script src='https://simeydotme.github.io/jQuery-ui-Slider-Pips/dist/js/jquery-ui-slider-pips.js'></script>       
 <script src="/js/chat.js"></script>
-
 <#include "main.ftl">

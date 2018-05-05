@@ -17,13 +17,6 @@
       <link rel="stylesheet" href="/css/main.css">
 <link rel="stylesheet" href="/css/form.css">
 
-         <nav class="navbar navbar-fixed-top">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="/home">Where2Eat</a>
-    </div>
-  </div>
-</nav>
 </head>
 <br><br><br>
 <body>
@@ -34,35 +27,29 @@
 <div class="invite">
 <h1 style="text-align:center"><i>Invitation</i></h1>
 <h2 id="title"><i>${name}</i> has invited you for <i>${meal}!!</h2>
-<h3 style="text-align:center">Where? <i>${location}</i></h3>
-<h3 style="text-align:center">When? <i>${date}</i></h3>
-<h3 style="text-align:center">Message from ${name}: <i>"${message}"</i></h3>
+	<div id="poll-info">
+		<h3>Where? <i>${location}</i></h3>
+		<h3>When? <i>${date}</i></h3>
+		<h3>Message from ${name}: <i>"${message}"</i></h3>
+	</div>
 <br><br>
 <form id="signin-form">
 <span class="signbox">Name: <input id="sign-in" type="text" placeholder="Sign in with just your name!" autocomplete="off" required> <br><br>
 </form>
-	<span class="enter"><button type="button" class="flip" title="Please sign in!">Go to form!</button></span>
+	<button type="button" class="flip" title="Please sign in!">Go to form!</button>
 </div>
 </div>
 <div class="back">
 <div id="modal">
 <form id="form" method="POST" action="/chat/:id?${pollId}">
-<h2 id="title"><span id="username"></span>Choose your preferences</h2><button type="button" class="goback btn">Go back</button>
+<h2 id="title"><button type="button" class="goback btn">Go back</button><span id="username"></span>Choose your preferences</h2>
+<div class="ranking">
+<p><b>I'm willing to travel <i><span id="dist">12</span></i> mile(s).</b></p><br>
+<div id="flat-slider-vertical-2"></div>
+</div>
 <div class="ranking">
 <p><b>My preferred price range is:</b></p><br>
 <div id="flat-slider-vertical-1"></div>
-</div>
-<div class="ranking">
-<p><b>I'm available from </b><i><span id="starttime">2pm</span></i><b> to </b><i><span id="endtime">4pm</span></i> </p><br>
-<div id="flat-slider"></div>
-</div>
-<div class="ranking">
-<p><b>Cuisine preferences (choose up to 3)</b>:</p>
-    <select id="cuisine" class="select" multiple>
-      <#list cuisines?keys as id>
-            <option value="${id}">${cuisines[id]}</option>
-      </#list>
-    </select>
 </div>
 <div class="ranking">
 <p><b>Any dietary restrictions?</b></p>
@@ -73,8 +60,12 @@
     </select>
 </div>
 <div class="ranking">
-<p><b>I'm willing to travel <i><span id="dist">12</span></i> mile(s).</b></p>
-<div id="flat-slider-vertical-2"></div>
+<p><b>Cuisine preferences (choose up to 3)</b>:</p>
+    <select id="cuisine" class="select" multiple>
+      <#list cuisines?keys as id>
+            <option value="${id}">${cuisines[id]}</option>
+      </#list>
+    </select>
 </div>
 <div class="ranking">
 <p><b>Any additional preferences?</b></p>
@@ -84,7 +75,7 @@
       </#list>
     </select>
 </div>
-<div class="ranking">
+<div class="ranking submitBtn">
 <button type="button" id="toResults" class="btn">Submit</button>
 </div>
 </div>

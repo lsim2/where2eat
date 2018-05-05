@@ -17,6 +17,15 @@ $("#flip").click(function(e){
     document.getElementById('message').value = "";
 });
 
+$("#newForm").click(function(e){
+    document.getElementById('name').value = "";
+    document.getElementById('title').value = "";
+    document.getElementById('location').value = "";
+    document.getElementById('date-format').value = "";
+    document.getElementById('message').value = "";
+    ractive.toggle( 'flipCard' );
+});
+
 $("#submit").click(function(e) {
     postParameter.name = document.getElementById('name').value;
     postParameter.title = document.getElementById('title').value;
@@ -55,14 +64,17 @@ $("#submit").click(function(e) {
         let title = "" + responseObject.pollTitle;
         let location = "" + responseObject.location;
         let date = "" + responseObject.date;
-        document.getElementById('pollTitle').innerHTML = "Poll for " + title + " at " + location + " on " + date;
-        document.getElementById('pollInfo').innerHTML = 'This is your URL:  ';
+        document.getElementById('pollTitle').innerHTML = "Details: " + title + " at " + location + " on " + date;
         let a = document.createElement('a');
         linkText = document.createTextNode('localhost:4567/poll/:id?'+pollId);
         a.appendChild(linkText);
         a.title = 'localhost:4567/poll/:id?'+pollId;
         a.href = '/poll/:id?'+pollId;
         a.target = "_blank";
+        let div = document.getElementById('pollInfo');
+        while(div.firstChild){
+            div.removeChild(div.firstChild);
+        }
         document.getElementById('pollInfo').appendChild(a);
     });
      setTimeout(function(){
