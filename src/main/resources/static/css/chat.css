@@ -284,9 +284,9 @@ a:hover, a:active, a:focus {
 }
 
 #map {
-  margin-top: 100px; 
+  margin-top: 60px;
   width: 400px;
-  height: 500px;
+  height: 575px;
 }
 
 .popup {
