@@ -137,7 +137,6 @@ public class YelpApi {
 			JsonArray myResponse = jsonObject.get("businesses").getAsJsonArray();
 
 			for (JsonElement str : myResponse) {
-
 				Restaurant rest = GSON.fromJson(str.getAsJsonObject(), Restaurant.class);
 				results.add(rest);
 			}

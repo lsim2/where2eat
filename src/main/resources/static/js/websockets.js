@@ -4,8 +4,15 @@ const MESSAGE_TYPE = {
   UPDATE: 2,
   DELETE: 3,
   UPDATEALLNAMES: 4,
-  ADDTOROOM: 5
+  ADDTOROOM: 5,
+  UPDATERESTS: 6,
 };
+
+const VOTE_TYPE = {
+    NONE: 0, 
+    UP: 1,
+    DOWN: 2
+}''
 // note DELETE is deleting an already disconnected socket
 
 let conn;
@@ -14,6 +21,10 @@ let myName;
 let regSuggestions;
 //keeps track of all the restaurants displayed on the screen
 let allRests;
+let restaurants; 
+let votes = {up:[], down:[]}
+let upvotes = {};
+let downvotes = {};
 
 let ranking = {}; 
 let myMap = new Map();
@@ -62,8 +73,8 @@ const setup_chatter = () => {
 
         $('#suggestions').empty();
         // update all uniqque users in chat
-        let suggestions = data.suggestions;
         regSuggestions = data.suggestions;
+        updateRestaurantList(data.rests);
 
         let centerLat = parseFloat(JSON.parse(data.rests[0]).coordinates.latitude);
       let centerLng = parseFloat(JSON.parse(data.rests[0]).coordinates.longitude);
@@ -74,15 +85,19 @@ const setup_chatter = () => {
         zoom: 18,
         center: center
       });
-
+            
       let bounds = new google.maps.LatLngBounds();
       allRests = data.rests.slice(0,5);
       let currRests = data.rests.slice(0,5);
       for(let i=0;i<currRests.length;i++){
         const restaurant = JSON.parse(data.rests[i]);
-        console.log(restaurant);
+          ranking[restaurant.id] = currRests.length-i; 
           let temp = document.getElementById("suggestion");
+          if (restaurant.image_url != "" ) {
             temp.content.querySelector('.food').src = restaurant.image_url;
+          } else {
+              temp.content.querySelector('.food').src = "https://www.shareicon.net/download/2016/09/02/824429_fork_512x512.png";
+          }
             temp.content.querySelector(".restaurant-name").innerHTML = restaurant.name;
             if (restaurant.categories.length < 2) {
                  temp.content.querySelector(".categories").innerHTML = restaurant.categories[0].title;
@@ -94,7 +109,6 @@ const setup_chatter = () => {
             temp.content.querySelector(".fa.thumb.fa-thumbs-down").classList.add(restaurant.id);
           temp.content.querySelector(".fa.thumb.fa-thumbs-down").id = restaurant.id;
             let clone = document.importNode(temp.content, true);
-            console.log(clone);
             $('#suggestions').append(clone);
         let pos = {lat: parseFloat(restaurant.coordinates.latitude), lng: parseFloat(restaurant.coordinates.longitude)};
         let marker = new google.maps.Marker({
@@ -269,6 +283,16 @@ const setup_chatter = () => {
         console.log("received an update msg and the msg is: " + txt);
         console.log("received an update msg and the msg id is: " + txtId);
         addChatMsg(nameTxt,date,txt);
+        break;
+      case MESSAGE_TYPE.UPDATERESTS:
+        let newRanking = data.payload.ranking;
+        let newList = [];
+        for (let i = 0; i< newRanking.length; i++) {
+            let restaurant = JSON.parse(newRanking[i]);
+            newList.push(restaurant);
+        }
+        updateCards(newList);
+        break;
     }
   };
 }
@@ -361,5 +385,121 @@ function addChatMsg(nameTxt,date,txt) {
         document.getElementById("chatMsgs").appendChild(clone);
         let chatMsg = document.getElementById("chat-message");
         chatMsg.scrollTop = chatMsg.scrollHeight;
+}
+
+function thumbUp(x) {
+    event.preventDefault();
+    let id = x.id; 
+    $(".fa.thumb.fa-thumbs-down." + id).removeClass('active');
+    x.classList.add("active");
+    ranking[id]++;
+    if (!(id in upvotes)) { upvotes[id] = 0 }
+    upvotes[id]++;
+    restaurants[id].voteType = VOTE_TYPE.UP;
+    votes.up.push(id);
+    for (i = 0; i < votes.down.length; i++) {
+        if (votes.down[i] == id) {
+            votes.down.splice(i, 1);
+            break;
+        }
+    }
+    updateRestList();
+}
+
+function thumbDown(x) {
+    event.preventDefault();
+    let id = x.id; 
+    $(".fa.thumb.fa-thumbs-up." + id).removeClass('active');
+    x.classList.add("active");
+    ranking[id]--;
+    if (!(id in downvotes)) { downvotes[id] = 0 }
+    downvotes[id]++;
+    restaurants[id].voteType = VOTE_TYPE.DOWN;
+    votes.down.push(id);
+    for (i = 0; i < votes.up.length; i++) {
+        if (votes.up[i] == id) {
+            votes.up.splice(i, 1);
+            break;
+        }
+    }
+    updateRestList();
+}
+
+
+function updateRestList() {
+     let currRanking = Object.keys(ranking).sort(function(a,b){return ranking[a]-ranking[b]});
+     let restListToSend = [];
+     for(i= currRanking.length-1; i >= 0; i--) {
+        let id = currRanking[i];
+        let restaurant = restaurants[id];
+        restListToSend.push(restaurant);
+         
+     }
+    sendRestUpdateMsg(restListToSend);
+}
+
+function updateCards(currRanking) {
+     $("#suggestions").empty();
+    for(i= 0; i < currRanking.length; i++) {
+        let restaurant = currRanking[i];
+          let temp = document.getElementById("suggestion");
+          if (restaurant.image_url != "" ) {
+            temp.content.querySelector('.food').src = restaurant.image_url;
+          } else {
+              temp.content.querySelector('.food').src = "https://www.shareicon.net/download/2016/09/02/824429_fork_512x512.png";
+          }
+            temp.content.querySelector(".restaurant-name").innerHTML = restaurant.name;
+            if (restaurant.categories.length < 2) {
+                 temp.content.querySelector(".categories").innerHTML = restaurant.categories[0].title;
+            } else{
+                temp.content.querySelector(".categories").innerHTML = restaurant.categories[0].title + ", " + restaurant.categories[1].title;
+            }
+            let thumbsUp = temp.content.querySelector(".fa.thumb.fa-thumbs-up");
+            let thumbsDown = temp.content.querySelector(".fa.thumb.fa-thumbs-down");
+            thumbsUp.classList = "";
+            thumbsUp.classList.add("fa","thumb","fa-thumbs-up", "fa-stack-2x", restaurant.id);
+            thumbsUp.id = restaurant.id;
+            thumbsDown.classList = "";
+            thumbsDown.classList.add("fa","thumb","fa-thumbs-down", "fa-stack-2x", restaurant.id);
+            thumbsDown.id = restaurant.id;
+            if (votes.up.indexOf(restaurant.id) > -1) {
+                thumbsUp.classList.add("active");
+            } else if (votes.down.indexOf(restaurant.id) > -1) {
+                thumbsDown.classList.add("active");
+            }
+            temp.content.querySelector(".fa-stack-1x.upNum").id = "thumbUp-"+ restaurant.id;
+            temp.content.querySelector(".fa-stack-1x.downNum").id = "thumbDown-"+ restaurant.id
+
+            let clone = document.importNode(temp.content, true);
+            $('#suggestions').append(clone);
+        
+            document.getElementById("thumbUp-"+ restaurant.id).innerHTML = restaurant.upVotes;
+            document.getElementById("thumbDown-"+ restaurant.id).innerHTML = restaurant.downVotes;
+            
+        }
+}
+
+function sendRestUpdateMsg(restListToSend){
+  let payLoad = {
+      "name": myName, 
+      "id": myId, 
+      "text": "", 
+      "roomURL": window.location.href,
+      "voteRank": restListToSend,
+      "upvotes": upvotes,
+      "downvotes": downvotes
+  };
+  let jsonObject = { "type": MESSAGE_TYPE.UPDATERESTS, "payload": payLoad}
+  let jsonString = JSON.stringify(jsonObject)
+  conn.send(jsonString);
+}
+
+// pass in data.rests as dataList
+function updateRestaurantList(dataList) {
+    restaurants = {};
+    for (i = 0; i < dataList.length; i++) {
+        restaurant = JSON.parse(dataList[i]);
+        restaurants[restaurant.id] = restaurant;
+    }
 }
 
