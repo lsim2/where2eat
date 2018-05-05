@@ -36,9 +36,9 @@ public class Server {
 
   private static Map<UUID, Poll> pollDb = new HashMap<>();
   private static Map<UUID, List<Answer>> answersDb = new HashMap<>();
-  private static Map<String, String> cuisinesDb = new HashMap<>();
-  private static Map<String, String> restrictionsDb = new HashMap<>();
-  private static Map<String, String> foodDb = new HashMap<>();
+  public static Map<String, String> cuisinesDb = new HashMap<>();
+  public static Map<String, String> restrictionsDb = new HashMap<>();
+  public static Map<String, String> foodDb = new HashMap<>();
 
   private static final Gson GSON = new Gson();
   private static final String YELPKEY = "gKGjR4vy8kXQAyKrBjuPXepYBqladSEtwSTm_NNshaMPebXqQkZsGLIOe6FSUESQIh_l-cSN5lIhxiQ3-mkCnr_orbJARb_cCSr3OlQs0Jxi21D-m8uiqoHJr1jVWnYx";
@@ -286,5 +286,16 @@ public class Server {
     }
   }
   
+  public static Map<String, String> getCuisinesMap() {
+    return cuisinesDb; 
+  }
+  
+  public static Map<String, String> getRestrictionsMap() {
+    return restrictionsDb; 
+  }
+  
+  public static Map<String, String> getFoodTermsMap() {
+    return foodDb; 
+  }
 
 }

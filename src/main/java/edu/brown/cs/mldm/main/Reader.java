@@ -24,7 +24,7 @@ public class Reader {
 				 }
 				
 			 }
-			 map.put(name, wordsinLine[wordsinLine.length-1]);
+			 map.put(wordsinLine[wordsinLine.length-1], name);
 		 }
 		 return;
 	} catch (UnsupportedEncodingException e) {

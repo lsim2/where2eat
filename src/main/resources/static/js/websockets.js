@@ -254,7 +254,7 @@ const setup_chatter = () => {
           let txtId = myIds[i];
           let txt = myContent[i];
           let nameTxt = myNames[i];
-          //$('#chatMsgs').append("<li>" + date + " and id: " + txtId + " & name: "+ nameTxt + " and txt: " + txt +"</li>");
+          console.log(txt);
           addChatMsg(nameTxt,date,txt);
         }
         break;

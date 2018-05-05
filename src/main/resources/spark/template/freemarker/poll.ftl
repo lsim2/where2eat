@@ -60,7 +60,7 @@
 <p><b>Cuisine preferences (choose up to 3)</b>:</p>
     <select id="cuisine" class="select" multiple>
       <#list cuisines?keys as id>
-            <option value="${cuisines[id]}">${id}</option>
+            <option value="${id}">${cuisines[id]}</option>
       </#list>
     </select>
 </div>
@@ -68,8 +68,7 @@
 <p><b>Any dietary restrictions?</b></p>
     <select id="restrictions" class="select" multiple>
      <#list restrictions?keys as id>
-            <li>${id}</li>
-            <option value="${restrictions[id]}">${id}</option>
+            <option value="${id}">${restrictions[id]}</option>
       </#list>
     </select>
 </div>
@@ -81,7 +80,7 @@
 <p><b>Any additional preferences?</b></p>
     <select id="misc" class="select" multiple>
       <#list food?keys as id>
-            <option value="${food[id]}">${id}</option>
+            <option value="${id}">${food[id]}</option>
       </#list>
     </select>
 </div>

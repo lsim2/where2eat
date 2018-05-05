@@ -269,7 +269,9 @@ public class ChatWebSocket {
       myQueue.add(session);
       List<Message> msgsInRoom = myChatroomMaps.getUrlToMsgs()
           .get(receivedRoomURL);
-      msgsInRoom.add(msg);
+      if (!msgsInRoom.contains(msg)) {
+        msgsInRoom.add(msg);
+      }
       addPreviousMessages(session, receivedRoomURL);
       return;
     } else if (msgType == MESSAGE_TYPE.UPDATERESTS.ordinal()) {
@@ -354,7 +356,6 @@ public class ChatWebSocket {
          
           rest = restFromList;
           rest.resetVote();
-          System.out.println("Up: " + rest.getUpVotes() + " Down: " + rest.getDownVotes());
           updatedRestaurantList.add(rest);
         } catch (Exception e) {
           e.printStackTrace();
