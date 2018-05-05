@@ -23,12 +23,9 @@ $("#newForm").click(function(e){
     document.getElementById('location').value = "";
     document.getElementById('date-format').value = "";
     document.getElementById('message').value = "";
-    $('[data-popup-close]').on('click', function(e)  {
-    let targeted_popup_class = jQuery(this).attr('data-popup-close');
-    $('[data-popup="' + targeted_popup_class + '"]').fadeOut(350);
-    e.preventDefault();
     ractive.toggle( 'flipCard' );
-});
+    let targeted_popup_class = jQuery('[data-popup-close]').attr('data-popup-close');
+    $('[data-popup="' + targeted_popup_class + '"]').fadeOut(350);
 });
 
 $("#submit").click(function(e) {

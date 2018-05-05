@@ -10,11 +10,11 @@
 <link rel='stylesheet prefetch' href='https://simeydotme.github.io/jQuery-ui-Slider-Pips/dist/css/jquery-ui-slider-pips.min.css'>
 <link rel='stylesheet prefetch' href='https://simeydotme.github.io/jQuery-ui-Slider-Pips/dist/css/app.min.css'>
   
-  <link rel='stylesheet prefetch' href='http://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.8.5/css/selectize.default.css'>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.0/css/bootstrap-slider.css" />
-     <link rel="stylesheet" href="/css/normalize.css">
-    <link rel="stylesheet" href="/css/html5bp.css">
-      <link rel="stylesheet" href="/css/main.css">
+<link rel='stylesheet prefetch' href='http://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.8.5/css/selectize.default.css'>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.0/css/bootstrap-slider.css" />
+<link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/html5bp.css">
+<link rel="stylesheet" href="/css/main.css">
 <link rel="stylesheet" href="/css/form.css">
 
 </head>
