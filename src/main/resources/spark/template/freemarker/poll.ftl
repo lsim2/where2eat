@@ -17,13 +17,6 @@
       <link rel="stylesheet" href="/css/main.css">
 <link rel="stylesheet" href="/css/form.css">
 
-         <nav class="navbar navbar-fixed-top">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="/home">Where2Eat</a>
-    </div>
-  </div>
-</nav>
 </head>
 <br><br><br>
 <body>
@@ -34,14 +27,16 @@
 <div class="invite">
 <h1 style="text-align:center"><i>Invitation</i></h1>
 <h2 id="title"><i>${name}</i> has invited you for <i>${meal}!!</h2>
-<h3 style="text-align:center">Where? <i>${location}</i></h3>
-<h3 style="text-align:center">When? <i>${date}</i></h3>
-<h3 style="text-align:center">Message from ${name}: <i>"${message}"</i></h3>
+	<div id="poll-info">
+		<h3>Where? <i>${location}</i></h3>
+		<h3>When? <i>${date}</i></h3>
+		<h3>Message from ${name}: <i>"${message}"</i></h3>
+	</div>
 <br><br>
 <form id="signin-form">
 <span class="signbox">Name: <input id="sign-in" type="text" placeholder="Sign in with just your name!" autocomplete="off" required> <br><br>
 </form>
-	<span class="enter"><button type="button" class="flip" title="Please sign in!">Go to form!</button></span>
+	<button type="button" class="flip" title="Please sign in!">Go to form!</button>
 </div>
 </div>
 <div class="back">
