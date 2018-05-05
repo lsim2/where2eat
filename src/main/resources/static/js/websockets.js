@@ -417,15 +417,19 @@ function updateCards(currRanking) {
             }
             console.log(restaurant.upVotes);
             console.log(downvotes[restaurant.id]);
-     
             console.log(restaurant.id + "restaurant: "+ restaurant.name);
+
+            let uVotes = restaurant.upVotes;
+            if ((restaurant.id in upvotes)) { uVotes = upvotes[restaurant.id] }
+            let dVotes = restaurant.downVotes;
+            if ((restaurant.id in downvotes)) { dVotes = downvotes[restaurant.id]}
             temp.content.querySelector(".fa-stack-1x.upNum").id = "thumbUp-"+ restaurant.id;
             temp.content.querySelector(".fa-stack-1x.downNum").id = "thumbDown-"+ restaurant.id
 
             let clone = document.importNode(temp.content, true);
             $('#suggestions').append(clone);
-            document.getElementById("thumbUp-"+ restaurant.id).innerHTML = restaurant.upVotes;
-            document.getElementById("thumbDown-"+ restaurant.id).innerHTML = restaurant.downVotes;
+            document.getElementById("thumbUp-"+ restaurant.id).innerHTML = uVotes;
+            document.getElementById("thumbDown-"+ restaurant.id).innerHTML = dVotes;
 
             
         }
