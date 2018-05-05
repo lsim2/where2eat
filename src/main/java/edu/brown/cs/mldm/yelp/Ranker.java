@@ -52,7 +52,6 @@ public class Ranker {
           suggestions.get(key).add(nRest);
         }
       }
-      assert !suggestions.get(key).isEmpty();
 
     }
     return rankBestMatches(suggestions, dupls);

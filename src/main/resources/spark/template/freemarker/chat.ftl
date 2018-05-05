@@ -6,9 +6,9 @@
     <div class="row">
 		<div class="col-md-4">
             <h4><b>Suggestions</b></h4>
-                <button type="button" id="pRanker" class="rankers">Rank by price</button>
-                <button type="button" id="distRanker" class="rankers">Rank by distance</button>
-                <button type="button" id="resetOrder" class="rankers">Reset to initial order</button>
+                <button type="button" id="pRanker" class="rankers">Order by price</button>
+                <button type="button" id="distRanker" class="rankers">Order by distance</button>
+                <button type="button" id="resetOrder" class="rankers">Reset order</button>
                 <div id="suggestions">Suggestions</div>
                 <template id="suggestion">
                 <div class="card">
