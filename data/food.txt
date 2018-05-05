@@ -8,7 +8,6 @@ Fondue fondue
 Hot Dogs hotdog
 Hot Pot hotpot
 Kebab kebab
-Live/Raw Food raw_food
 Falafel falafel
 Tacos tacos
 Noodles noodles
@@ -18,14 +17,11 @@ Sandwiches sandwiches
 Seafood seafood
 Soup soup
 Steakhouses steak
-Venison venison
 Waffles waffles
 Acai Bowls acaibowls
 Bagels bagels
 Beer, Wine & Spirits beer_and_wine
 Bubble Tea bubbletea
-Chimney Cakes chimneycakes
-Cideries cideries
 Coffee & Tea coffee
 Cupcakes cupcakes
 Custom Cakes customcakes
@@ -37,5 +33,3 @@ Juice Bars & Smoothies juicebars
 Poke poke
 Patisserie/Cake Shop cakeshop
 Pretzels pretzels
-Shaved Ice shavedice
-Shaved Snow shavedsnow

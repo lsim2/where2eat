@@ -167,8 +167,11 @@ public class Server {
       UUID pollId = UUID.randomUUID();
       String lat = qm.value("lat");
       String lng = qm.value("lng");
+      
       double[] coordinates = { Double.parseDouble(lat),
           Double.parseDouble(lng) };
+      
+      
       Poll poll = new Poll(pollId, name, title, location, date, msg,
           coordinates);
       pollDb.put(pollId, poll);
@@ -244,9 +247,7 @@ public class Server {
       }
 
       // changed to include sortedLists
-      chatSocket.addRestaurantList(id, restList,
-          ranker.sortRests("price", restList, ans),
-          ranker.sortRests("distance", restList, ans));
+      chatSocket.addRestaurantList(id, restList);
 
       String name = qm.value("user");
       chatSocket.addName(id, name, ans);

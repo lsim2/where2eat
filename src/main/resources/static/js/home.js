@@ -5,6 +5,9 @@ let ractive = new Ractive({
 });
 let pollId = "";
 let postParameter = {};
+let places;
+
+let linkText;
 
 $("#flip").click(function(e){
     document.getElementById('name').value = "";
@@ -27,6 +30,24 @@ $("#submit").click(function(e) {
           return;
         }
     }
+    if(postParameter.lat == null || postParameter.lng == null){
+        alert("Please enter a valid location");
+        ractive.toggle( 'flipCard' );
+      return ;
+    }
+    // let valid = false;
+    // for(let place in places){
+    //   console.log(places[place]);
+    //   console.log(postParameter.location);
+    //   if(postParameter.location == places[place].location){
+    //     valid == true;
+    //     break;
+    //   }
+    // }
+    // if(valid == false){
+    //   console.log("falsity");
+    // }
+
     console.log(postParameter);
     $.post("/home", postParameter, response => {
         const responseObject = JSON.parse(response);
@@ -37,7 +58,7 @@ $("#submit").click(function(e) {
         document.getElementById('pollTitle').innerHTML = "Poll for " + title + " at " + location + " on " + date;
         document.getElementById('pollInfo').innerHTML = 'This is your URL:  ';
         let a = document.createElement('a');
-        let linkText = document.createTextNode('localhost:4567/poll/:id?'+pollId);
+        linkText = document.createTextNode('localhost:4567/poll/:id?'+pollId);
         a.appendChild(linkText);
         a.title = 'localhost:4567/poll/:id?'+pollId;
         a.href = '/poll/:id?'+pollId;
@@ -70,11 +91,11 @@ $("#update").click(function(e){
 function initAutocomplete() {
   let input = document.getElementById('location');
   let searchBox = new google.maps.places.SearchBox(input);
+
   // Listen for the event fired when the user selects a prediction and retrieve
   // more details for that place.
   searchBox.addListener('places_changed', function() {
-    let places = searchBox.getPlaces();
-
+    places = searchBox.getPlaces();
     if (places.length == 0) {
       return;
     }

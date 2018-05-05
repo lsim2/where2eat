@@ -17,12 +17,11 @@ import okhttp3.Request;
 import okhttp3.Request.Builder;
 import okhttp3.Response;
 
-// using AOuth 2.0 to access Yelp Fusion api
 
 public class YelpApi {
 	private String apiKey;
-	private static final String NORMAL_LIMIT = "30"; // suggestions per person
-	private static final String SORT = "distance"; // could also be rating, number of reviews, distance or
+	private static final String NORMAL_LIMIT = "30"; // num suggestions per person
+	private static final String SORT = "best_match"; // could also be rating, number of reviews, distance or
 	private static final Gson GSON = new Gson();
 
 	public YelpApi(String key) {

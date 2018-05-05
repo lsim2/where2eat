@@ -67,20 +67,27 @@ public class Ranker {
    *
    * @return the set of restaurants to use
    */
-  public Set<Restaurant> findTop10(List<Restaurant> list, Answer answer,
+  public List<Restaurant> findTop10(List<Restaurant> list, Answer answer,
       boolean three) {
-    list.sort(new PriceComparator());
-    list.sort(new DistComparator(answer));
+
     // methods which increment a restaurant's score based on these criteria
     checkRestrictions(list, answer);
     checkCuisines(list, answer);
     checkFoodTerms(list, answer);
-    // checkLocation(list, answer);
-    // checkPrice(list, answer);
-
+    checkPrice(list, answer);
+    checkLocation(list, answer);
+    list.sort(new PriceComparator());
+    list.sort(new DistComparator(answer));
+    list.sort(new ScoreComparator());
+    List<Restaurant> ret = new ArrayList<Restaurant>();
+    for (int a = 0; a < list.size() && a < 10; a++) {
+      Restaurant rest = list.get(a);
+      if (isInList(ret, rest) == null) {
+        ret.add(rest);
+      }
+    }
     // increments the top restaurant so that it shows up in the list
-    list.get(0).setScore(list.get(0).getScore() + INC);
-    Set<Restaurant> ret = new HashSet<Restaurant>(list);
+    ret.get(0).setScore(ret.get(0).getScore() + INC);
 
     return ret;
   }
@@ -100,7 +107,7 @@ public class Ranker {
 
     // loops through to find everyone's top10 restaurants
     for (Entry<Answer, List<Restaurant>> sugg : suggs) {
-      Set<Restaurant> rests = new HashSet<Restaurant>();
+      List<Restaurant> rests = new ArrayList<Restaurant>();
       if (suggs.size() > 1) {
         rests = findTop10(sugg.getValue(), sugg.getKey(), false);
       } else {
@@ -266,8 +273,10 @@ public class Ranker {
    */
   private void checkLocation(List<Restaurant> rests, Answer answer) {
     rests.sort(new DistComparator(answer));
+    int a = 10;
     for (int i = 0; i < rests.size() && i < 10; i++) {
-      rests.get(i).incrementScore();
+      rests.get(i).setScore(rests.get(i).getScore() + a);
+      a--;
     }
 
   }
