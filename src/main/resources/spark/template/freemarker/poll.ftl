@@ -17,13 +17,6 @@
       <link rel="stylesheet" href="/css/main.css">
 <link rel="stylesheet" href="/css/form.css">
 
-         <nav class="navbar navbar-fixed-top">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="/home">Where2Eat</a>
-    </div>
-  </div>
-</nav>
 </head>
 <br><br><br>
 <body>
