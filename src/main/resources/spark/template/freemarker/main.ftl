@@ -18,13 +18,6 @@
 		<link rel="stylesheet" href="/css/bootstrap-material-datetimepicker.css" />
 		<link href='http://fonts.googleapis.com/css?family=Roboto:400,500' rel='stylesheet' type='text/css'>
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-	<nav class="navbar navbar-fixed-top">
-	  <div class="container-fluid">
-	    <div class="navbar-header">
-	      <a class="navbar-brand" href="/home">Where2Eat</a>
-	    </div>
-	  </div>
-	</nav>
   </head>
 
   <body>

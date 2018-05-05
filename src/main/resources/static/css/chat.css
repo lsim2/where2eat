@@ -183,6 +183,7 @@ img {
   -moz-transition: all .5s ease;
   -ms-transition: all .5s ease;
   -o-transition: all .5s ease;
+  display: none;
 }
 
 .primary-font {
@@ -284,9 +285,9 @@ a:hover, a:active, a:focus {
 }
 
 #map {
-  margin-top: 100px; 
-  width: 400px;
-  height: 500px;
+  margin-top: 60px;
+  width: 780px;
+  height: 575px;
 }
 
 .popup {
@@ -337,5 +338,9 @@ a:hover, a:active, a:focus {
     transform:translate(50%, -50%) rotate(180deg);
     background:rgba(0,0,0,1);
     text-decoration:none;
+}
+
+#myChat {
+    margin-left:150%;
 }
 

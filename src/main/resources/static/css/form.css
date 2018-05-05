@@ -58,7 +58,8 @@ h3 {
 }
 
 .selectize-input.items.not-full.has-options.has-items div{
-  background-color:#f00 !important;
+  padding: 5px; 
+  background-color:#0094e4 !important;
 }
 
 .select {

@@ -1,14 +1,25 @@
+<head>
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
-<link rel='stylesheet prefetch' href='http://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.8.5/css/selectize.default.css'>
+
 <link rel='stylesheet prefetch' href='https://simeydotme.github.io/jQuery-ui-Slider-Pips/dist/css/jqueryui.min.css'>
 <link rel='stylesheet prefetch' href='https://simeydotme.github.io/jQuery-ui-Slider-Pips/dist/css/jquery-ui-slider-pips.min.css'>
-
+<link rel='stylesheet prefetch' href='http://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.8.5/css/selectize.default.css'>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.0/css/bootstrap-slider.css" />
 <link rel="stylesheet" href="/css/chat.css">
 <link rel="stylesheet" href="/css/form.css">
-
+<nav class="navbar navbar-fixed-top">
+	  <div class="container-fluid">
+	    <div class="navbar-header">
+	      <a class="navbar-brand" href="/home">Where2Eat</a>
+          <a class="navbar-brand" style="margin-left: 700px;" href="" id="shareURL" target="_blank">Share Poll &nbsp; |</a>
+          <a class="navbar-brand" data-popup-open="popup-1" href="javascript:{}" onclick="myF()">Change Preferences  &nbsp;|</a>
+          <a id="chat" class="navbar-brand" href="javascript:{}">Chat</a>
+	    </div>
+	  </div>
+	</nav>
+</head>
 <br><br>
 <div class="container bootstrap snippet">
     <div class="row">
@@ -56,9 +67,7 @@
 	    <!--stuff i added -->
 
     </div>
-    	<div class="col-md-3">
-    			<p><a href="" id="shareURL" target="_blank" style="color: black">Share the Poll URL!</a></p>
-    			<hr>
+    	<div id="myChat" class="col-md-3">
             <div class="chat-message" id="chat-message">
                 <ul id="chatMsgs" class="chat">
                 <li class="left clearfix">
@@ -118,14 +127,13 @@
   	<p hidden>Currently connected users</p>
   	<ul id="connectedUsrs" hidden></ul>
 	 </div>
-<button class="btn" data-popup-open="popup-1" onclick="myF()">Change my preferences</button>
 <div class="popup" data-popup="popup-1">
 <div class="popup-inner">
 <h3 id="pollTitle"></h3>
 <p id="pollInfo"></p>
 <div class="submit">
 <form id="form" method="POST" action="/chat/:id?${pollId}">
-<h2 id="title"><button type="button" class="goback btn">Go back</button><span id="username"></span>Choose your preferences</h2>
+<h2 id="title"><span id="username"></span>Choose your preferences</h2>
 <div class="ranking">
 <p><b>I'm willing to travel <i><span id="dist">12</span></i> mile(s).</b></p><br>
 <div id="flat-slider-vertical-2"></div>
@@ -169,6 +177,7 @@
      
 <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 <script src='https://simeydotme.github.io/jQuery-ui-Slider-Pips/dist/js/jquery-plus-ui.min.js'></script>
-<script src='https://simeydotme.github.io/jQuery-ui-Slider-Pips/dist/js/jquery-ui-slider-pips.js'></script>       
+<script src='https://simeydotme.github.io/jQuery-ui-Slider-Pips/dist/js/jquery-ui-slider-pips.js'></script> 
+<script src='http://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.8.5/js/standalone/selectize.min.js'></script>
 <script src="/js/chat.js"></script>
 <#include "main.ftl">

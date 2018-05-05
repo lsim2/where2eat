@@ -26,26 +26,26 @@ $(function() {
     $('[data-popup="' + targeted_popup_class + '"]').fadeOut(350);
     e.preventDefault();
     });
+    
+     $("#chat").on('click', function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        if ($('#myChat').css("margin-left") == "0px") {
+             $('#myChat').animate({'marginLeft':"150%"}, 500);
+             $('.chat-box').css('display', 'none');
+             $('#map').animate({'width': "780px"}, 500);
+        }
+        else {
+            $('#myChat').animate({'marginLeft':0, 'display':'block'}, 500);
+            $('.chat-box').css('display', 'block');
+            $('#map').animate({'width': "400px"}, 500);
+        }
+    });
 });
 
 
 $(function() {
     
-    const prevAns = JSON.parse(JSON.parse($("#prevAns").html()));
-    preferences = {
-        user: prevAns.userId,
-        cuisine: JSON.stringify(prevAns.cuisine),
-        restrictions: JSON.stringify(prevAns.restrictions),
-        misc: JSON.stringify(prevAns.foodTerms),
-        pollURL: window.location.href,
-        price:  prevAns.price,
-        startTime: "2pm",
-        endTime: "4pm",
-        distance: Math.round(parseFloat(prevAns.radius)*0.000621371192),
-        url: window.location.href
-    };
-    
-
   $('#cuisine').selectize({
       plugins: ['remove_button'],
       maxItems: 3,
