@@ -10,6 +10,7 @@ body {
 
 }
 
+
 #name {
 	background-color: white;
 	border-radius: 5px;
@@ -52,11 +53,6 @@ body {
 }
 
 
-#pollInfo {
-/*	background-color: #FFF0F5;
-	padding: 10px;
-	border-radius: 5px;*/
-}
 .contact-wrapper {
 	 position: absolute;
 	 top: 50%;
@@ -446,4 +442,6 @@ body {
     background:rgba(0,0,0,1);
     text-decoration:none;
 }
+
+
  
