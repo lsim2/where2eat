@@ -41,8 +41,10 @@ public class Server {
   public static Map<String, String> foodDb = new HashMap<>();
 
   private static final Gson GSON = new Gson();
-  private static final String YELPKEY = "gKGjR4vy8kXQAyKrBjuPXepYBqladSEtwSTm_NNshaMPebXqQkZsGLIOe6FSUESQIh_l-cSN5lIhxiQ3-mkCnr_orbJARb_cCSr3OlQs0Jxi21D-m8uiqoHJr1jVWnYx";
-
+  //private static final String YELPKEY = "gKGjR4vy8kXQAyKrBjuPXepYBqladSEtwSTm_NNshaMPebXqQkZsGLIOe6FSUESQIh_l-cSN5lIhxiQ3-mkCnr_orbJARb_cCSr3OlQs0Jxi21D-m8uiqoHJr1jVWnYx";
+  private static final String YELPKEY = "F291TzGm16HMb6ZoMS4j1azreUQJq9PHCLjoeNPcS33pOntIq"
+      + "SRpC-aO-cXuQ_8O2O8TM-RohICpxPAzXuTekf-T7i2Ktym"
+      + "LLCUTwTyEqJKsLm3XzmuWTSKPbzLdWnYx";
   void runSparkServer(int port) {
     readFiles();
     chatSocket = new ChatWebSocket();
@@ -63,7 +65,6 @@ public class Server {
     Spark.post("/validate", new resignInHandler());
     Spark.post("/chat/:id", new pollResHandler(), freeMarker);
     Spark.get("/chat/:id", new pollUniqueHandler(), freeMarker);
-    Spark.post("/prefill", new preFillHandler());
   }
 
   private static FreeMarkerEngine createEngine() {
@@ -186,8 +187,6 @@ public class Server {
       int distance = Math.min(Integer.parseInt(qm.value("distance")) * 1609,
           39999);
       String user = qm.value("user");
-      String startTime = qm.value("startTime");
-      String endTime = qm.value("endTime");
       String cuisineString = qm.value("cuisine");
       String restrictionsString = qm.value("restrictions");
       String miscString = qm.value("misc");
@@ -263,28 +262,7 @@ public class Server {
       return GSON.toJson(variables);
     }
   }
-  //      
-  /**
-   * Handle requests to the front page of our Stars website.
-   *
-   * @author lsim2
-   */
-  private static class preFillHandler implements Route {
-    @Override
-    public String handle(Request req, Response res) {
-      QueryParamsMap qm = req.queryMap();
-      String username = qm.value("user");
-      String url = qm.value("url");
-      UUID id = chatSocket.getUuid(url);
-      Answer previousAns = chatSocket.getPreviousAns(id, username);
-      Map<String, Object> variables = ImmutableMap.of("prevAns", "");
-      if (previousAns != null) {
-        variables = ImmutableMap.of("prevAns", previousAns);
-      }
-      
-      return GSON.toJson(variables);
-    }
-  }
+
   
   private static class NameGetHandler implements TemplateViewRoute {
     @Override

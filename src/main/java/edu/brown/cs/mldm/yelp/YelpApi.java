@@ -121,6 +121,7 @@ public class YelpApi {
 	}
 
 	public List<Restaurant> makeRequest(String requestURL) {
+	    System.out.println(requestURL);
 		OkHttpClient client2 = new OkHttpClient();
 		List<Restaurant> results = new ArrayList<>();
 		Request request2 = new Builder()
@@ -141,8 +142,10 @@ public class YelpApi {
 			}
 
 		} catch (IOException e) {
+		    e.printStackTrace();
 			System.out.println("ERROR: Error making database query!");
 		} catch (NullPointerException e) {
+		    e.printStackTrace();
 			System.out.println("ERROR: Error making database query!");
 		}
 		return results;

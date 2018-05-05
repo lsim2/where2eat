@@ -31,8 +31,9 @@ h3 {
 .ranking {
     position: relative; 
     float: left; 
-    padding: 15px; 
+    padding: 10px; 
     margin-left: 90px; 
+    margin-top: 10px; 
 }
 
 .myForm {
@@ -177,4 +178,7 @@ button:hover {
 
 .submitBtn {
     margin-top: 100px; 
+    position: fixed;
+    top: 500px;
+    left: 500px; 
 }
