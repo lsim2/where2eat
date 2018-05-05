@@ -10,6 +10,40 @@ body {
 
 }
 
+#name {
+	background-color: white;
+	border-radius: 5px;
+	padding: 4px;
+	color: #737173;
+}
+
+#title {
+	background-color: white;
+	border-radius: 5px;
+	padding: 4px;
+	color: #737173;
+}
+
+#location {
+	background-color: white;
+	border-radius: 5px;
+	padding: 4px;
+	color: #737173;
+}
+
+#date-format {
+	background-color: white;
+	border-radius: 5px;
+	padding: 4px;
+	color: #737173;
+}
+
+#message {
+	background-color: white;
+	border-radius: 5px;
+	padding: 4px;
+	color: 	#737173;
+}
 .contact-wrapper {
 	 position: absolute;
 	 top: 50%;

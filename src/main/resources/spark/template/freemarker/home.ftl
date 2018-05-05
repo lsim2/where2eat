@@ -25,7 +25,7 @@
                 <div class="top-wrapper">
                   <div class="input">
                     <label style="color: white">Name</label>
-                    <input type="text" name="name" id="name" autocomplete="off" placeholder="Your name" required />
+                    <input type="text" class="home_input" name="name" id="name" autocomplete="off" placeholder="Your name" required />
                   </div>
                   <div class="input">
                     <label style="color: white">Title</label>
@@ -63,10 +63,10 @@
 <div class="popup" data-popup="popup-1">
 <div class="popup-inner">
 <h2>Poll created!</h2>
-<h3 id="pollTitle"></h3>
-<p id="pollInfo"></p>
-<div class="submit">
-  <a id="update" class="submit-card">Change poll information</a>
+	<h3 id="pollTitle"></h3>
+	<p id="pollInfo"></p>
+	<div class="submit">
+	  <a id="update" class="submit-card">Change poll information</a>
 </div>
 <a class="popup-close" data-popup-close="popup-1">x</a>
 </div>
