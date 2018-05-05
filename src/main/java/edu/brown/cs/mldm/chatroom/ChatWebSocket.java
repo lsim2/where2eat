@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -22,7 +24,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import edu.brown.cs.mldm.main.Server;
 import edu.brown.cs.mldm.model.Message;
+import edu.brown.cs.mldm.yelp.Answer;
 import edu.brown.cs.mldm.yelp.Restaurant;
 
 //TODO: ask why this annotation is necessary <-- what does it even do?
@@ -42,8 +46,14 @@ public class ChatWebSocket {
   }
 
   // called in server
-  public void addName(String name) {
+  public void addName(UUID id, String name, Answer ans) {
     myChatroomMaps.getidsToName().put(nextId, name);
+    Map<UUID, Map<String, Answer>> usersDb = myChatroomMaps.getUsersDb();
+    if(!usersDb.containsKey(id)) {
+      usersDb.put(id, new HashMap<String, Answer>());
+    }
+    usersDb.get(id).put(name, ans);
+    
   }
 
   // called in server
@@ -62,12 +72,12 @@ public class ChatWebSocket {
 
     JsonObject jObject = new JsonObject();
     jObject.addProperty("type", MESSAGE_TYPE.CONNECT.ordinal());
+    
 
     JsonObject payLoadObject = new JsonObject();
     payLoadObject.addProperty("id", nextId);
     payLoadObject.addProperty("myName",
         myChatroomMaps.getidsToName().get(nextId));
-
     jObject.add("payload", payLoadObject);
     myChatroomMaps.getSessionToId().put(session, nextId);
     // TODO: update connect on client
@@ -244,11 +254,22 @@ public class ChatWebSocket {
         myChatroomMaps.getUrlToMsgs().put(receivedRoomURL,
             new ArrayList<Message>());
       }
-
+      
+      Map<String, Answer> userPreferences = myChatroomMaps.getUsersDb().get(getUuid(receivedRoomURL));
+      Answer preferences = userPreferences.get(receivedName);
+      Date now = new Date();
+      Message msg = new Message();
+      msg.setContent(preferences.toString());
+      msg.setSenderName(receivedName);
+      msg.setDate(now);
+      msg.setSenderId(receivedId);
+      
       Queue<Session> myQueue = myChatroomMaps.getUrlToQueueOfSessions()
           .get(receivedRoomURL);
       myQueue.add(session);
-
+      List<Message> msgsInRoom = myChatroomMaps.getUrlToMsgs()
+          .get(receivedRoomURL);
+      msgsInRoom.add(msg);
       addPreviousMessages(session, receivedRoomURL);
       return;
     } else if (msgType == MESSAGE_TYPE.UPDATERESTS.ordinal()) {
@@ -330,7 +351,10 @@ public class ChatWebSocket {
           } else if (rest.getVoteType() == VOTE_TYPE.DOWN.ordinal()) {
             restFromList.incrementDownVotes();
           }
+         
           rest = restFromList;
+          rest.resetVote();
+          System.out.println("Up: " + rest.getUpVotes() + " Down: " + rest.getDownVotes());
           updatedRestaurantList.add(rest);
         } catch (Exception e) {
           e.printStackTrace();

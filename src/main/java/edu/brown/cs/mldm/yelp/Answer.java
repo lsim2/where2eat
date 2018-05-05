@@ -47,5 +47,12 @@ public class Answer {
 	public List<String> getRestrictions() {
 		return restrictions;
 	}
+	
+	public String toString() {
+	  StringBuilder sb = new StringBuilder();
+	  sb.append(this.userId);
+	  sb.append(" has chosen the following:");
+	  return sb.toString();
+	}
 
 }

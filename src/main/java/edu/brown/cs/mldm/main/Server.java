@@ -36,7 +36,6 @@ public class Server {
 
   private static Map<UUID, Poll> pollDb = new HashMap<>();
   private static Map<UUID, List<Answer>> answersDb = new HashMap<>();
-
   private static Map<String, String> cuisinesDb = new HashMap<>();
   private static Map<String, String> restrictionsDb = new HashMap<>();
   private static Map<String, String> foodDb = new HashMap<>();
@@ -97,7 +96,6 @@ public class Server {
       QueryParamsMap qm = req.queryMap();
       String name = qm.value("user");
       System.out.println("the name is: " + name);
-      chatSocket.addName(name);
       Map<String, Object> variables = ImmutableMap.of("title", "Chatroom");
       return new ModelAndView(variables, "chatroom/chatroom.ftl");
     }
@@ -231,7 +229,7 @@ public class Server {
         answersDb.put(id, new ArrayList<Answer>());
       }
       answersDb.get(id).add(ans);
-
+      
       // processing with the algorithm:
       YelpApi yelpApi = new YelpApi(YELPKEY);
       Map<Answer, List<Restaurant>> results = yelpApi
@@ -251,7 +249,8 @@ public class Server {
           ranker.sortRests("distance", restList, ans));
 
       String name = qm.value("user");
-      chatSocket.addName(name);
+      chatSocket.addName(id, name, ans);
+      
 
       Map<String, Object> variables = ImmutableMap.of("title", "Where2Eat",
           "user", user, "restaurants",
@@ -286,5 +285,6 @@ public class Server {
       res.body(stacktrace.toString());
     }
   }
+  
 
 }

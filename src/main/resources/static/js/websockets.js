@@ -12,7 +12,7 @@ const VOTE_TYPE = {
     NONE: 0, 
     UP: 1,
     DOWN: 2
-}''
+};
 // note DELETE is deleting an already disconnected socket
 
 let conn;
@@ -235,7 +235,6 @@ const setup_chatter = () => {
         console.log("werw");
         myId = data.payload.id;
         myName = data.payload.myName;
-
         let payLoad = {"name": myName, "id": myId, "roomURL": window.location.href}; 
         let jsonObject = { "type": MESSAGE_TYPE.ADDTOROOM, "payload": payLoad} 
         let jsonString = JSON.stringify(jsonObject)
@@ -255,18 +254,6 @@ const setup_chatter = () => {
           let txtId = myIds[i];
           let txt = myContent[i];
           let nameTxt = myNames[i];
-            let temp = document.getElementById("left");
-            if (nameTxt == myName) {
-                temp = document.getElementById("right");
-            }
-            temp.content.querySelector('img').src = 'https://api.adorable.io/avatars/50/'+nameTxt+'@adorable.png';
-            temp.content.querySelector(".user").innerHTML = nameTxt;
-            temp.content.querySelector(".time").innerHTML = " " + date;
-            temp.content.querySelector(".msg").innerHTML = txt;
-            let clone = document.importNode(temp.content, true);
-            document.getElementById("chatMsgs").appendChild(clone);
-            let chatMsg = document.getElementById("chat-message");
-            chatMsg.scrollTop = chatMsg.scrollHeight;
           //$('#chatMsgs').append("<li>" + date + " and id: " + txtId + " & name: "+ nameTxt + " and txt: " + txt +"</li>");
           addChatMsg(nameTxt,date,txt);
         }
@@ -290,6 +277,7 @@ const setup_chatter = () => {
         for (let i = 0; i< newRanking.length; i++) {
             let restaurant = JSON.parse(newRanking[i]);
             newList.push(restaurant);
+            restaurants[restaurant.id].voteType = VOTE_TYPE.NONE;
         }
         updateCards(newList);
         break;
