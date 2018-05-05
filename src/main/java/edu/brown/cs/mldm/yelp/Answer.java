@@ -57,7 +57,7 @@ public class Answer {
 	  StringBuilder sb = new StringBuilder();
 	  sb.append("<h5>" + userId + "'s Preferences:</h5>");
 	  sb.append("<b>Price</b>: " + priceSigns[price] + "<br>");
-	  sb.append("<b>Distance</b>: " + (int) (radius/1609.34+1) + " miles<br>");
+	  sb.append("<b>Distance</b>: " + Math.round(radius/1609.34) + " miles<br>");
 	  addToHTML(sb, cuisine, "Cuisines", Server.getCuisinesMap());
 	  addToHTML(sb, restrictions, "Food Restrictions", Server.getRestrictionsMap());
 	  addToHTML(sb, foodTerms, "Others", Server.getFoodTermsMap());

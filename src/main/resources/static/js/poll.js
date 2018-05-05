@@ -78,32 +78,18 @@ $(document).keydown(
             e.preventDefault();
         if ($('#sign-in').val()=="") {
             alert("Please sign in first!");
-    } else {
-        currentUser = $('#sign-in').val();
-        preferences.user = currentUser;
-        $('#username').html("Hello " + $('#sign-in').val() + "! ");
-        $('.flip-container .flipper').closest('.flip-container').toggleClass('hover');
-        $('.flip-container .flipper').css('transform, rotateY(180deg)');
-    }
+        } else {
+            currentUser = $('#sign-in').val();
+            oldUser(currentUser);
+        }
         }
     });
 $('.flip').click(function() {
     if ($('#sign-in').val()=="") {
         alert("Please sign in first!");
     } else {
-        // alert("BEFORE COOKIE IS: " + document.cookie);
-        // $.post('/setCookies', responseJSON => {
-        //     alert("SUCCESSFULYL SENT : "+ document.cookie);
-        // });
-        // alert("AFTER SENT : "+ document.cookie);
-        // send post reuqest to back-end...
-
-
         currentUser = $('#sign-in').val();
-        preferences.user = currentUser;
-        $('#username').html("Hello " + $('#sign-in').val() + "! ");
-        $('.flip-container .flipper').closest('.flip-container').toggleClass('hover');
-        $('.flip-container .flipper').css('transform, rotateY(180deg)');
+        oldUser(currentUser);
     }
 });
 
@@ -124,7 +110,6 @@ $('.goback').click(function() {
 
 $('#signin-form').submit(function(){
     //TODO: make post request here and fill in the information if the user has signed in before!
-
     $(".flip").attr("disabled",false);
 });
 
@@ -138,3 +123,36 @@ $('#toResults').click(function() {
     }
     $("#form").submit();
 });
+
+function oldUser(currentUser) {
+    const postParameter = {"user": currentUser, "url": window.location.href};
+    $.post("/validate", postParameter, response => {
+        const responseObject = JSON.parse(response);
+        console.log(responseObject);
+        const userAnswer = responseObject.answer;
+        console.log(userAnswer);
+        if (responseObject.oldUser == true) {
+            preferences = {
+                user: userAnswer.userId,
+                cuisine: JSON.stringify(userAnswer.cuisine),
+                restrictions: JSON.stringify(userAnswer.restrictions),
+                misc: JSON.stringify(userAnswer.foodTerms),
+                pollURL: window.location.href,
+                price:  userAnswer.price,
+                startTime: "2pm",
+                endTime: "4pm",
+                distance: Math.round(parseFloat(userAnswer.radius)*0.000621371192),
+                url: window.location.href
+            };
+            for (let key in preferences) {
+              $('#form').append("<input name='" + key +"' value='" + preferences[key] +"' type='hidden'/>");
+            }
+            $("#form").submit();
+        } else {
+            preferences.user = currentUser;
+            $('#username').html("Hello " + $('#sign-in').val() + "! ");
+            $('.flip-container .flipper').closest('.flip-container').toggleClass('hover');
+            $('.flip-container .flipper').css('transform, rotateY(180deg)');
+        }
+    });
+}

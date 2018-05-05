@@ -64,6 +64,7 @@ public class Server {
     Spark.get("/poll/:id", new pollUniqueHandler(), freeMarker);
     Spark.post("/chat/:id", new pollResHandler(), freeMarker);
     Spark.get("/chat/:id", new pollUniqueHandler(), freeMarker);
+    Spark.post("/validate", new resignInHandler());
 
   }
 
@@ -254,12 +255,34 @@ public class Server {
       
 
       Map<String, Object> variables = ImmutableMap.of("title", "Where2Eat",
-          "user", user, "restaurants",
-          restaurants, "pollId", id);
+          "user", user, "restaurants", restaurants, "pollId", id);
       return new ModelAndView(variables, "chat.ftl");
     }
   }
 
+  /**
+   * Handle requests to the front page of our Stars website.
+   *
+   * @author lsim2
+   */
+  private static class resignInHandler implements Route {
+    @Override
+    public String handle(Request req, Response res) {
+      QueryParamsMap qm = req.queryMap();
+      String username = qm.value("user");
+      String url = qm.value("url");
+      UUID id = chatSocket.getUuid(url);
+      Map<UUID, Map<String, Answer>> usersDb = chatSocket.getMaps().getUsersDb();
+      Map<String, Object> variables = ImmutableMap.of("oldUser", false);
+      if (usersDb.get(id).containsKey(username)) {
+        Answer ans = usersDb.get(id).get(username);
+        variables = ImmutableMap.of("oldUser", true, "answer", ans, "id", id);
+      }
+      
+      return GSON.toJson(variables);
+    }
+  }
+  
   private static class NameGetHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(Request request, Response response) {

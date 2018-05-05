@@ -55,6 +55,10 @@ public class ChatWebSocket {
     usersDb.get(id).put(name, ans);
     
   }
+  
+  public ChatroomMaps getMaps() {
+    return this.myChatroomMaps;
+  }
 
   // called in server
   public void addRestaurantList(UUID id, List<Restaurant> restaurants) {
@@ -380,7 +384,7 @@ public class ChatWebSocket {
   }
 
   // added to ease adding the restaurants
-  private UUID getUuid(String receivedRoomURL) {
+  public UUID getUuid(String receivedRoomURL) {
     int index = receivedRoomURL.lastIndexOf('?') + 1;
     String uuidString = receivedRoomURL.substring(index,
         receivedRoomURL.length());
