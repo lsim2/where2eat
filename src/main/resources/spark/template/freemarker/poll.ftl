@@ -46,22 +46,14 @@
 </div>
 <div class="back">
 <form id="form" method="POST" action="/chat/:id?${pollId}">
-<h2 id="title"><span id="username"></span>Choose your preferences</h2><button type="button" class="goback btn">Go back</button>
+<h2 id="title"><button type="button" class="goback btn">Go back</button><span id="username"></span>Choose your preferences</h2>
+<div class="ranking">
+<p><b>I'm willing to travel <i><span id="dist">12</span></i> mile(s).</b></p><br>
+<div id="flat-slider-vertical-2"></div>
+</div>
 <div class="ranking">
 <p><b>My preferred price range is:</b></p><br>
 <div id="flat-slider-vertical-1"></div>
-</div>
-<div class="ranking">
-<p><b>I'm available from </b><i><span id="starttime">2pm</span></i><b> to </b><i><span id="endtime">4pm</span></i> </p><br>
-<div id="flat-slider"></div>
-</div>
-<div class="ranking">
-<p><b>Cuisine preferences (choose up to 3)</b>:</p>
-    <select id="cuisine" class="select" multiple>
-      <#list cuisines?keys as id>
-            <option value="${id}">${cuisines[id]}</option>
-      </#list>
-    </select>
 </div>
 <div class="ranking">
 <p><b>Any dietary restrictions?</b></p>
@@ -72,8 +64,12 @@
     </select>
 </div>
 <div class="ranking">
-<p><b>I'm willing to travel <i><span id="dist">12</span></i> mile(s).</b></p>
-<div id="flat-slider-vertical-2"></div>
+<p><b>Cuisine preferences (choose up to 3)</b>:</p>
+    <select id="cuisine" class="select" multiple>
+      <#list cuisines?keys as id>
+            <option value="${id}">${cuisines[id]}</option>
+      </#list>
+    </select>
 </div>
 <div class="ranking">
 <p><b>Any additional preferences?</b></p>
@@ -83,7 +79,7 @@
       </#list>
     </select>
 </div>
-<div class="ranking">
+<div class="ranking submitBtn">
 <button type="button" id="toResults" class="btn">Submit</button>
 </div>
 </form>

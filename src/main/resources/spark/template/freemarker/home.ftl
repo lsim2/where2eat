@@ -15,7 +15,7 @@
 
   <div id="container"></div>
   <script id="template">
-    <div id="flip" class="flip-card">Clear form</div>
+    <div id="newForm" class="flip-card">New form</div>
     <div class="contact-wrapper">
         <div class="envelope {{ flipCard ? 'active' : '' }}">
           <div class="back paper"></div>

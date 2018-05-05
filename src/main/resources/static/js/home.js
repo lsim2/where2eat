@@ -17,6 +17,15 @@ $("#flip").click(function(e){
     document.getElementById('message').value = "";
 });
 
+$("#newForm").click(function(e){
+    document.getElementById('name').value = "";
+    document.getElementById('title').value = "";
+    document.getElementById('location').value = "";
+    document.getElementById('date-format').value = "";
+    document.getElementById('message').value = "";
+    ractive.toggle( 'flipCard' );
+});
+
 $("#submit").click(function(e) {
     postParameter.name = document.getElementById('name').value;
     postParameter.title = document.getElementById('title').value;

@@ -56,6 +56,15 @@ public class ChatWebSocket {
     
   }
   
+  public Answer getPreviousAns(UUID id, String name) {
+    myChatroomMaps.getidsToName().put(nextId, name);
+    Map<UUID, Map<String, Answer>> usersDb = myChatroomMaps.getUsersDb();
+    if(!usersDb.containsKey(id) || !usersDb.get(id).containsKey(name)) {
+      return null;
+    } 
+    return usersDb.get(id).get(name);
+  }
+  
   public ChatroomMaps getMaps() {
     return this.myChatroomMaps;
   }
