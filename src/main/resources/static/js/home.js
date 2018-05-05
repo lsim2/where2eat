@@ -62,6 +62,10 @@ $("#submit").click(function(e) {
         a.title = 'localhost:4567/poll/:id?'+pollId;
         a.href = '/poll/:id?'+pollId;
         a.target = "_blank";
+        let div = document.getElementById('pollInfo');
+        while(div.firstChild){
+            div.removeChild(div.firstChild);
+        }
         document.getElementById('pollInfo').appendChild(a);
     });
      setTimeout(function(){
