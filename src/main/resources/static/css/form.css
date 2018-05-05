@@ -31,8 +31,9 @@ h3 {
 .ranking {
     position: relative; 
     float: left; 
-    padding: 15px; 
+    padding: 10px; 
     margin-left: 90px; 
+    margin-top: 10px; 
 }
 
 .myForm {
@@ -58,7 +59,8 @@ h3 {
 }
 
 .selectize-input.items.not-full.has-options.has-items div{
-  background-color:#f00 !important;
+  padding: 5px; 
+  background-color:#0094e4 !important;
 }
 
 .select {
@@ -176,4 +178,7 @@ button:hover {
 
 .submitBtn {
     margin-top: 100px; 
+    position: fixed;
+    top: 500px;
+    left: 500px; 
 }

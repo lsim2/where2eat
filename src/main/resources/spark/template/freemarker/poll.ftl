@@ -75,7 +75,7 @@
       </#list>
     </select>
 </div>
-<div class="ranking submitBtn">
+<div class="submitBtn">
 <button type="button" id="toResults" class="btn">Submit</button>
 </div>
 </div>
