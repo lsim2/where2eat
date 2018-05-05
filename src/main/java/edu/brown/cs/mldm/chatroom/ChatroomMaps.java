@@ -9,13 +9,15 @@ import java.util.UUID;
 import org.eclipse.jetty.websocket.api.Session;
 
 import edu.brown.cs.mldm.model.Message;
+import edu.brown.cs.mldm.yelp.Answer;
 import edu.brown.cs.mldm.yelp.Restaurant;
 
 /*
  * Holds all the different hashmaps for the ChatWebSocket
  */
 public class ChatroomMaps {
-	private final Map<Integer, String> idsToName = new HashMap<Integer, String>();
+	private final Map<Integer, String> idsToName = new HashMap<>();
+	private final Map<UUID, Map<String,Answer>> usersDb = new HashMap<>();
 	private final Map<Session, Integer> sessionToId = new HashMap<Session, Integer>();
 	private final Map<Session, String> sessionToURL = new HashMap<Session, String>();
 	private final Map<UUID, List<Restaurant>> uuidToRestaurants = new HashMap<>();
@@ -54,6 +56,10 @@ public class ChatroomMaps {
 	
 	public Map<String, Queue<Session>> getUrlToQueueOfSessions() {
 		return urlToQueueOfSessions;
+	}
+	
+	public Map<UUID, Map<String, Answer>> getUsersDb() {
+	  return usersDb;
 	}
 	
 	

@@ -16,8 +16,17 @@
                    <img class="food" src="https://www.shareicon.net/download/2016/09/02/824429_fork_512x512.png" alt="Food pic" style="width:110px; height: 100px;">
                     <h5 class="restaurant-name"><b>Name</b></h5> 
                     <p class="categories" style="font-size:10px"></p>
-                    <i onclick="thumbUp(this)" class="fa thumb fa-thumbs-up"></i>
-                    <i onclick="thumbDown(this)" class="fa thumb fa-thumbs-down"></i>
+                    <span class="fa-stack">
+                    <span onclick="thumbUp(this)" class="fa thumb fa-thumbs-up fa-stack-2x"></span>
+                    <strong class="fa-stack-1x upNum" style="margin-top:24px; font-size:70%">0   
+                    </strong>
+                    </span>
+                    <span class="fa-stack">
+                     <span onclick="thumbDown(this)" class="fa thumb fa-thumbs-down fa-stack-2x"></span>
+                    <strong class="fa-stack-1x downNum" style="margin-top:24px; font-size:70%">0
+                    </strong>
+                    </span>
+                    
                   </div>
                 </div>
                 </template>

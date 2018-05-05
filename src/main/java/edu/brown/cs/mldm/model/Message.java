@@ -2,6 +2,8 @@ package edu.brown.cs.mldm.model;
 
 import java.util.Date;
 
+import edu.brown.cs.mldm.yelp.Restaurant;
+
 public class Message {
 
 	private String content;
@@ -43,5 +45,11 @@ public class Message {
 	public final void setDate(final Date date) {
 		this.date = date;
 	}
+	
+	 @Override
+	 public boolean equals(Object msg) {
+
+	    return this.getContent().equals(((Message)  msg).getContent());
+	  }
 
 }

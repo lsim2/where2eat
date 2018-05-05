@@ -36,10 +36,9 @@ public class Server {
 
   private static Map<UUID, Poll> pollDb = new HashMap<>();
   private static Map<UUID, List<Answer>> answersDb = new HashMap<>();
-
-  private static Map<String, String> cuisinesDb = new HashMap<>();
-  private static Map<String, String> restrictionsDb = new HashMap<>();
-  private static Map<String, String> foodDb = new HashMap<>();
+  public static Map<String, String> cuisinesDb = new HashMap<>();
+  public static Map<String, String> restrictionsDb = new HashMap<>();
+  public static Map<String, String> foodDb = new HashMap<>();
 
   private static final Gson GSON = new Gson();
   private static final String YELPKEY = "gKGjR4vy8kXQAyKrBjuPXepYBqladSEtwSTm_NNshaMPebXqQkZsGLIOe6FSUESQIh_l-cSN5lIhxiQ3-mkCnr_orbJARb_cCSr3OlQs0Jxi21D-m8uiqoHJr1jVWnYx";
@@ -56,16 +55,14 @@ public class Server {
     FreeMarkerEngine freeMarker = createEngine();
 
     // note: there should NOT be a chatroom get handler
-    Spark.post("/chatroom", new ChatroomPostHandler(), freeMarker);
     Spark.get("/name", new NameGetHandler(), freeMarker);
 
     Spark.get("/home", new homeFrontHandler(), freeMarker);
     Spark.post("/home", new homeSubmitHandler());
-    Spark.get("/date", new dateFrontHandler(), freeMarker);
     Spark.get("/poll/:id", new pollUniqueHandler(), freeMarker);
+    Spark.post("/validate", new resignInHandler());
     Spark.post("/chat/:id", new pollResHandler(), freeMarker);
     Spark.get("/chat/:id", new pollUniqueHandler(), freeMarker);
-
   }
 
   private static FreeMarkerEngine createEngine() {
@@ -88,20 +85,6 @@ public class Server {
     reader.readFiles("data/restrictions.txt", restrictionsDb);
   }
 
-  /**
-   * Handles requests to the starting query page.
-   */
-  private static class ChatroomPostHandler implements TemplateViewRoute {
-    @Override
-    public ModelAndView handle(Request req, Response response) {
-      QueryParamsMap qm = req.queryMap();
-      String name = qm.value("user");
-      System.out.println("the name is: " + name);
-      chatSocket.addName(name);
-      Map<String, Object> variables = ImmutableMap.of("title", "Chatroom");
-      return new ModelAndView(variables, "chatroom/chatroom.ftl");
-    }
-  }
 
   /**
    * Handle requests to the front page of our Stars website.
@@ -116,18 +99,6 @@ public class Server {
     }
   }
 
-  /**
-   * Handle requests to the front page of our Autocorrect website.
-   *
-   * @author lsim2
-   */
-  private static class dateFrontHandler implements TemplateViewRoute {
-    @Override
-    public ModelAndView handle(Request req, Response res) {
-      Map<String, Object> variables = ImmutableMap.of("title", "Where2Eat");
-      return new ModelAndView(variables, "date.ftl");
-    }
-  }
 
   /**
    * Handle requests to the front page of our Autocorrect website.
@@ -138,7 +109,6 @@ public class Server {
     @Override
     public ModelAndView handle(Request req, Response res) {
       String id = req.raw().getQueryString();
-      System.out.println("my id: " + id);
       Poll poll = pollDb.get(UUID.fromString((id)));
       Map<String, Object> variables = ImmutableMap.<String, Object>builder()
           .put("title", "Where2Eat")
@@ -234,11 +204,12 @@ public class Server {
         answersDb.put(id, new ArrayList<Answer>());
       }
       answersDb.get(id).add(ans);
-
+      
       // processing with the algorithm:
       YelpApi yelpApi = new YelpApi(YELPKEY);
       Map<Answer, List<Restaurant>> results = yelpApi
           .getPossibleRestaurants(answersDb.get(id));
+      
       Ranker ranker = new Ranker();
 
       List<Restaurant> restList = new ArrayList<Restaurant>(
@@ -252,15 +223,38 @@ public class Server {
       chatSocket.addRestaurantList(id, restList);
 
       String name = qm.value("user");
-      chatSocket.addName(name);
+      chatSocket.addName(id, name, ans);
+      
 
       Map<String, Object> variables = ImmutableMap.of("title", "Where2Eat",
-          "user", user, "restaurants",
-          restaurants, "pollId", id);
+          "user", user, "restaurants", restaurants, "pollId", id);
       return new ModelAndView(variables, "chat.ftl");
     }
   }
 
+  /**
+   * Handle requests to the front page of our Stars website.
+   *
+   * @author lsim2
+   */
+  private static class resignInHandler implements Route {
+    @Override
+    public String handle(Request req, Response res) {
+      QueryParamsMap qm = req.queryMap();
+      String username = qm.value("user");
+      String url = qm.value("url");
+      UUID id = chatSocket.getUuid(url);
+      Map<UUID, Map<String, Answer>> usersDb = chatSocket.getMaps().getUsersDb();
+      Map<String, Object> variables = ImmutableMap.of("oldUser", false);
+      if (usersDb.get(id).containsKey(username)) {
+        Answer ans = usersDb.get(id).get(username);
+        variables = ImmutableMap.of("oldUser", true, "answer", ans, "id", id);
+      }
+      
+      return GSON.toJson(variables);
+    }
+  }
+  
   private static class NameGetHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(Request request, Response response) {
@@ -286,6 +280,18 @@ public class Server {
       }
       res.body(stacktrace.toString());
     }
+  }
+  
+  public static Map<String, String> getCuisinesMap() {
+    return cuisinesDb; 
+  }
+  
+  public static Map<String, String> getRestrictionsMap() {
+    return restrictionsDb; 
+  }
+  
+  public static Map<String, String> getFoodTermsMap() {
+    return foodDb; 
   }
 
 }

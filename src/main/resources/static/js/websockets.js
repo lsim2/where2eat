@@ -4,7 +4,14 @@ const MESSAGE_TYPE = {
   UPDATE: 2,
   DELETE: 3,
   UPDATEALLNAMES: 4,
-  ADDTOROOM: 5
+  ADDTOROOM: 5,
+  UPDATERESTS: 6,
+};
+
+const VOTE_TYPE = {
+    NONE: 0, 
+    UP: 1,
+    DOWN: 2
 };
 // note DELETE is deleting an already disconnected socket
 
@@ -14,6 +21,10 @@ let myName;
 let regSuggestions;
 //keeps track of all the restaurants displayed on the screen
 let allRests;
+let restaurants; 
+let votes = {up:[], down:[]}
+let upvotes = {};
+let downvotes = {};
 
 let ranking = {}; 
 let myMap = new Map();
@@ -62,8 +73,8 @@ const setup_chatter = () => {
 
         $('#suggestions').empty();
         // update all uniqque users in chat
-        let suggestions = data.suggestions;
         regSuggestions = data.suggestions;
+        updateRestaurantList(data.rests);
 
         let centerLat = parseFloat(JSON.parse(data.rests[0]).coordinates.latitude);
       let centerLng = parseFloat(JSON.parse(data.rests[0]).coordinates.longitude);
@@ -74,14 +85,13 @@ const setup_chatter = () => {
         zoom: 18,
         center: center
       });
-
+            
       let bounds = new google.maps.LatLngBounds();
       allRests = data.rests.slice(0,5);
       let currRests = data.rests.slice(0,5);
       for(let i=0;i<currRests.length;i++){
         const restaurant = JSON.parse(data.rests[i]);
         drawRest(restaurant);
-
         let pos = {lat: parseFloat(restaurant.coordinates.latitude), lng: parseFloat(restaurant.coordinates.longitude)};
         let marker = new google.maps.Marker({
           title: restaurant.name,
@@ -172,8 +182,6 @@ const setup_chatter = () => {
             let endPos = new google.maps.LatLng(parseFloat(r.coordinates.latitude), parseFloat(r.coordinates.longitude));
             let start = marker.position;
             let end = endPos;
-            console.log(start);
-            console.log(end);
             let request = {
                 origin:start,
                 destination:end,
@@ -199,15 +207,9 @@ const setup_chatter = () => {
         break;
 
       case MESSAGE_TYPE.CONNECT:
-        //alert("CONNECTING COOKIE IS : " + document.cookie);
-          // do get request (and the get request should end up with the server verifiying us
-          // if we signed in before ) and the
-
         // sending our info to the server, so the server can put us in the right room
-        console.log("werw");
         myId = data.payload.id;
         myName = data.payload.myName;
-
         let payLoad = {"name": myName, "id": myId, "roomURL": window.location.href}; 
         let jsonObject = { "type": MESSAGE_TYPE.ADDTOROOM, "payload": payLoad} 
         let jsonString = JSON.stringify(jsonObject)
@@ -215,8 +217,6 @@ const setup_chatter = () => {
         break;
 
       case MESSAGE_TYPE.ADDTOROOM:
-        console.log("connected and my id is: " + data.payload.id);
-
         let myDates = data.payload.dates;
         let myIds = data.payload.ids;
         let myContent = data.payload.content;
@@ -227,18 +227,6 @@ const setup_chatter = () => {
           let txtId = myIds[i];
           let txt = myContent[i];
           let nameTxt = myNames[i];
-            let temp = document.getElementById("left");
-            if (nameTxt == myName) {
-                temp = document.getElementById("right");
-            }
-            temp.content.querySelector('img').src = 'https://api.adorable.io/avatars/50/'+nameTxt+'@adorable.png';
-            temp.content.querySelector(".user").innerHTML = nameTxt;
-            temp.content.querySelector(".time").innerHTML = " " + date;
-            temp.content.querySelector(".msg").innerHTML = txt;
-            let clone = document.importNode(temp.content, true);
-            document.getElementById("chatMsgs").appendChild(clone);
-            let chatMsg = document.getElementById("chat-message");
-            chatMsg.scrollTop = chatMsg.scrollHeight;
           addChatMsg(nameTxt,date,txt);
         }
         break;
@@ -251,9 +239,18 @@ const setup_chatter = () => {
         txt = data.payload.text;
         date = data.payload.date;
         nameTxt = data.payload.name;
-        console.log("received an update msg and the msg is: " + txt);
-        console.log("received an update msg and the msg id is: " + txtId);
         addChatMsg(nameTxt,date,txt);
+        break;
+      case MESSAGE_TYPE.UPDATERESTS:
+        let newRanking = data.payload.ranking;
+        let newList = [];
+        for (let i = 0; i< newRanking.length; i++) {
+            let restaurant = JSON.parse(newRanking[i]);
+            newList.push(restaurant);
+            restaurants[restaurant.id].voteType = VOTE_TYPE.NONE;
+        }
+        updateCards(newList);
+        break;
     }
   };
 }
@@ -262,8 +259,6 @@ const setup_chatter = () => {
 
 
 const send_chat = chat => {
-  console.log("we received the chat and it is: " + chat);
-
   let payLoad = {"name": myName, "id": myId, "text": chat, "roomURL": window.location.href};
   let jsonObject = { "type": MESSAGE_TYPE.SEND, "payload": payLoad}
   let jsonString = JSON.stringify(jsonObject)
@@ -285,8 +280,6 @@ function initMap() {
 
 
 $("#pRanker").click( function() {
-  
-  console.log("price ranking");
   let priceRests = allRests.slice().sort(priceRanker);
    $("#suggestions").empty();
         for (let i = 0; i < priceRests.length && i < 5; i++) {
@@ -296,7 +289,6 @@ $("#pRanker").click( function() {
 
 });
 $("#distRanker").click( function() {
-  console.log("distance ranking");
   let distRests = allRests.slice().sort(distRanker);
    $("#suggestions").empty();
         for (let i = 0; i < distRests.length && i < 5; i++) {
@@ -347,9 +339,125 @@ function addChatMsg(nameTxt,date,txt) {
         chatMsg.scrollTop = chatMsg.scrollHeight;
 }
 
-function drawRest(restaurant){
-        console.log(restaurant);
+function thumbUp(x) {
+    event.preventDefault();
+    let id = x.id; 
+    $(".fa.thumb.fa-thumbs-down." + id).removeClass('active');
+    x.classList.add("active");
+    ranking[id]++;
+    if (!(id in upvotes)) { upvotes[id] = 0 }
+    upvotes[id]++;
+    restaurants[id].voteType = VOTE_TYPE.UP;
+    votes.up.push(id);
+    for (i = 0; i < votes.down.length; i++) {
+        if (votes.down[i] == id) {
+            votes.down.splice(i, 1);
+            break;
+        }
+    }
+    updateRestList();
+}
+
+function thumbDown(x) {
+    event.preventDefault();
+    let id = x.id; 
+    $(".fa.thumb.fa-thumbs-up." + id).removeClass('active');
+    x.classList.add("active");
+    ranking[id]--;
+    if (!(id in downvotes)) { downvotes[id] = 0 }
+    downvotes[id]++;
+    restaurants[id].voteType = VOTE_TYPE.DOWN;
+    votes.down.push(id);
+    for (i = 0; i < votes.up.length; i++) {
+        if (votes.up[i] == id) {
+            votes.up.splice(i, 1);
+            break;
+        }
+    }
+    updateRestList();
+}
+
+
+function updateRestList() {
+     let currRanking = Object.keys(ranking).sort(function(a,b){return ranking[a]-ranking[b]});
+     let restListToSend = [];
+     for(i= currRanking.length-1; i >= 0; i--) {
+        let id = currRanking[i];
+        let restaurant = restaurants[id];
+        restListToSend.push(restaurant);
+         
+     }
+    sendRestUpdateMsg(restListToSend);
+}
+
+function updateCards(currRanking) {
+     $("#suggestions").empty();
+    for(i= 0; i < currRanking.length; i++) {
+        let restaurant = currRanking[i];
           let temp = document.getElementById("suggestion");
+          if (restaurant.image_url != "" ) {
+            temp.content.querySelector('.food').src = restaurant.image_url;
+          } else {
+              temp.content.querySelector('.food').src = "https://www.shareicon.net/download/2016/09/02/824429_fork_512x512.png";
+          }
+            temp.content.querySelector(".restaurant-name").innerHTML = restaurant.name;
+            if (restaurant.categories.length < 2) {
+                 temp.content.querySelector(".categories").innerHTML = restaurant.categories[0].title;
+            } else{
+                temp.content.querySelector(".categories").innerHTML = restaurant.categories[0].title + ", " + restaurant.categories[1].title;
+            }
+            let thumbsUp = temp.content.querySelector(".fa.thumb.fa-thumbs-up");
+            let thumbsDown = temp.content.querySelector(".fa.thumb.fa-thumbs-down");
+            thumbsUp.classList = "";
+            thumbsUp.classList.add("fa","thumb","fa-thumbs-up", "fa-stack-2x", restaurant.id);
+            thumbsUp.id = restaurant.id;
+            thumbsDown.classList = "";
+            thumbsDown.classList.add("fa","thumb","fa-thumbs-down", "fa-stack-2x", restaurant.id);
+            thumbsDown.id = restaurant.id;
+            if (votes.up.indexOf(restaurant.id) > -1) {
+                thumbsUp.classList.add("active");
+            } else if (votes.down.indexOf(restaurant.id) > -1) {
+                thumbsDown.classList.add("active");
+            }
+            temp.content.querySelector(".fa-stack-1x.upNum").id = "thumbUp-"+ restaurant.id;
+            temp.content.querySelector(".fa-stack-1x.downNum").id = "thumbDown-"+ restaurant.id
+
+            let clone = document.importNode(temp.content, true);
+            $('#suggestions').append(clone);
+        
+            document.getElementById("thumbUp-"+ restaurant.id).innerHTML = restaurant.upVotes;
+            document.getElementById("thumbDown-"+ restaurant.id).innerHTML = restaurant.downVotes;
+            
+        }
+}
+
+function sendRestUpdateMsg(restListToSend){
+  let payLoad = {
+      "name": myName, 
+      "id": myId, 
+      "text": "", 
+      "roomURL": window.location.href,
+      "voteRank": restListToSend,
+      "upvotes": upvotes,
+      "downvotes": downvotes
+  };
+  let jsonObject = { "type": MESSAGE_TYPE.UPDATERESTS, "payload": payLoad}
+  let jsonString = JSON.stringify(jsonObject)
+  conn.send(jsonString);
+}
+
+// pass in data.rests as dataList
+function updateRestaurantList(dataList) {
+    restaurants = {};
+    for (i = 0; i < dataList.length; i++) {
+        restaurant = JSON.parse(dataList[i]);
+        restaurants[restaurant.id] = restaurant;
+    }
+}
+
+function drawRest(restaurant){
+          let temp = document.getElementById("suggestion");
+            ranking[restaurant.id] = 0;
             temp.content.querySelector('.food').src = restaurant.image_url;
             temp.content.querySelector(".restaurant-name").innerHTML = restaurant.name;
             if (restaurant.categories.length < 2) {
@@ -362,6 +470,5 @@ function drawRest(restaurant){
             temp.content.querySelector(".fa.thumb.fa-thumbs-down").classList.add(restaurant.id);
           temp.content.querySelector(".fa.thumb.fa-thumbs-down").id = restaurant.id;
             let clone = document.importNode(temp.content, true);
-            console.log(clone);
             $('#suggestions').append(clone);
 }
