@@ -415,9 +415,7 @@ function updateCards(currRanking) {
             } else if (votes.down.indexOf(restaurant.id) > -1) {
                 thumbsDown.classList.add("active");
             }
-            console.log(restaurant.upVotes);
-            console.log(downvotes[restaurant.id]);
-            console.log(restaurant.id + "restaurant: "+ restaurant.name);
+            console.log(restaurant.name +" : "+ restaurant.downVotes + " : " + downvotes[restaurant.id]);
 
             let uVotes = restaurant.upVotes;
             if ((restaurant.id in upvotes)) { uVotes = upvotes[restaurant.id] }
@@ -428,6 +426,7 @@ function updateCards(currRanking) {
 
             let clone = document.importNode(temp.content, true);
             $('#suggestions').append(clone);
+             console.log(restaurant.name +" : "+ restaurant.downVotes + " : " + downvotes[restaurant.id]);
             document.getElementById("thumbUp-"+ restaurant.id).innerHTML = uVotes;
             document.getElementById("thumbDown-"+ restaurant.id).innerHTML = dVotes;
 

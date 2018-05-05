@@ -63,7 +63,6 @@ public class Server {
     Spark.post("/validate", new resignInHandler());
     Spark.post("/chat/:id", new pollResHandler(), freeMarker);
     Spark.get("/chat/:id", new pollUniqueHandler(), freeMarker);
-    Spark.post("/prefill", new preFillHandler());
   }
 
   private static FreeMarkerEngine createEngine() {
@@ -224,19 +223,11 @@ public class Server {
       chatSocket.addRestaurantList(id, restList);
 
       String name = qm.value("user");
-      Answer previousAns = chatSocket.getPreviousAns(id, name);
       chatSocket.addName(id, name, ans);
       
-      String prevAns = GSON.toJson(ans);
-      if (previousAns != null) {
-        prevAns = GSON.toJson(prevAns);
-      }
 
-      Map<String, Object> variables = ImmutableMap.<String, Object>builder()
-          .put("title", "Where2Eat")
-          .put("user", user).put("restaurants", restaurants).put("pollId", id)
-          .put("cuisines", cuisinesDb).put("restrictions", restrictionsDb)
-          .put("food", foodDb).put("prevAns", prevAns).build();
+      Map<String, Object> variables = ImmutableMap.of("title", "Where2Eat",
+          "user", user, "restaurants", restaurants, "pollId", id);
       return new ModelAndView(variables, "chat.ftl");
     }
   }
@@ -258,28 +249,6 @@ public class Server {
       if (usersDb.get(id).containsKey(username)) {
         Answer ans = usersDb.get(id).get(username);
         variables = ImmutableMap.of("oldUser", true, "answer", ans, "id", id);
-      }
-      
-      return GSON.toJson(variables);
-    }
-  }
-  //      
-  /**
-   * Handle requests to the front page of our Stars website.
-   *
-   * @author lsim2
-   */
-  private static class preFillHandler implements Route {
-    @Override
-    public String handle(Request req, Response res) {
-      QueryParamsMap qm = req.queryMap();
-      String username = qm.value("user");
-      String url = qm.value("url");
-      UUID id = chatSocket.getUuid(url);
-      Answer previousAns = chatSocket.getPreviousAns(id, username);
-      Map<String, Object> variables = ImmutableMap.of("prevAns", "");
-      if (previousAns != null) {
-        variables = ImmutableMap.of("prevAns", previousAns);
       }
       
       return GSON.toJson(variables);

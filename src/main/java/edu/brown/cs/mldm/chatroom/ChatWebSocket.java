@@ -380,6 +380,15 @@ public class ChatWebSocket {
 
   }
 
+  // private void updateVotes(Restaurant rest, String direction) {
+  // Map<String, Restaurant> dVotes = myChatroomMaps.getDownvotes();
+  // Map<String, Restaurant> upVotes = myChatroomMaps.getUpvotes();
+  //
+  // if (direction.equals("up")) {
+  // if(upVotes.containsKey(rest.getId()))
+  // }
+  // }
+
   private List<Restaurant> getRestaurantList(String receivedRoomURL) {
     int index = receivedRoomURL.lastIndexOf('?') + 1;
     String uuidString = receivedRoomURL.substring(index,

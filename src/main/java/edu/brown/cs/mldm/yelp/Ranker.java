@@ -52,7 +52,6 @@ public class Ranker {
           suggestions.get(key).add(nRest);
         }
       }
-
     }
     return rankBestMatches(suggestions, dupls);
 
@@ -86,7 +85,9 @@ public class Ranker {
       }
     }
     // increments the top restaurant so that it shows up in the list
-    ret.get(0).setScore(ret.get(0).getScore() + INC);
+    if (!ret.isEmpty()) {
+      ret.get(0).setScore(ret.get(0).getScore() + INC);
+    }
 
     return ret;
   }
