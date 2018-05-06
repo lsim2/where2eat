@@ -510,9 +510,10 @@ function removeCard(x) {
             delete ranking[id];
             for (let restaurantId in remainingRests) {
                if (!(restaurantId in ranking)) {
-                   ranking[restaurantId] = 1;
+                   ranking[restaurantId] = -1;
                    delete remainingRests[restaurantId];
                    updateRestList();
+                   ranking[restaurantId] = 0;
                    break;
                }
             }

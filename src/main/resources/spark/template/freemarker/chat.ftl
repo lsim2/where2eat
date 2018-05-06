@@ -18,7 +18,7 @@
             <ul style="margin-left: 250px;" class="dropdown-menu">
               <li> <a class="dropdown-item" id="pRanker" href="javascript:{}">Order by Price</a></li>
               <li><a class="dropdown-item" id="distRanker" href="javascript:{}">Order by Distance</a></li>
-              <li><a class="dropdown-item" id="resetOrder" href="javascript:{}">Reset Order</a></li>
+              <li><a class="dropdown-item" id="resetOrder" href="javascript:{}">Order by Votes</a></li>
             </ul>
           <a class="navbar-brand" style="margin-left: 400px;" href="" id="shareURL" target="_blank">Share Poll &nbsp; |</a>
           <a class="navbar-brand" data-popup-open="popup-1" href="javascript:{}" onclick="myF()">Change Preferences  &nbsp;|</a>
@@ -148,7 +148,7 @@
 <div class="ranking price">
 <p><b>My preferred price range is:</b></p><br>
 <div id="flat-slider-vertical-1"></div>
-</div> 
+</div>
 <div class="ranking restrictions">
 <p><b>Any dietary restrictions?</b></p>
     <select id="restrictions" class="select" multiple>
