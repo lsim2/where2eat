@@ -222,10 +222,19 @@ public class Server {
       chatSocket.addRestaurantList(id, restList);
 
       String name = qm.value("user");
+      Answer previousAns = chatSocket.getPreviousAns(id, name);
       chatSocket.addName(id, name, ans);
 
-      Map<String, Object> variables = ImmutableMap.of("title", "Where2Eat",
-          "user", user, "restaurants", restaurants, "pollId", id);
+      String prevAns = GSON.toJson(ans);
+      if (previousAns != null) {
+        prevAns = GSON.toJson(prevAns);
+      }
+
+      Map<String, Object> variables = ImmutableMap.<String, Object>builder()
+          .put("title", "Where2Eat")
+          .put("user", user).put("restaurants", restaurants).put("pollId", id)
+          .put("cuisines", cuisinesDb).put("restrictions", restrictionsDb)
+          .put("food", foodDb).put("prevAns", prevAns).build();
       return new ModelAndView(variables, "chat.ftl");
     }
   }
