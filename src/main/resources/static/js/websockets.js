@@ -145,7 +145,10 @@ const setup_chatter = () => {
           });
 
           // directions
-          displayRoute(JSON.parse(data.rests[0]));
+          if(data.rests[0]!=null){
+            displayRoute(JSON.parse(data.rests[0]));
+          }
+
 
 
         // end directions.
