@@ -25,9 +25,10 @@ let restaurants;
 let votes = {up:[], down:[]}
 let upvotes = {};
 let downvotes = {};
-
 let ranking = {};
-let myMap = new Map();
+let map;
+let selfpos;
+  let directionsDisplay;
 
 // Setup the WebSocket connection for live updating of scores.
 const setup_chatter = () => {
@@ -81,7 +82,7 @@ const setup_chatter = () => {
 
       let center = {lat: centerLat, lng: centerLng};
 
-      let map = new google.maps.Map(document.getElementById('map'), {
+      map = new google.maps.Map(document.getElementById('map'), {
         zoom: 18,
         center: center
       });
@@ -89,7 +90,7 @@ const setup_chatter = () => {
       let bounds = new google.maps.LatLngBounds();
      // allRests = data.rests.slice(0,5);
       let currRests = data.rests.slice(0,5);
-     allRests = [];
+      allRests = [];
       // updateCards(allRests);
       for(let i=0;i<currRests.length;i++){
         const restaurant = JSON.parse(data.rests[i]);
@@ -146,14 +147,14 @@ const setup_chatter = () => {
       if (navigator.geolocation) {
 
        navigator.geolocation.getCurrentPosition(function(position) {
-         let pos = {
+         selfpos = {
            lat: position.coords.latitude,
            lng: position.coords.longitude
          };
 
          let marker = new google.maps.Marker({
            title: "You!",
-           position: new google.maps.LatLng(pos.lat, pos.lng),
+           position: new google.maps.LatLng(selfpos.lat, selfpos.lng),
            animation: google.maps.Animation.DROP,
            map: map,
            icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
@@ -170,33 +171,12 @@ const setup_chatter = () => {
               herewindow.close();
 
           });
-          let directionsDisplay;
-            let directionsService = new google.maps.DirectionsService();
 
-            directionsDisplay = new google.maps.DirectionsRenderer(
-              {
-                suppressMarkers: true,
-                preserveViewport: true
-              });
+          // directions
+          displayRoute(JSON.parse(currRests[0]));
 
 
-            directionsDisplay.setMap(map);
-            let r = JSON.parse(data.rests[0]);
-            //let endPos = {lat: parseFloat(r.coordinates.latitude), lng: parseFloat(r.coordinates.longitude)};
-            let endPos = new google.maps.LatLng(parseFloat(r.coordinates.latitude), parseFloat(r.coordinates.longitude));
-            let start = marker.position;
-            let end = endPos;
-            let request = {
-                origin:start,
-                destination:end,
-                travelMode: google.maps.DirectionsTravelMode.DRIVING
-            };
-            directionsService.route(request, function(response, status) {
-                if (status === google.maps.DirectionsStatus.OK) {
-                    directionsDisplay.setDirections(response);
-                }
-            });
-
+        // end directions.
          //map.setCenter(pos);
        }, function() {
          handleLocationError(true, infoWindow, map.getCenter());
@@ -379,7 +359,15 @@ function updateRestList() {
         restListToSend.push(restaurant);
      }
      console.log("Top: " + currRanking[0]);
+
     sendRestUpdateMsg(restListToSend);
+    console.log("her" + restaurants[currRanking[0]].name);
+    if(selfpos != undefined){
+      //displayRoute(restaurants[currRanking[0]]);
+      displayRoute(restListToSend[0]);
+    }
+
+
 }
 
 function updateCards(currRanking) {
@@ -454,6 +442,10 @@ function updateRestaurantList(dataList) {
         restaurants[restaurant.id] = restaurant;
        // allRests.push(restaurant);
     }
+    if(selfpos != undefined){
+      displayRoute(JSON.parse(dataList[0]));
+    }
+    console.log("Top: " + JSON.parse(dataList[0]).name);
 }
 
 function drawRest(restaurant){
@@ -472,4 +464,37 @@ function drawRest(restaurant){
           temp.content.querySelector(".fa.thumb.fa-thumbs-down").id = restaurant.id;
             let clone = document.importNode(temp.content, true);
             $('#suggestions').append(clone);
+}
+
+function displayRoute(endRest){
+
+    if(directionsDisplay != undefined){
+      directionsDisplay.setMap(null);
+    }
+    let directionsService = new google.maps.DirectionsService();
+
+    directionsDisplay = new google.maps.DirectionsRenderer(
+      {
+        suppressMarkers: true,
+        preserveViewport: true
+      });
+    directionsDisplay.setMap(map);
+    let r = endRest;
+    console.log(selfpos.lat);
+    console.log(selfpos.lng);
+
+
+    let endPos = new google.maps.LatLng(parseFloat(r.coordinates.latitude), parseFloat(r.coordinates.longitude));
+    let start = new google.maps.LatLng(parseFloat(selfpos.lat), parseFloat(selfpos.lng));
+    let end = endPos;
+    let request = {
+        origin:start,
+        destination:end,
+        travelMode: google.maps.DirectionsTravelMode.DRIVING
+    };
+    directionsService.route(request, function(response, status) {
+        if (status === google.maps.DirectionsStatus.OK) {
+            directionsDisplay.setDirections(response);
+        }
+    });
 }
