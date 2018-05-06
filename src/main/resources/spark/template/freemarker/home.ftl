@@ -58,13 +58,13 @@
   <a class="btn" data-popup-open="popup-1" href="#" style="display:none">Open Popup #1</a>
 	<div class="popup" data-popup="popup-1">
 		<div class="popup-inner">
-			<h3>Poll created!</h3>
+			<h3 style="text-align:center"><b>Poll created!</b></h3><br>
 			<h4 id="pollTitle"></h4>
 			<br>
 			<div id = "urlInfo" style="text-align: center">
 				<p> This is your URL: </p>
 				<h4 id="pollInfo"></h4>
-        <p> Send this to your friends to invite them! </p>
+        <p> Fill and share this link with your friends! </p>
 			</div>
 			<br>
 			<div class="submit" style="text-align: right">

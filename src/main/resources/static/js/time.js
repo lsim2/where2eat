@@ -17,7 +17,8 @@ $(document).ready(function()
                 enabledHours: enabledHoursArr,
                 stepping: 15,
                 minuteStep: 30,
-                shortTime: true
+                shortTime: true,
+                okText: "next"
 			});
 			$.material.init()
 		});

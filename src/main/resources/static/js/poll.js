@@ -80,8 +80,10 @@ $(document).keydown(
         if ($('#sign-in').val()=="") {
             alert("Please sign in first!");
         } else {
-              currentUser = $('#sign-in').val();
+            if ($('.flip-container .flipper').closest('.flip-container').attr("class") != "flip-container hover") {
+             currentUser = $('#sign-in').val();
               validate(currentUser);
+            }
         }
         }
     });
