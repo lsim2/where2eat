@@ -84,7 +84,7 @@ const setup_chatter = () => {
 //markers start here
       let center;
 
-      if(data.rests[0]) !=null){
+      if(data.rests[0] !=null){
         let centerLat = parseFloat(JSON.parse(data.rests[0]).coordinates.latitude);
         let centerLng = parseFloat(JSON.parse(data.rests[0]).coordinates.longitude);
         center = {lat: centerLat, lng: centerLng};

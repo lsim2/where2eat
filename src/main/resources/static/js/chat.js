@@ -31,14 +31,16 @@ $(function() {
         e.stopPropagation();
         e.preventDefault();
         if ($('#myChat').css("margin-left") == "0px") {
-             $('#myChat').animate({'marginLeft':"150%"}, 500);
+              $('#myChat').css('display', 'none');
              $('.chat-box').css('display', 'none');
+             $('#myChat').animate({'marginLeft':"150%"}, 500);
              $('#map').animate({'width': "780px"}, 500);
         }
         else {
             $('#myChat').animate({'marginLeft':0, 'display':'block'}, 500);
             $('.chat-box').css('display', 'block');
             $('#map').animate({'width': "400px"}, 500);
+            $('#myChat').css('display', 'block');
         }
     });
 });

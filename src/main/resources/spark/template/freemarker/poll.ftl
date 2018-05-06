@@ -44,7 +44,7 @@
 <form id="form" method="POST" action="/chat/:id?${pollId}">
 <h2 id="title"><button type="button" class="goback btn">Go back</button><span id="username"></span>Choose your preferences</h2>
 <div class="ranking distance">
-<p><b>I'm willing to travel <i><span id="dist">12</span></i> mile(s).</b></p><br>
+<p><b>I'm willing to travel <i><span id="dist">12</span></i> mile(s) from: <br><span style="font-size: 80%">${location}</span>.</b></p>
 <div id="flat-slider-vertical-2"></div>
 </div>
 <div class="ranking price">
