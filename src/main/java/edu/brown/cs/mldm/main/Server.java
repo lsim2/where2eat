@@ -191,8 +191,7 @@ public class Server {
       answersDb.get(id).add(ans);
 
       // processing with the algorithm:
-      YelpApi yelpApi = new YelpApi(YELPKEY);
-      Map<Answer, List<Restaurant>> results = yelpApi
+      Map<Answer, List<Restaurant>> results = YelpApi
           .getPossibleRestaurants(answersDb.get(id));
 
       Ranker ranker = new Ranker();

@@ -26,17 +26,16 @@ import okhttp3.Response;
  */
 
 public class YelpApi {
-  private String apiKey; // yelp api key
-  private static final String NORMAL_LIMIT = "30"; // num suggestions per person
-  private static final String SORT = "best_match"; // how to sort yelp re
+  private static final String API_KEY ="gKGjR4vy8kXQAyKrBjuPXepYBqladSEtwSTm_NNshaMP"
+      + "ebXqQkZsGLIOe6FSUESQIh_l-cSN5lIhxiQ3-mkCnr_orbJARb_cCSr3OlQs0Jxi21D"
+      + "-m8uiqoHJr1jVWnYx" ; // yelp api key needed to make requests 
+  private static final String NORMAL_LIMIT = "30"; // num suggestions per person to be sent to ranker
+  private static final String SORT = "best_match"; // how to sort yelp results
   private static final Gson GSON = new Gson();
 
-  public YelpApi(String key) {
-    apiKey = key;
-  }
-
+  
   /**
-   * This method takes in a list of answers and returns a map that from each
+   * This method takes in a list of answers and returns a map from each
    * answer to a list of relevant restaurants for that answer. This map is then
    * given to the ranking algorithm to get the best possible restaurants for the
    * entire group.
@@ -45,16 +44,14 @@ public class YelpApi {
    *          list of answers
    * @return map of answers to restaurants for that answer.
    */
-  public Map<Answer, List<Restaurant>> getPossibleRestaurants(
+  public static Map<Answer, List<Restaurant>> getPossibleRestaurants(
       List<Answer> answers) {
     Map<Answer, List<Restaurant>> results = new HashMap<>();
     if (answers == null || answers.size() == 0) {
       return results;
     }
     for (Answer answer : answers) {
-      List<Restaurant> smallSet = this.getRestaurantSet(answer);
-      // results.add(smallSet);
-
+      List<Restaurant> smallSet = getRestaurantSet(answer);
       results.put(answer, smallSet);
     }
 
@@ -65,25 +62,25 @@ public class YelpApi {
    * This method takes in an instance of the Answer class and uses the
    * preferences specified in the Answer to search for relevant restaurant
    * results. It calls the make request method on the url that is built up based
-   * on the specified preferences. If no radius is specified or itis invalid,
+   * on the specified preferences. If no radius is specified or it is invalid,
    * the default radius is set. The same is done for price. It looks through all
    * cuisine, food and restriction preferences and adds these to the url as
    * categories that should be searched for by the Yelp Api. It also includes
    * the users location. It then makes a request and returns the list of
    * restaurants that are possible matches for that particular answer. It tries
    * to satisy as many preferences as possible and returns the list in order of
-   * best match.
+   * best match. If no results are found, it just searches for a generic set of 
+   * restaurants within the radius and price range. 
    * 
    * @param answer
    *          Answer for a single user.
    * @return list of possible restaurants for that given user.
    */
-  public List<Restaurant> getRestaurantSet(Answer answer) {
-    // String location = "Providence, RI";
+  public static List<Restaurant> getRestaurantSet(Answer answer) {
     String terms = "restaurants"; // makes sure that search results only include
                                   // restaurants, no other types of businesses
     String price = "1"; // price 1 = $, 2 = $$, 3 = $$$, 4 = $$$$
-    String radius = "39999"; // ~25 miles - max radius
+    String radius = "39999"; // ~25 miles - max radius (default)
     String categories = "";
 
     List<Restaurant> restaurants = new ArrayList<>();
@@ -95,6 +92,7 @@ public class YelpApi {
 
     double[] coordinates = answer.getCoordinates();
 
+    // sets up url and backup url in case no results are found
     StringBuilder url = new StringBuilder();
     StringBuilder backupurl = new StringBuilder();
 
@@ -138,7 +136,6 @@ public class YelpApi {
         }
       }
       // add all dietary restrictions to the url so that they can be searched
-      // for
       if (!answer.getRestrictions().isEmpty()) {
         for (String category : answer.getRestrictions()) {
           categories = categories + category + ",";
@@ -162,11 +159,11 @@ public class YelpApi {
     url.append("&radius=" + radius);
     backupurl.append("&radius=" + radius);
 
-    List<Restaurant> originalReq = this.makeRequest(url.toString());
+    List<Restaurant> originalReq = makeRequest(url.toString());
     if (originalReq.size() > 0) {
       return originalReq;
     } else {
-      return this.makeRequest(backupurl.toString());
+      return makeRequest(backupurl.toString());
     }
 
   }
@@ -182,14 +179,15 @@ public class YelpApi {
    *          url for querying yelp api
    * @return List of restaurants that match the criteria.
    */
-  public List<Restaurant> makeRequest(String requestURL) {
+  public static List<Restaurant> makeRequest(String requestURL) {
     OkHttpClient client2 = new OkHttpClient();
     List<Restaurant> results = new ArrayList<>();
+    // makes request to api 
     Request request2 = new Builder()
         .url("https://api.yelp.com/v3/businesses/search?" + requestURL
             + "&limit=" + NORMAL_LIMIT + "&sort_by="
             + SORT)
-        .get().addHeader("authorization", "Bearer" + " " + apiKey)
+        .get().addHeader("authorization", "Bearer" + " " + API_KEY)
         .addHeader("cache-control", "no-cache")
         .addHeader("postman-token", "b5fc33ce-3dad-86d7-6e2e-d67e14e8071b")
         .build();

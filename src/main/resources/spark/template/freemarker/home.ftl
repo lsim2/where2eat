@@ -29,7 +29,7 @@
                     <input type="text" class="home_input" name="name" id="name" autocomplete="off" placeholder="Your name" required />
                   </div>
                   <div class="input">
-                    <label style="color: white">Title</label>
+                    <label style="color: white">Event Title</label>
                     <input type="text" name="title" id="title" autocomplete="off" placeholder="e.g: lunch, dinner, etc..." required/>
                   </div>
                   <div class="input">

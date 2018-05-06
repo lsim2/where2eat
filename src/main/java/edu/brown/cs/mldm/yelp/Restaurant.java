@@ -9,6 +9,7 @@ import java.util.Set;
 
 public class Restaurant {
 
+  // restaurants can either have no vote, be voted up or voted down. 
   private static enum VOTE_TYPE {
     NONE, UP, DOWN
   }
@@ -37,7 +38,7 @@ public class Restaurant {
   /**
    * Returns the unique business ID of the restaurant.
    * 
-   * @return
+   * @return String representing business ID
    */
   public String getId() {
     return id;
@@ -46,26 +47,18 @@ public class Restaurant {
   /**
    * Returns the name of the restaurant.
    * 
-   * @return
+   * @return name of restaurant 
    */
   public String getName() {
     return name;
   }
-  /**
-   * This method will return the location of the restaurant: City, State (might
-   * get rid of this)
-   * 
-   * @return
-   */
-  // public String getLocation(){
-  // return location;
-  // }
+
 
   /**
    * Returns an array of doubles of size 2 representing the lat/lon coordinates
    * of the restaurant. [lat, lon]
    * 
-   * @return
+   * @return array of double representing coordinates. 
    */
   public double[] getCoordinates() {
 
@@ -79,7 +72,7 @@ public class Restaurant {
    * Returns a number between 1 and 4 depending on how expensive the restaurant
    * is. 1 - $ 2 - $$ 3 - $$$ 4 - $$$$
    * 
-   * @return
+   * @return price of restaurant
    */
   public int getPrice() {
 
@@ -92,7 +85,7 @@ public class Restaurant {
 
   /**
    * Returns a set of the categories that the restaurant satisfies. eg: italian,
-   * mexican, indpak, etc...
+   * mexican, indpak, vegan, pizza etc...
    * 
    * @return
    */
@@ -105,14 +98,19 @@ public class Restaurant {
     return cat;
   }
 
-  /**
-   * Returns a double between 0-5 depending on how well the restaurant is rated,
+/**
+ * Returns a double between 0-5 depending on how well the restaurant is rated,
    * 0 is worst, 5 is best.
-   */
+ * @return double representing rating of restaurant
+ */
   public double getRating() {
     return rating;
   }
 
+  /**
+   * Returns address of the restaurant in the format to be displayed in. 
+   * @return String representing address. 
+   */
   public String getAddress() {
     String addr = "";
     for (String str : (List<String>) location.get("display_address")) {
@@ -121,6 +119,10 @@ public class Restaurant {
     return addr;
   }
 
+  /**
+   * Returns whether or not the restaurant is currently open. 
+   * @return true if restaurant is open, false otherwise. 
+   */
   public boolean isOpen() {
     if (is_closed.equals("false")) {
       return true;
@@ -129,6 +131,10 @@ public class Restaurant {
     }
   }
 
+  /**
+   * Returns whether restaurant is open at a given time. 
+   * @return true/false depending on whether open
+   */
   public String getOpenAt() {
     return open_at;
   }
@@ -139,19 +145,19 @@ public class Restaurant {
   }
 
   /**
-   * Compares true if restaurants have the same name
+   * Compares two Restaurants. Two restaurants are equal if their business ids are equal. 
    *
-   * @param obj
-   * @return
+   * @param obj restaurant to compare to. 
+   * @return boolean representing whether the restaurants are equal. 
    */
   @Override
   public boolean equals(Object rest) {
-
-    // return this.getCoordinates()[0] == rest.getCoordinates()[0]
-    // && this.getCoordinates()[1] == rest.getCoordinates()[1];
     return this.getId().equals(((Restaurant) rest).getId());
   }
 
+  /**
+   * Overrides hashcode. 
+   */
   @Override
   public int hashCode() {
     return Objects.hash(this.getId());
@@ -182,6 +188,11 @@ public class Restaurant {
     score++;
   }
 
+  /**
+   * Returns a set of dietary restrictions that the user specified, if any. 
+   * Returns an empty set if none are specified. 
+   * @return set of restrictions. 
+   */
   public Set<String> getRestrictions() {
     Set<String> result = new HashSet<>();
     Set<String> restrictions = new HashSet<>(
@@ -198,12 +209,16 @@ public class Restaurant {
     return result;
   }
 
+  /**
+   * Returns a string representing url of image of restaurant. 
+   * @return image url 
+   */
   public String getImageUrl() {
     return image_url;
   }
 
   /**
-   * @return the distance
+   * @return the distance from initial users specified location
    */
   public double getDistance() {
     return dist;
@@ -217,38 +232,71 @@ public class Restaurant {
     this.dist = distance;
   }
 
+  /**
+   * Returns the number of upvotes for this restaurant. 
+   * @return number of upvotes for restaurant. 
+   */
   public int getUpVotes() {
     return this.upVotes;
   }
 
+  /**
+   * Returns the number of downvotes for this restaurant. 
+   * @return number of downvotes for restaurant. 
+   */
   public int getDownVotes() {
     return this.downVotes;
   }
 
+  /**
+   * Increases upvotes by 1. 
+   */
   public void incrementUpVotes() {
     this.upVotes++;
   }
 
+  /**
+   * Increases downvotes by 1
+   */
   public void incrementDownVotes() {
     this.downVotes++;
   }
 
+  /**
+   * Sets number of upvotes of restaurant. 
+   * @param votes
+   */
   public void setUpVotes(int votes) {
     upVotes = votes;
   }
 
+  /**
+   * Sets number of downvotes of restaurant. 
+   * @param votes
+   */
   public void setDownVotes(int votes) {
     downVotes = votes;
   }
 
+  /**
+   * Returns net vote score of restaurant
+   * @return net number of votes
+   */
   public int getNetVotes() {
     return this.upVotes - this.downVotes;
   }
 
+  /**
+   * Returns vote type of a given restaurant. 
+   * @return vote type. 
+   */
   public int getVoteType() {
     return this.voteType;
   }
 
+  /**
+   * Resets vote type to none. 
+   */
   public void resetVote() {
     this.voteType = VOTE_TYPE.NONE.ordinal();
   }
