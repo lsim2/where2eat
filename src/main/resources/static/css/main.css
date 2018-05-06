@@ -1,12 +1,13 @@
 body {
 	padding: 40px;
 	color: black;
-	margin-left: 30px; 
+	margin-left: 30px;
 	font-family: 'Montserrat', sans-serif;
 	background-size: cover;
 	background: #50C9C3; 
   background: -webkit-linear-gradient(to right, #96DEDA, #50C9C3);  
   background: linear-gradient(to right, #96DEDA, #50C9C3); 
-
 }
+button:focus {outline:0 !important;}
+
 

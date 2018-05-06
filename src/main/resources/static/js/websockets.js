@@ -32,6 +32,7 @@ let map;
 let selfpos;
 let directionsDisplay;
 let bounds;
+let markers = [];
 
 // Setup the WebSocket connection for live updating of scores.
 const setup_chatter = () => {
@@ -74,13 +75,17 @@ const setup_chatter = () => {
         regSuggestions = data.suggestions;
         updateRestaurantList(data.rests);
 
-
       //markers start here
-      let centerLat = parseFloat(JSON.parse(data.rests[0]).coordinates.latitude);
-      let centerLng = parseFloat(JSON.parse(data.rests[0]).coordinates.longitude);
+      let center;
 
-      let center = {lat: centerLat, lng: centerLng};
-
+      if(data.rests[0] !=null){
+        let centerLat = parseFloat(JSON.parse(data.rests[0]).coordinates.latitude);
+        let centerLng = parseFloat(JSON.parse(data.rests[0]).coordinates.longitude);
+        center = {lat: centerLat, lng: centerLng};
+      } else{
+        let uluru = {lat: -37.0902, lng: 95.7129};
+        center = uluru;
+      }
       map = new google.maps.Map(document.getElementById('map'), {
         zoom: 18,
         center: center
@@ -89,14 +94,8 @@ const setup_chatter = () => {
       let currRests = data.rests.slice(0,5);
       let lastFive = data.rests.slice(5,10);
       addRemainingRests(lastFive);
-      allRests = [];
-
       drawRestMarkers(data.rests.slice(0,5));
-
       updateCards(allRests);
-
-
-
       let contentString = "You are here!" ;
       let herewindow = new google.maps.InfoWindow({
         content: contentString
@@ -128,9 +127,11 @@ const setup_chatter = () => {
               herewindow.close();
 
           });
-
           // directions
-          displayRoute(JSON.parse(data.rests[0]));
+          if(data.rests[0]!=null){
+            displayRoute(JSON.parse(data.rests[0]));
+          }
+          //end directions
        }, function() {
          handleLocationError(true, infoWindow, map.getCenter());
        });
@@ -138,11 +139,8 @@ const setup_chatter = () => {
        // Browser doesn't support Geolocation
        handleLocationError(false, infoWindow, map.getCenter());
      }
-
-
-
-        break;
-
+      break;
+      
       case MESSAGE_TYPE.CONNECT:
         // sending our info to the server, so the server can put us in the right room
         myId = data.payload.id;
@@ -158,15 +156,26 @@ const setup_chatter = () => {
         let myIds = data.payload.ids;
         let myContent = data.payload.content;
         let myNames = data.payload.names;
-        // need to ask user for name
-        for (let i = 0; i < myDates.length; i++) {
-          let date = myDates[i];
-          let txtId = myIds[i];
-          let txt = myContent[i];
-          let nameTxt = myNames[i];
-          addChatMsg(nameTxt,date,txt);
+        console.log(data.payload.myName);
+        if (myName == data.payload.myName) {
+            for (let i = 0; i < myDates.length; i++) {
+              let date = myDates[i];
+              let txtId = myIds[i];
+              let txt = myContent[i];
+              let nameTxt = myNames[i];
+              console.log("new user", txt);
+              addChatMsg(nameTxt,date,txt);
+            }
+        } else {
+            let i = myDates.length-1;
+            let date = myDates[i];
+            let txtId = myIds[i];
+            let txt = myContent[i];
+            let nameTxt = myNames[i];
+            console.log("new msg addtoroom", txt);
+            addChatMsg(nameTxt,date,txt);
         }
-        break;
+      break;
       case MESSAGE_TYPE.UPDATE:
         let txt;
         let txtId;
@@ -206,12 +215,14 @@ const send_chat = chat => {
   let payLoad = {"name": myName, "id": myId, "text": chat, "roomURL": window.location.href};
   let jsonObject = { "type": MESSAGE_TYPE.SEND, "payload": payLoad}
   let jsonString = JSON.stringify(jsonObject)
-  conn.send(jsonString);
+  if (chat != "") {
+    conn.send(jsonString);
+  }
 }
 
 /*Initializes the google map*/
 function initMap() {
-  let uluru = {lat: -25.363, lng: 131.044};
+  let uluru = {lat: -37.0902, lng: 95.7129};
   let map = new google.maps.Map(document.getElementById('map'), {
     zoom: 4,
     center: uluru
@@ -443,8 +454,18 @@ function drawRest(restaurant){
 
 /*This function positions a maker on the map for every restaurant. */
 function drawRestMarkers(restList){
+
+  if(markers != undefined){
+    for(let i=0;i<markers.length;i++){
+      markers[i].setMap(null);
+    }
+    markers = [];
+  }
+
+
   bounds = new google.maps.LatLngBounds();
   let currRests = restList;
+
   allRests = [];
   for(let i=0;i<currRests.length;i++){
     const restaurant = JSON.parse(currRests[i]);
@@ -458,6 +479,7 @@ function drawRestMarkers(restList){
       map: map,
       clicked: false
     });
+    markers.push(marker);
 
     let contentString = "<b>" + restaurant.name + "</b></br>" + restaurant.location.display_address;
     let infowindow = new google.maps.InfoWindow({
@@ -490,6 +512,11 @@ function drawRestMarkers(restList){
     bounds.extend(marker.position);
   }
 
+  if(selfpos!=undefined){
+    bounds.extend(selfpos);
+  }
+
+
   map.fitBounds(bounds);
 }
 
@@ -503,9 +530,10 @@ function removeCard(x) {
             delete ranking[id];
             for (let restaurantId in remainingRests) {
                if (!(restaurantId in ranking)) {
-                   ranking[restaurantId] = 1;
+                   ranking[restaurantId] = -1;
                    delete remainingRests[restaurantId];
                    updateRestList();
+                   ranking[restaurantId] = 0;
                    break;
                }
             }
@@ -539,8 +567,6 @@ function displayRoute(endRest){
       });
     directionsDisplay.setMap(map);
     let r = endRest;
-    console.log(selfpos.lat);
-    console.log(selfpos.lng);
 
 
     let endPos = new google.maps.LatLng(parseFloat(r.coordinates.latitude), parseFloat(r.coordinates.longitude));

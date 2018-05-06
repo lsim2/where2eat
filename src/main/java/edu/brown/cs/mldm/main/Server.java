@@ -41,11 +41,11 @@ public class Server {
   public static Map<String, String> foodDb = new HashMap<>();
 
   private static final Gson GSON = new Gson();
-  // private static final String YELPKEY =
-  // "gKGjR4vy8kXQAyKrBjuPXepYBqladSEtwSTm_NNshaMPebXqQkZsGLIOe6FSUESQIh_l-cSN5lIhxiQ3-mkCnr_orbJARb_cCSr3OlQs0Jxi21D-m8uiqoHJr1jVWnYx";
-  private static final String YELPKEY = "F291TzGm16HMb6ZoMS4j1azreUQJq9PHCLjoeNPcS33pOntIq"
-      + "SRpC-aO-cXuQ_8O2O8TM-RohICpxPAzXuTekf-T7i2Ktym"
-      + "LLCUTwTyEqJKsLm3XzmuWTSKPbzLdWnYx";
+   private static final String YELPKEY =
+   "gKGjR4vy8kXQAyKrBjuPXepYBqladSEtwSTm_NNshaMPebXqQkZsGLIOe6FSUESQIh_l-cSN5lIhxiQ3-mkCnr_orbJARb_cCSr3OlQs0Jxi21D-m8uiqoHJr1jVWnYx";
+//  private static final String YELPKEY = "F291TzGm16HMb6ZoMS4j1azreUQJq9PHCLjoeNPcS33pOntIq"
+//      + "SRpC-aO-cXuQ_8O2O8TM-RohICpxPAzXuTekf-T7i2Ktym"
+//      + "LLCUTwTyEqJKsLm3XzmuWTSKPbzLdWnYx";
 
   void runSparkServer(int port) {
     readFiles();
@@ -191,8 +191,7 @@ public class Server {
       answersDb.get(id).add(ans);
 
       // processing with the algorithm:
-      YelpApi yelpApi = new YelpApi(YELPKEY);
-      Map<Answer, List<Restaurant>> results = yelpApi
+      Map<Answer, List<Restaurant>> results = YelpApi
           .getPossibleRestaurants(answersDb.get(id));
 
       Ranker ranker = new Ranker();
@@ -247,11 +246,11 @@ public class Server {
       Map<UUID, Map<String, Answer>> usersDb = chatSocket.getMaps()
           .getUsersDb();
       Map<String, Object> variables = ImmutableMap.of("oldUser", false);
-      if (usersDb.get(id).containsKey(username)) {
+      if (usersDb.containsKey(id) && usersDb.get(id).containsKey(username)) {
         Answer ans = usersDb.get(id).get(username);
-        variables = ImmutableMap.of("oldUser", true, "answer", ans, "id", id);
+        Map<String, Object> variables2 = ImmutableMap.of("oldUser", true, "answer", ans, "id", id);
+        return GSON.toJson(variables2);
       }
-
       return GSON.toJson(variables);
     }
   }

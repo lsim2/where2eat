@@ -11,7 +11,7 @@ $(document).ready(() => {
         }
     });
 
-    $("#shareURL").click(function(e) {  
+    $("#shareURL").click(function(e) {
     	e.preventDefault();
 
     	const el = document.createElement('textarea');
@@ -21,7 +21,8 @@ $(document).ready(() => {
 		  document.execCommand('copy');
 		  document.body.removeChild(el);
 
-    	alert(pollURL + ": copied to your clipboard!!");
+    	//alert(pollURL + ": copied to your clipboard!!");
+			alert("Link to poll has been copied to your clipboard! Send it to your friends to invite them!");
     });
 
     let currentChatURL = window.location.href;

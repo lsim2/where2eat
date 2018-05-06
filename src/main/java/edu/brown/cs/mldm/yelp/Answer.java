@@ -6,14 +6,12 @@ import java.util.Map;
 import edu.brown.cs.mldm.main.Server;
 
 /**
- * This is the answer class, it's responsible for storing the users' responses
- * about their preferences. It has fields such as their id, the price, the
- * cuisine, etc.
+ * Holds information about the user and their preferences.
  *
  */
 public class Answer {
 
-  // the different fields in a user's response.
+  // all the important fields about the user.
   private String userId;
   private int price;
   private List<String> cuisine;
@@ -24,19 +22,23 @@ public class Answer {
   private String[] priceSigns = { "$", "$$", "$$$", "$$$$" };
 
   /**
-   * the constructor takes in all the necessary fields.
+   * The constructor takes in all the information about the user.
    * 
    * @param userId
-   *          a unique id per user.
+   *          the user's id
    * @param cuisine
-   *          the user's preferred cuisines(up to three)
+   *          the user's prefered cuisines
    * @param restrictions
-   *          the user's dietary restrictions.
+   *          the user's dietary restrictions
    * @param foodTerms
-   *          extra t
+   *          the user's preferred foodterms that are not cuisines(i.e: chicken
+   *          wings)
    * @param price
+   *          the user's preferred price range
    * @param coordinates
+   *          the user's location(the initial user's only)
    * @param radius
+   *          the radius they're willing to travel
    */
   public Answer(String userId, List<String> cuisine, List<String> restrictions,
       List<String> foodTerms, int price,
@@ -50,34 +52,59 @@ public class Answer {
     this.restrictions = restrictions;
   }
 
+  /**
+   * @return the list of preferred cuisines.
+   */
   public List<String> getCuisine() {
     return cuisine;
   }
 
+  /**
+   * 
+   * @return the user's price range.
+   */
   public int getPrice() {
     return price;
   }
 
+  /**
+   * 
+   * @return the radius they're willing to travel
+   */
   public int getRadius() {
     return radius;
   }
 
+  /**
+   * @return the user's location(the initial user's only)
+   */
   public double[] getCoordinates() {
     return coordinates;
   }
 
+  /**
+   * 
+   * @return the user's food terms
+   */
   public List<String> getFoodTerms() {
     return foodTerms;
   }
 
+  /**
+   * @return the user's dietary restrictions
+   */
   public List<String> getRestrictions() {
     return restrictions;
   }
 
+  /**
+   * @return changes the user's preferences as a string to be displayed on the
+   *         webpage.
+   */
   public String toHTML() {
     StringBuilder sb = new StringBuilder();
     sb.append("<h5>" + userId + "'s Preferences:</h5>");
-    sb.append("<b>Price</b>: " + priceSigns[price] + "<br>");
+    sb.append("<b>Price</b>: " + priceSigns[price - 1] + "<br>");
     sb.append(
         "<b>Distance</b>: " + Math.round(radius / 1609.34) + " miles<br>");
     addToHTML(sb, cuisine, "Cuisines", Server.getCuisinesMap());
@@ -87,6 +114,18 @@ public class Answer {
     return sb.toString();
   }
 
+  /**
+   * Helper method to change the user's preferences to an HTMl string.
+   * 
+   * @param sb
+   *          the string builder used.
+   * @param list
+   *          the list to change the to a string
+   * @param title
+   *          describes the contents of the list, ie: cuisines, etc.
+   * @param map
+   *          the map to get the terms from.
+   */
   private void addToHTML(StringBuilder sb, List<String> list, String title,
       Map<String, String> map) {
     if (list.size() > 0) {

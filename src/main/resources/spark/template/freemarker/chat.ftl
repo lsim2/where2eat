@@ -13,12 +13,12 @@
       <div class="container-fluid">
         <div class="navbar-header">
           <a class="navbar-brand" href="/home">Where2Eat &nbsp; |</a>
-          <a class="navbar-brand" href="javascript:{}" id="getEvent">Hide Details</a>
+          <a class="navbar-brand" href="javascript:{}" id="getEvent">Show Details</a>
           <a class="navbar-brand dropdown-toggle" data-toggle="dropdown" href=""> | &nbsp;&nbsp;Sort Suggestions<span class="caret"></span></a>
             <ul style="margin-left: 250px;" class="dropdown-menu">
               <li> <a class="dropdown-item" id="pRanker" href="javascript:{}">Order by Price</a></li>
               <li><a class="dropdown-item" id="distRanker" href="javascript:{}">Order by Distance</a></li>
-              <li><a class="dropdown-item" id="resetOrder" href="javascript:{}">Reset Order</a></li>
+              <li><a class="dropdown-item" id="resetOrder" href="javascript:{}">Order by Votes</a></li>
             </ul>
           <a class="navbar-brand" style="margin-left: 400px;" href="" id="shareURL" target="_blank">Share Poll &nbsp; |</a>
           <a class="navbar-brand" data-popup-open="popup-1" href="javascript:{}" onclick="myF()">Change Preferences  &nbsp;|</a>
@@ -31,10 +31,10 @@
 <div class="container bootstrap snippet">
     <div class="row">
     <div id="details">
-    <h4 id="event"><b>${author}</b> invites you for <b>${pollTitle}</b> at <b>${pollLoc}</b> on <b>${pollDate}</b></h4></div>
+    <h4 id="event"><b>${author}</b> invites you for <b>${pollTitle}</b> near <b>${pollLoc}</b> on <b>${pollDate}</b></h4></div>
     <br>
         <div class="col-md-4">
-                <div id="suggestions"></div>
+                <div id="suggestions">No Suggestions Found!</div>
                 <template id="suggestion">
                 <div class="card">
                   <div class="container">
@@ -51,9 +51,9 @@
                     <strong class="fa-stack-1x downNum" style="margin-top:24px; font-size:70%">0
                     </strong>
                     </span>
-                    
+
                   </div>
-                  <a onclick="removeCard(this)" class="popup-close-card" data-popup-close="popup-1">x</a>
+                  <a onclick="removeCard(this)"class="popup-close-card" data-popup-close="popup-1">x</a>
                 </div>
                 </template>
 
@@ -141,15 +141,15 @@
 <div class="submit">
 <form id="form" method="POST" action="/chat/:id?${pollId}">
 <h2 id="title"><span id="username"></span>Choose your preferences</h2>
-<div class="ranking">
+<div class="ranking distance">
 <p><b>I'm willing to travel <i><span id="dist">12</span></i> mile(s).</b></p><br>
 <div id="flat-slider-vertical-2"></div>
 </div>
-<div class="ranking">
+<div class="ranking price">
 <p><b>My preferred price range is:</b></p><br>
 <div id="flat-slider-vertical-1"></div>
 </div>
-<div class="ranking">
+<div class="ranking restrictions">
 <p><b>Any dietary restrictions?</b></p>
     <select id="restrictions" class="select" multiple>
      <#list restrictions?keys as id>
@@ -157,7 +157,7 @@
       </#list>
     </select>
 </div>
-<div class="ranking">
+<div class="ranking cuisines">
 <p><b>Cuisine preferences (choose up to 3)</b>:</p>
     <select id="cuisine" class="select" multiple>
       <#list cuisines?keys as id>
@@ -165,7 +165,7 @@
       </#list>
     </select>
 </div>
-<div class="ranking">
+<div class="ranking misc">
 <p><b>Any additional preferences?</b></p>
     <select id="misc" class="select" multiple>
       <#list food?keys as id>
@@ -173,8 +173,8 @@
       </#list>
     </select>
 </div>
-<div class="ranking">
-<button type="button" id="toResults" class="btn">Submit</button>
+<div class="submitButton">
+<button type="button" id="toResults" class="btn submitB">Submit</button>
 </div>
 </form>
 </div>

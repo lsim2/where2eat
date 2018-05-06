@@ -80,12 +80,8 @@ $(document).keydown(
         if ($('#sign-in').val()=="") {
             alert("Please sign in first!");
         } else {
-            currentUser = $('#sign-in').val();
-            oldUser(currentUser);
-            preferences.user = currentUser;
-            $('#username').html("Hello " + $('#sign-in').val() + "! ");
-            $('.flip-container .flipper').closest('.flip-container').toggleClass('hover');
-            $('.flip-container .flipper').css('transform, rotateY(180deg)');
+              currentUser = $('#sign-in').val();
+              validate(currentUser);
         }
         }
     });
@@ -94,12 +90,9 @@ $('.flip').click(function() {
         alert("Please sign in first!");
     } else {
         currentUser = $('#sign-in').val();
-        oldUser(currentUser);
-        preferences.user = currentUser;
-        $('#username').html("Hello " + $('#sign-in').val() + "! ");
-        $('.flip-container .flipper').closest('.flip-container').toggleClass('hover');
-        $('.flip-container .flipper').css('transform, rotateY(180deg)');
+        validate(currentUser);
     }
+      
 });
 
 $('.goback').click(function() {
@@ -133,31 +126,42 @@ $('#toResults').click(function() {
     $("#form").submit();
 });
 
-function oldUser(currentUser) {
+function validate(currentUser) {
     const postParameter = {"user": currentUser, "url": window.location.href};
     console.log(postParameter);
+    let userAnswer = "";
+    let reSignIn = false; 
     $.post("/validate", postParameter, response => {
         const responseObject = JSON.parse(response);
         console.log(responseObject);
-        const userAnswer = responseObject.answer;
-        console.log(userAnswer);
-        if (responseObject.oldUser == true) {
-            preferences = {
-                user: userAnswer.userId,
-                cuisine: JSON.stringify(userAnswer.cuisine),
-                restrictions: JSON.stringify(userAnswer.restrictions),
-                misc: JSON.stringify(userAnswer.foodTerms),
-                pollURL: window.location.href,
-                price:  userAnswer.price,
-                startTime: "2pm",
-                endTime: "4pm",
-                distance: Math.round(parseFloat(userAnswer.radius)*0.000621371192),
-                url: window.location.href
-            };
-            for (let key in preferences) {
-              $('#form').append("<input name='" + key +"' value='" + preferences[key] +"' type='hidden'/>");
-            }
-            $("#form").submit();
+        userAnswer = responseObject.answer;
+        reSignIn = responseObject.oldUser ;
+        if (reSignIn == true) {
+            goToChat(userAnswer);
+        } else {
+            preferences.user = currentUser;
+            $('#username').html("Hello " + $('#sign-in').val() + "! ");
+            $('.flip-container .flipper').closest('.flip-container').toggleClass('hover');
+            $('.flip-container .flipper').css('transform, rotateY(180deg)');
         }
     });
+}
+
+function goToChat(userAnswer) {
+    preferences = {
+        user: userAnswer.userId,
+        cuisine: JSON.stringify(userAnswer.cuisine),
+        restrictions: JSON.stringify(userAnswer.restrictions),
+        misc: JSON.stringify(userAnswer.foodTerms),
+        pollURL: window.location.href,
+        price:  userAnswer.price,
+        startTime: "2pm",
+        endTime: "4pm",
+        distance: Math.round(parseFloat(userAnswer.radius)*0.000621371192),
+        url: window.location.href
+    };
+    for (let key in preferences) {
+        $('#form').append("<input name='" + key +"' value='" + preferences[key] +"' type='hidden'/>");
+    }
+    $("#form").submit();
 }

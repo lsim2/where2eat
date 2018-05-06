@@ -2,13 +2,13 @@ $(document).ready(function() {
   setup_chatter();
 });
 
+// user preferences
 let preferences = {user:$('#user').html(), cuisine:JSON.stringify([]), restrictions:JSON.stringify([]), misc:JSON.stringify([]), price: 1, startTime: '2pm', endTime: '4pm', distance: 12, pollURL: window.location.href};
-
 
 
 function myF() {
   let targeted_popup_class = jQuery('[data-popup-open]').attr('data-popup-open');
-  $('[data-popup="' + targeted_popup_class + '"]').fadeIn(350);   
+  $('[data-popup="' + targeted_popup_class + '"]').fadeIn(350);
 }
 
 $(function() {
@@ -19,6 +19,7 @@ $(function() {
     });
 });
 
+// chat windown opens when the chat button is clicked and slides onto screen
 $(function() {
 //----- CLOSE
     $('[data-popup-close]').on('click', function(e)  {
@@ -26,7 +27,7 @@ $(function() {
     $('[data-popup="' + targeted_popup_class + '"]').fadeOut(350);
     e.preventDefault();
     });
-    
+
      $("#chat").on('click', function (e) {
         e.stopPropagation();
         e.preventDefault();
@@ -43,9 +44,9 @@ $(function() {
     });
 });
 
-
+// dropdown for cuisine/restriction/food selection.
 $(function() {
-    
+
   $('#cuisine').selectize({
       plugins: ['remove_button'],
       maxItems: 3,
@@ -55,6 +56,7 @@ $(function() {
   });
   $('#misc').selectize({
       plugins: ['remove_button'],
+      maxItems: 3,
   });
 });
 
@@ -84,13 +86,14 @@ $("#flat-slider")
         step: 2
     });
 
+// slider for price selection
 let prices = ["$", "$$", "$$$", "$$$$"];
 $("#flat-slider-vertical-1")
     .slider({
         max: prices.length - 1,
         min: 0,
         range: "min",
-        value: preferences.price,
+        value: 0,
      change: function(event, ui) {
         preferences.price = ui.value;
     }
@@ -99,7 +102,7 @@ $("#flat-slider-vertical-1")
         rest: "label",
         labels: prices
     });
-    
+
     $("#flat-slider-vertical-2")
     .slider({
         max: 25,
@@ -122,6 +125,7 @@ $('#signin-form').submit(function(){
     $(".flip").attr("disabled",false);
 });
 
+// fills in form preferneces when submit button is clicked.
 $('#toResults').click(function() {
     if ($("#cuisine").val() != null) {preferences.cuisine = JSON.stringify($("#cuisine").val());}
     if ($("#restrictions").val() != null) {preferences.restrictions = JSON.stringify($("#restrictions").val());}
@@ -133,6 +137,7 @@ $('#toResults').click(function() {
     $("#form").submit();
 });
 
+// Changes text of buttons when event details are shown/hidden
 $("#getEvent").click(function() {
     $("#details").toggle();
     if($("#details").is(":hidden") == true) {
@@ -141,4 +146,3 @@ $("#getEvent").click(function() {
         $("#getEvent").html("Hide Details");
     }
 });
-

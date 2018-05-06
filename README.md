@@ -1,7 +1,6 @@
 Approved by Alex!
 
-# FoodGroup
-
+# Where2Eat
 **Team Members:** Diane Mutako, Lina Sim, Matthew Liu, Mounika Dandu
 
 **Team Strengths**

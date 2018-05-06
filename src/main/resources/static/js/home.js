@@ -8,7 +8,9 @@ let postParameter = {};
 let places;
 let filled = false;
 let linkText;
+let autocomplete;
 
+// card flipping, resets text input
 $("#flip").click(function(e){
     document.getElementById('name').value = "";
     document.getElementById('title').value = "";
@@ -17,14 +19,13 @@ $("#flip").click(function(e){
     document.getElementById('message').value = "";
 });
 
+// new form button, resets inputs
 $("#newForm").click(function(e){
     document.getElementById('name').value = "";
     document.getElementById('title').value = "";
     document.getElementById('location').value = "";
     document.getElementById('date-format').value = "";
     document.getElementById('message').value = "Let's eat!";
-
-    console.log(filled);
     if(filled == true){
       ractive.toggle( 'flipCard' );
         let targeted_popup_class = jQuery('[data-popup-close]').attr('data-popup-close');
@@ -34,6 +35,8 @@ $("#newForm").click(function(e){
     filled = false;
 });
 
+// submit button handler. If user entered valid input, closes card and creates
+// their poll url. Otherwise, prompts them to fix it.
 $("#submit").click(function(e) {
     postParameter.name = document.getElementById('name').value;
     postParameter.title = document.getElementById('title').value;
@@ -52,20 +55,8 @@ $("#submit").click(function(e) {
         ractive.toggle( 'flipCard' );
       return ;
     }
-    // let valid = false;
-    // for(let place in places){
-    //   console.log(places[place]);
-    //   console.log(postParameter.location);
-    //   if(postParameter.location == places[place].location){
-    //     valid == true;
-    //     break;
-    //   }
-    // }
-    // if(valid == false){
-    //   console.log("falsity");
-    // }
 
-    console.log(postParameter);
+    // gets random url for poll and displays the link and poll info.
     $.post("/home", postParameter, response => {
         const responseObject = JSON.parse(response);
         pollId = "" + responseObject.pollId;
@@ -102,6 +93,7 @@ e.preventDefault();
 });
 });
 
+// update poll. Reopens card and allows user to change preferences.
 $("#update").click(function(e){
         ractive.toggle( 'flipCard' );
         let targeted_popup_class = jQuery('[data-popup-close]').attr('data-popup-close');
@@ -109,22 +101,27 @@ $("#update").click(function(e){
         e.preventDefault();
 });
 
+// provides Google Maps suggestions for location on GUI.
 function initAutocomplete() {
-  let input = document.getElementById('location');
-  let searchBox = new google.maps.places.SearchBox(input);
+    // restricts location to the USA
+    let options = {
+        componentRestrictions: {country: 'US'}
+    };
+
+  autocomplete = new google.maps.places.Autocomplete((document.getElementById('location')),
+            options);
 
   // Listen for the event fired when the user selects a prediction and retrieve
   // more details for that place.
-  searchBox.addListener('places_changed', function() {
-    places = searchBox.getPlaces();
+  autocomplete.addListener('place_changed', function() {
+    places = autocomplete.getPlace();
     if (places.length == 0) {
       return;
     }
     // For each place, get the icon, name and location.
     let bounds = new google.maps.LatLngBounds();
-    places.forEach(function(place) {
+    let place = places;
       if (!place.geometry) {
-        console.log("Returned place contains no geometry");
         return;
       }
       postParameter.lat = place.geometry.location.lat();
@@ -135,6 +132,5 @@ function initAutocomplete() {
       } else {
         bounds.extend(place.geometry.location);
       }
-    });
   });
 }
