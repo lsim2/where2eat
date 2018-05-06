@@ -51,7 +51,6 @@ const setup_chatter = () => {
         break;
       case MESSAGE_TYPE.DELETE:
         let nameToDelete = String(data.name);
-        console.log("name to delete is: " + nameToDelete );
         $('ul#connectedUsrs li:contains(' + nameToDelete + ')').remove();
         break;
       case MESSAGE_TYPE.UPDATEALLNAMES:
@@ -66,7 +65,6 @@ const setup_chatter = () => {
 
         for (let i = 0; i < uniqueNames.length; i++) {
           let uniqueName = uniqueNames[i];
-          console.log("unique name is: " + uniqueName);
           $('#connectedUsrs').append("<li>" + uniqueName + "</li>");
         }
 
@@ -118,14 +116,12 @@ const setup_chatter = () => {
         let myIds = data.payload.ids;
         let myContent = data.payload.content;
         let myNames = data.payload.names;
-        console.log(data.payload.myName);
         if (myName == data.payload.myName) {
             for (let i = 0; i < myDates.length; i++) {
               let date = myDates[i];
               let txtId = myIds[i];
               let txt = myContent[i];
               let nameTxt = myNames[i];
-              console.log("new user", txt);
               addChatMsg(nameTxt,date,txt);
             }
         } else {
@@ -134,7 +130,6 @@ const setup_chatter = () => {
             let txtId = myIds[i];
             let txt = myContent[i];
             let nameTxt = myNames[i];
-            console.log("new msg addtoroom", txt);
             addChatMsg(nameTxt,date,txt);
         }
       break;
@@ -383,7 +378,6 @@ function updateCards(currRanking) {
             } else if (votes.down.indexOf(restaurant.id) > -1) {
                 thumbsDown.classList.add("active");
             }
-            console.log(restaurant.name +" : "+ restaurant.downVotes + " : " + downvotes[restaurant.id]);
             let uVotes = restaurant.upVotes;
             let dVotes = restaurant.downVotes;
             temp.content.querySelector(".fa-stack-1x.upNum").id = "thumbUp-"+ restaurant.id;
@@ -392,7 +386,6 @@ function updateCards(currRanking) {
 
             let clone = document.importNode(temp.content, true);
             $('#suggestions').append(clone);
-             console.log(restaurant.name +" : "+ restaurant.downVotes + " : " + downvotes[restaurant.id]);
             document.getElementById("thumbUp-"+ restaurant.id).innerHTML = uVotes;
             document.getElementById("thumbDown-"+ restaurant.id).innerHTML = dVotes;
 
