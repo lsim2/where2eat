@@ -16,6 +16,7 @@ body {
 	border-radius: 5px;
 	padding: 3px;
 	color: #737173;
+	  padding-left: 8px;
 }
 
 #title {
@@ -23,6 +24,7 @@ body {
 	border-radius: 5px;
 	padding: 3px;
 	color: #737173;
+	  padding-left: 8px;
 }
 
 #location {
@@ -30,6 +32,7 @@ body {
 	border-radius: 5px;
 	padding: 3px;
 	color: #737173;
+	  padding-left: 8px;
 }
 
 #date-format {
@@ -37,6 +40,7 @@ body {
 	border-radius: 5px;
 	padding: 3px;
 	color: #737173;
+	  padding-left: 8px;
 }
 
 #message {
@@ -44,6 +48,7 @@ body {
 	border-radius: 5px;
 	padding: 3px;
 	color: 	#737173;
+	  padding-left: 8px;
 }
 
 #urlInfo {
@@ -462,4 +467,8 @@ body {
     transform:translate(50%, -50%) rotate(180deg);
     background:rgba(0,0,0,1);
     text-decoration:none;
+}
+::placeholder{
+	color: #c1c6cc;
+	padding-left: 3px;
 }

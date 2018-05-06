@@ -66,7 +66,7 @@
 			<h4 id="pollTitle"></h4>
 			<br>
 			<div id = "urlInfo" style="text-align: center">
-				<p> This is your URL </p>
+				<p> This is your URL: </p>
 				<h4 id="pollInfo"></h4>
         <p> Send this to your friends to invite them! </p>
 			</div>
