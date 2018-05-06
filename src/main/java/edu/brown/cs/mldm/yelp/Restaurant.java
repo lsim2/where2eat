@@ -8,12 +8,11 @@ import java.util.Objects;
 import java.util.Set;
 
 public class Restaurant {
-  
+
   private static enum VOTE_TYPE {
     NONE, UP, DOWN
   }
 
-  
   private String id;
   private String name;
   private Map<String, Object> location; // need to get rid of Object?
@@ -27,10 +26,10 @@ public class Restaurant {
   private int intPrice = 0;
   private String image_url;
   private double dist = 0.0;
-  private int upVotes = 0; 
+  private int upVotes = 0;
   private int downVotes = 0;
   private int voteType = VOTE_TYPE.NONE.ordinal();
-  
+
   public Restaurant() {
     score = this.getRating();
   }
@@ -217,15 +216,15 @@ public class Restaurant {
   public void setDistance(double distance) {
     this.dist = distance;
   }
-  
+
   public int getUpVotes() {
     return this.upVotes;
   }
-  
+
   public int getDownVotes() {
     return this.downVotes;
   }
-  
+
   public void incrementUpVotes() {
     this.upVotes++;
   }
@@ -233,15 +232,23 @@ public class Restaurant {
   public void incrementDownVotes() {
     this.downVotes++;
   }
-  
+
+  public void setUpVotes(int votes) {
+    upVotes = votes;
+  }
+
+  public void setDownVotes(int votes) {
+    downVotes = votes;
+  }
+
   public int getNetVotes() {
     return this.upVotes - this.downVotes;
   }
-  
+
   public int getVoteType() {
     return this.voteType;
   }
-  
+
   public void resetVote() {
     this.voteType = VOTE_TYPE.NONE.ordinal();
   }

@@ -115,6 +115,12 @@ public class ChatWebSocket {
     List<Restaurant> restaurantList = getRestaurantList(receivedRoomURL);
     for (Restaurant r : restaurantList) {
       suggestions.add(r.getName());
+      System.out.println(r.getName() + "DVotes: " + r.getDownVotes()
+          + "UVOTEs: " + r.getUpVotes());
+      updateRestVotes(r);
+      System.out.println(r.getName() + "DVotes: " + r.getDownVotes()
+          + "UVOTEs: " + r.getUpVotes());
+
       rests.add(GSON.toJson(r));
     }
 
@@ -342,8 +348,10 @@ public class ChatWebSocket {
         Restaurant restFromList = currRestaurantList.get(index);
         if (rest.getVoteType() == VOTE_TYPE.UP.ordinal()) {
           restFromList.incrementUpVotes();
+          this.updateVotes(restFromList, "up");
         } else if (rest.getVoteType() == VOTE_TYPE.DOWN.ordinal()) {
           restFromList.incrementDownVotes();
+          this.updateVotes(restFromList, "down");
         }
 
         rest = restFromList;
@@ -397,6 +405,42 @@ public class ChatWebSocket {
         receivedRoomURL.length());
     UUID id = UUID.fromString(uuidString);
     return id;
+  }
+
+  /**
+   * Method updates the map which keeps track of a restaurant's votes.
+   * 
+   * @param rest
+   * @param direction
+   */
+  private void updateVotes(Restaurant rest, String direction) {
+    Map<String, Restaurant> dVotes = myChatroomMaps.getDownvotes();
+    Map<String, Restaurant> upVotes = myChatroomMaps.getUpvotes();
+
+    if (direction.equals("up")) {
+      if (upVotes.containsKey(rest.getId())) {
+        upVotes.get(rest.getId()).incrementUpVotes();
+      } else {
+        upVotes.put(rest.getId(), rest);
+      }
+    } else if (direction.equals("down")) {
+      if (dVotes.containsKey(rest.getId())) {
+        dVotes.get(rest.getId()).incrementDownVotes();
+      } else {
+        dVotes.put(rest.getId(), rest);
+      }
+    }
+  }
+
+  private void updateRestVotes(Restaurant rest) {
+    Map<String, Restaurant> dvotes = myChatroomMaps.getDownvotes();
+    Map<String, Restaurant> uvotes = myChatroomMaps.getUpvotes();
+    if (dvotes.containsKey(rest.getId())) {
+      rest.setDownVotes(dvotes.get(rest.getId()).getDownVotes());
+    }
+    if (uvotes.containsKey(rest.getId())) {
+      rest.setUpVotes(uvotes.get(rest.getId()).getUpVotes());
+    }
   }
 
 }

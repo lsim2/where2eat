@@ -41,10 +41,12 @@ public class Server {
   public static Map<String, String> foodDb = new HashMap<>();
 
   private static final Gson GSON = new Gson();
-  //private static final String YELPKEY = "gKGjR4vy8kXQAyKrBjuPXepYBqladSEtwSTm_NNshaMPebXqQkZsGLIOe6FSUESQIh_l-cSN5lIhxiQ3-mkCnr_orbJARb_cCSr3OlQs0Jxi21D-m8uiqoHJr1jVWnYx";
+  // private static final String YELPKEY =
+  // "gKGjR4vy8kXQAyKrBjuPXepYBqladSEtwSTm_NNshaMPebXqQkZsGLIOe6FSUESQIh_l-cSN5lIhxiQ3-mkCnr_orbJARb_cCSr3OlQs0Jxi21D-m8uiqoHJr1jVWnYx";
   private static final String YELPKEY = "F291TzGm16HMb6ZoMS4j1azreUQJq9PHCLjoeNPcS33pOntIq"
       + "SRpC-aO-cXuQ_8O2O8TM-RohICpxPAzXuTekf-T7i2Ktym"
       + "LLCUTwTyEqJKsLm3XzmuWTSKPbzLdWnYx";
+
   void runSparkServer(int port) {
     readFiles();
     chatSocket = new ChatWebSocket();
@@ -87,7 +89,6 @@ public class Server {
     reader.readFiles("data/restrictions.txt", restrictionsDb);
   }
 
-
   /**
    * Handle requests to the front page of our Stars website.
    *
@@ -100,7 +101,6 @@ public class Server {
       return new ModelAndView(variables, "home.ftl");
     }
   }
-
 
   /**
    * Handle requests to the front page of our Autocorrect website.
@@ -141,11 +141,10 @@ public class Server {
       UUID pollId = UUID.randomUUID();
       String lat = qm.value("lat");
       String lng = qm.value("lng");
-      
+
       double[] coordinates = { Double.parseDouble(lat),
           Double.parseDouble(lng) };
-      
-      
+
       Poll poll = new Poll(pollId, name, title, location, date, msg,
           coordinates);
       pollDb.put(pollId, poll);
@@ -204,12 +203,12 @@ public class Server {
         answersDb.put(id, new ArrayList<Answer>());
       }
       answersDb.get(id).add(ans);
-      
+
       // processing with the algorithm:
       YelpApi yelpApi = new YelpApi(YELPKEY);
       Map<Answer, List<Restaurant>> results = yelpApi
           .getPossibleRestaurants(answersDb.get(id));
-      
+
       Ranker ranker = new Ranker();
 
       List<Restaurant> restList = new ArrayList<Restaurant>(
@@ -225,7 +224,7 @@ public class Server {
       String name = qm.value("user");
       Answer previousAns = chatSocket.getPreviousAns(id, name);
       chatSocket.addName(id, name, ans);
-      
+
       String prevAns = GSON.toJson(ans);
       if (previousAns != null) {
         prevAns = GSON.toJson(prevAns);
@@ -252,18 +251,18 @@ public class Server {
       String username = qm.value("user");
       String url = qm.value("url");
       UUID id = chatSocket.getUuid(url);
-      Map<UUID, Map<String, Answer>> usersDb = chatSocket.getMaps().getUsersDb();
+      Map<UUID, Map<String, Answer>> usersDb = chatSocket.getMaps()
+          .getUsersDb();
       Map<String, Object> variables = ImmutableMap.of("oldUser", false);
       if (usersDb.get(id).containsKey(username)) {
         Answer ans = usersDb.get(id).get(username);
         variables = ImmutableMap.of("oldUser", true, "answer", ans, "id", id);
       }
-      
+
       return GSON.toJson(variables);
     }
   }
 
-  
   private static class NameGetHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(Request request, Response response) {
@@ -290,17 +289,17 @@ public class Server {
       res.body(stacktrace.toString());
     }
   }
-  
+
   public static Map<String, String> getCuisinesMap() {
-    return cuisinesDb; 
+    return cuisinesDb;
   }
-  
+
   public static Map<String, String> getRestrictionsMap() {
-    return restrictionsDb; 
+    return restrictionsDb;
   }
-  
+
   public static Map<String, String> getFoodTermsMap() {
-    return foodDb; 
+    return foodDb;
   }
 
 }
