@@ -100,45 +100,7 @@ const setup_chatter = () => {
       let herewindow = new google.maps.InfoWindow({
         content: contentString
       });
-      if (navigator.geolocation) {
-
-       navigator.geolocation.getCurrentPosition(function(position) {
-         selfpos = {
-           lat: position.coords.latitude,
-           lng: position.coords.longitude
-         };
-
-         let marker = new google.maps.Marker({
-           title: "You!",
-           position: new google.maps.LatLng(selfpos.lat, selfpos.lng),
-           animation: google.maps.Animation.DROP,
-           map: map,
-           icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
-         });
-
-          bounds.extend(marker.position);
-          map.fitBounds(bounds);
-
-          marker.addListener('mouseover', function() {
-            herewindow.open(map, marker);
-          });
-          marker.addListener('mouseout', function() {
-
-              herewindow.close();
-
-          });
-          // directions
-          if(data.rests[0]!=null){
-            displayRoute(JSON.parse(data.rests[0]));
-          }
-          //end directions
-       }, function() {
-         handleLocationError(true, infoWindow, map.getCenter());
-       });
-     } else {
-       // Browser doesn't support Geolocation
-       handleLocationError(false, infoWindow, map.getCenter());
-     }
+      drawCurrLoc(data.rests[0]);
       break;
       
       case MESSAGE_TYPE.CONNECT:
@@ -206,7 +168,47 @@ const setup_chatter = () => {
     }
   };
 }
+function drawCurrLoc(rest){
+  if (navigator.geolocation) {
 
+       navigator.geolocation.getCurrentPosition(function(position) {
+         selfpos = {
+           lat: position.coords.latitude,
+           lng: position.coords.longitude
+         };
+
+         let marker = new google.maps.Marker({
+           title: "You!",
+           position: new google.maps.LatLng(selfpos.lat, selfpos.lng),
+           animation: google.maps.Animation.DROP,
+           map: map,
+           icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+         });
+
+          bounds.extend(marker.position);
+          map.fitBounds(bounds);
+
+          marker.addListener('mouseover', function() {
+            herewindow.open(map, marker);
+          });
+          marker.addListener('mouseout', function() {
+
+              herewindow.close();
+
+          });
+          // directions
+          if(rest!=null){
+            displayRoute(JSON.parse(rest));
+          }
+          //end directions
+       }, function() {
+         handleLocationError(true, infoWindow, map.getCenter());
+       });
+     } else {
+       // Browser doesn't support Geolocation
+       handleLocationError(false, infoWindow, map.getCenter());
+     }
+}
 
 
 /*Sends a chat message

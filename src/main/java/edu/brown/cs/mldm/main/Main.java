@@ -30,6 +30,7 @@ public class Main {
    * specified arguments.
    * 
    * @param args
+   *          the arguments from the main class.
    */
   public static void main(String[] args) {
 
@@ -52,12 +53,12 @@ public class Main {
         System.out.println("echoding: " + line);
       }
     } catch (IOException e) {
-      e.printStackTrace();
+      System.out.println("ERROR: Reading the command line");
     } finally {
       try {
         reader.close();
       } catch (IOException e) {
-        e.printStackTrace();
+        System.out.println("ERROR: Closing the buffer reader");
       }
     }
 
