@@ -30,11 +30,11 @@
                   </div>
                   <div class="input">
                     <label style="color: white">Title</label>
-                    <input type="text" name="title" id="title" autocomplete="off" placeholder="What meal are you having?" required/>
+                    <input type="text" name="title" id="title" autocomplete="off" placeholder="e.g: lunch, dinner, etc..." required/>
                   </div>
                   <div class="input">
                     <label style="color: white">Location</label>
-                    <input id="location" name="location" class="controls" type="text" placeholder="Where would you like to go?">
+                    <input id="location" name="location" class="controls" type="text" placeholder="Enter your location">
                     <!--<input type="text" name="location" id="location" autocomplete="off" required/>-->
                   </div>
                 </div>
@@ -68,6 +68,7 @@
 			<div id = "urlInfo" style="text-align: center">
 				<p> This is your URL </p>
 				<h4 id="pollInfo"></h4>
+        <p> Send this to your friends to invite them! </p>
 			</div>
 			<br>
 			<div class="submit" style="text-align: right">
