@@ -2,8 +2,8 @@ $(document).ready(function() {
   setup_chatter();
 });
 
+// user preferences
 let preferences = {user:$('#user').html(), cuisine:JSON.stringify([]), restrictions:JSON.stringify([]), misc:JSON.stringify([]), price: 1, startTime: '2pm', endTime: '4pm', distance: 12, pollURL: window.location.href};
-
 
 
 function myF() {
@@ -19,6 +19,7 @@ $(function() {
     });
 });
 
+// chat windown opens when the chat button is clicked and slides onto screen
 $(function() {
 //----- CLOSE
     $('[data-popup-close]').on('click', function(e)  {
@@ -45,7 +46,7 @@ $(function() {
     });
 });
 
-
+// dropdown for cuisine/restriction/food selection.
 $(function() {
 
   $('#cuisine').selectize({
@@ -87,6 +88,7 @@ $("#flat-slider")
         step: 2
     });
 
+// slider for price selection
 let prices = ["$", "$$", "$$$", "$$$$"];
 $("#flat-slider-vertical-1")
     .slider({
@@ -125,6 +127,7 @@ $('#signin-form').submit(function(){
     $(".flip").attr("disabled",false);
 });
 
+// fills in form preferneces when submit button is clicked.
 $('#toResults').click(function() {
     if ($("#cuisine").val() != null) {preferences.cuisine = JSON.stringify($("#cuisine").val());}
     if ($("#restrictions").val() != null) {preferences.restrictions = JSON.stringify($("#restrictions").val());}
@@ -136,6 +139,7 @@ $('#toResults').click(function() {
     $("#form").submit();
 });
 
+// Changes text of buttons when event details are shown/hidden
 $("#getEvent").click(function() {
     $("#details").toggle();
     if($("#details").is(":hidden") == true) {

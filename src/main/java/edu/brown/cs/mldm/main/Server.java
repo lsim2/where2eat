@@ -48,7 +48,6 @@ public class Server {
   private static Map<String, String> foodDb = new HashMap<>();
 
   private static final Gson GSON = new Gson();
-  private static final String YELPKEY = "gKGjR4vy8kXQAyKrBjuPXepYBqladSEtwSTm_NNshaMPebXqQkZsGLIOe6FSUESQIh_l-cSN5lIhxiQ3-mkCnr_orbJARb_cCSr3OlQs0Jxi21D-m8uiqoHJr1jVWnYx";
 
   /**
    * Runs the Spark server on the given port number, it initializes the
@@ -216,8 +215,7 @@ public class Server {
       answersDb.get(id).add(ans);
 
       // processing with the algorithm:
-      YelpApi yelpApi = new YelpApi(YELPKEY);
-      Map<Answer, List<Restaurant>> results = yelpApi
+      Map<Answer, List<Restaurant>> results = YelpApi
           .getPossibleRestaurants(answersDb.get(id));
 
       Ranker ranker = new Ranker();

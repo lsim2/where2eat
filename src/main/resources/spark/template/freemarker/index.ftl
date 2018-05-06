@@ -1,12 +1,10 @@
-
 <br><br>
 <div class="container">
   <h1>Welcome to YELP 2.0</h1>
   <p>Choose a place to eat for your family and friends!</p> 
 </div>
 
-<div ng-app="coolform" class="wrapper">
-  
+<div ng-app="coolform" class="wrapper"> 
   <div cool-form>
     <div class="q-title">Create a poll!</div>
     <div ng-repeat="q in questions" class="question">
@@ -29,10 +27,6 @@
     </div>
   </div>
   <center ng-show="activequestion > -1 && activequestion < questions.length">{{activequestion+1}} / {{questions.length}}</center>
-  
 </div>
 
-
-
-    
 <#include "main.ftl">
