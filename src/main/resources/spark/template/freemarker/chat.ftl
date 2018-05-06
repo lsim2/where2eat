@@ -51,8 +51,9 @@
                     <strong class="fa-stack-1x downNum" style="margin-top:24px; font-size:70%">0
                     </strong>
                     </span>
-
+                    
                   </div>
+                  <a onclick="removeCard(this)" class="popup-close-card" data-popup-close="popup-1">x</a>
                 </div>
                 </template>
 

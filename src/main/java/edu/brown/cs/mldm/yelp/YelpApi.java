@@ -142,7 +142,6 @@ public class YelpApi {
 
         url.append("&radius=" + radius);
         backupurl.append("&radius=" + radius);
-        System.out.println(url);
         
         List<Restaurant> originalReq = this.makeRequest(url.toString());
         if(originalReq.size()>0 ){

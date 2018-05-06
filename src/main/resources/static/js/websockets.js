@@ -21,6 +21,7 @@ let myName;
 let regSuggestions;
 //keeps track of all the restaurants displayed on the screen
 let allRests  = [];
+let remainingRests = {};
 let restaurants;
 let votes = {up:[], down:[]}
 let upvotes = {};
@@ -89,6 +90,8 @@ const setup_chatter = () => {
       let bounds = new google.maps.LatLngBounds();
      // allRests = data.rests.slice(0,5);
       let currRests = data.rests.slice(0,5);
+      let lastFive = data.rests.slice(5,10);
+      addRemainingRests(lastFive);
      allRests = [];
       // updateCards(allRests);
       for(let i=0;i<currRests.length;i++){
@@ -248,7 +251,7 @@ const setup_chatter = () => {
       case MESSAGE_TYPE.UPDATERESTS:
         let newRanking = data.payload.ranking;
         let newList = [];
-
+        remainingRests = data.payload.remaining;
         for (let i = 0; i< newRanking.length; i++) {
             let restaurant = JSON.parse(newRanking[i]);
             newList.push(restaurant);
@@ -377,18 +380,16 @@ function thumbDown(x) {
 function updateRestList() {
      let currRanking = Object.keys(ranking).sort(function(a,b){return ranking[a]-ranking[b]});
      let restListToSend = [];
-     for(i= currRanking.length-1; i >= 0; i--) {
+     for(i= 4; i >= 0; i--) {
         let id = currRanking[i];
         let restaurant = restaurants[id];
         restListToSend.push(restaurant);
      }
-     console.log("Top: " + currRanking[0]);
     sendRestUpdateMsg(restListToSend);
 }
 
 function updateCards(currRanking) {
      $("#suggestions").empty();
-     //console.log(currRanking.length);
     for(i= 0; i < currRanking.length; i++) {
         let restaurant = currRanking[i];
           let temp = document.getElementById("suggestion");
@@ -422,7 +423,8 @@ function updateCards(currRanking) {
             let dVotes = restaurant.downVotes;
             if ((restaurant.id in downvotes)) { dVotes = downvotes[restaurant.id]}
             temp.content.querySelector(".fa-stack-1x.upNum").id = "thumbUp-"+ restaurant.id;
-            temp.content.querySelector(".fa-stack-1x.downNum").id = "thumbDown-"+ restaurant.id
+            temp.content.querySelector(".fa-stack-1x.downNum").id = "thumbDown-"+ restaurant.id;
+            temp.content.querySelector(".popup-close-card").id = restaurant.id; 
 
             let clone = document.importNode(temp.content, true);
             $('#suggestions').append(clone);
@@ -442,7 +444,8 @@ function sendRestUpdateMsg(restListToSend){
       "roomURL": window.location.href,
       "voteRank": restListToSend,
       "upvotes": upvotes,
-      "downvotes": downvotes
+      "downvotes": downvotes,
+      "remaining": remainingRests
   };
   let jsonObject = { "type": MESSAGE_TYPE.UPDATERESTS, "payload": payLoad}
   let jsonString = JSON.stringify(jsonObject)
@@ -473,7 +476,34 @@ function drawRest(restaurant){
             temp.content.querySelector(".fa.thumb.fa-thumbs-up").classList.add(restaurant.id);
             temp.content.querySelector(".fa.thumb.fa-thumbs-up").id = restaurant.id;
             temp.content.querySelector(".fa.thumb.fa-thumbs-down").classList.add(restaurant.id);
-          temp.content.querySelector(".fa.thumb.fa-thumbs-down").id = restaurant.id;
+            temp.content.querySelector(".fa.thumb.fa-thumbs-down").id = restaurant.id;
+            temp.content.querySelector(".popup-close-card").id = restaurant.id; 
             let clone = document.importNode(temp.content, true);
             $('#suggestions').append(clone);
+}
+
+function removeCard(x) {
+    event.preventDefault();
+    let id = x.id;
+    if (Object.keys(remainingRests).length > 0) {
+            delete ranking[id];
+            for (let restaurantId in remainingRests) {
+               if (!(restaurantId in ranking)) {
+                   ranking[restaurantId] = 1; 
+                   delete remainingRests[restaurantId];
+                   updateRestList();
+                   break;
+               }
+            }
+    } else {
+        alert("You've reached the limit on card deletion.");
+    }
+        
+}
+
+function addRemainingRests(lastFive) {
+    for (i = 0; i < lastFive.length; i++) {
+        const restaurant = JSON.parse(lastFive[i]);
+        remainingRests[restaurant.id] = restaurant;
+    }
 }

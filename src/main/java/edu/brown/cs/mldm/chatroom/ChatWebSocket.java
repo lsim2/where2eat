@@ -332,6 +332,7 @@ public class ChatWebSocket {
       String receivedRoomURL) throws IOException {
     JsonElement voteRank = receivedPayload.get("voteRank");
     JsonArray newResList = voteRank.getAsJsonArray();
+    JsonElement remaining = receivedPayload.get("remaining");
     List<Restaurant> updatedRestaurantList = new ArrayList<>();
     List<Restaurant> currRestaurantList = getRestaurantList(receivedRoomURL);
     for (JsonElement jsonObj : newResList) {
@@ -360,8 +361,8 @@ public class ChatWebSocket {
     updatedRestaurantList
         .sort((r1, r2) -> Integer.compare(r2.getNetVotes(), r1.getNetVotes()));
 
-    myChatroomMaps.getUuidToRestaurants().put(getUuid(receivedRoomURL),
-        updatedRestaurantList);
+//    myChatroomMaps.getUuidToRestaurants().put(getUuid(receivedRoomURL),
+//        updatedRestaurantList);
     JsonArray updatedJsonResList = new JsonArray();
 
     for (Restaurant r : updatedRestaurantList) {
@@ -372,6 +373,7 @@ public class ChatWebSocket {
     JsonObject payLoadObject = new JsonObject();
     updatedObject.addProperty("type", MESSAGE_TYPE.UPDATERESTS.ordinal());
     payLoadObject.add("ranking", updatedJsonResList);
+    payLoadObject.add("remaining", remaining);
     updatedObject.add("payload", payLoadObject);
     Queue<Session> myQueue = myChatroomMaps.getUrlToQueueOfSessions()
         .get(receivedRoomURL);
