@@ -196,7 +196,7 @@ const setup_chatter = () => {
             newList.push(restaurant);
             restaurants[restaurant.id].voteType = VOTE_TYPE.NONE;
         }
-        drawRestMarkers(newList);
+        drawRestMarkers(newRanking);
         allRests = newList;
         updateCards(newList);
 
