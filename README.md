@@ -45,7 +45,7 @@ https://docs.google.com/document/d/1G1jawLaQgQToq7AnwRABAXkI2r7d8_QyW5dzpf_zUlk/
 _A necessary part of any README!_
 
 To build the program, run mvn package in a terminal. 
-To run, enter: 
+To run, enter 
 ./run --gui
 
 Open up a web browser and navigate to http://localhost:4567/home to go to the home page. 
