@@ -9,7 +9,7 @@
   <link rel='stylesheet prefetch' href='https://simeydotme.github.io/jQuery-ui-Slider-Pips/dist/css/jqueryui.min.css'>
 <link rel='stylesheet prefetch' href='https://simeydotme.github.io/jQuery-ui-Slider-Pips/dist/css/jquery-ui-slider-pips.min.css'>
 <link rel='stylesheet prefetch' href='https://simeydotme.github.io/jQuery-ui-Slider-Pips/dist/css/app.min.css'>
-  
+
 <link rel='stylesheet prefetch' href='http://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.8.5/css/selectize.default.css'>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.0/css/bootstrap-slider.css" />
 <link rel="stylesheet" href="/css/normalize.css">
@@ -28,9 +28,9 @@
 <h1 style="text-align:center"><i>Invitation</i></h1>
 <h2 id="title"><i>${name}</i> has invited you for <i>${meal}!!</h2>
 	<div id="poll-info">
-		<h3>Where? <i>${location}</i></h3>
-		<h3>When? <i>${date}</i></h3>
-		<h3>Message from ${name}: <i>"${message}"</i></h3>
+		<h3 style="text-align:center">Where?  <i>${location}</i></h3>
+		<h3 style="text-align:center">When?  <i>${date}</i></h3>
+		<h3 style="text-align:center">Message from ${name}:  <i>"${message}"</i></h3>
 	</div>
 <br><br>
 <form id="signin-form">
@@ -87,7 +87,7 @@
 
 <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 <script src='https://simeydotme.github.io/jQuery-ui-Slider-Pips/dist/js/jquery-plus-ui.min.js'></script>
-<script src='https://simeydotme.github.io/jQuery-ui-Slider-Pips/dist/js/jquery-ui-slider-pips.js'></script>       
+<script src='https://simeydotme.github.io/jQuery-ui-Slider-Pips/dist/js/jquery-ui-slider-pips.js'></script>
 <script src='http://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.8.5/js/standalone/selectize.min.js'></script>
 
 <script src="/js/poll.js"></script>

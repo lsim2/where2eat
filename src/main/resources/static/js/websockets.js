@@ -28,7 +28,8 @@ let downvotes = {};
 let ranking = {};
 let map;
 let selfpos;
-  let directionsDisplay;
+let directionsDisplay;
+let bounds;
 
 // Setup the WebSocket connection for live updating of scores.
 const setup_chatter = () => {
@@ -77,6 +78,8 @@ const setup_chatter = () => {
         regSuggestions = data.suggestions;
         updateRestaurantList(data.rests);
 
+
+//markers start here
       let centerLat = parseFloat(JSON.parse(data.rests[0]).coordinates.latitude);
       let centerLng = parseFloat(JSON.parse(data.rests[0]).coordinates.longitude);
 
@@ -87,56 +90,8 @@ const setup_chatter = () => {
         center: center
       });
 
-      let bounds = new google.maps.LatLngBounds();
-     // allRests = data.rests.slice(0,5);
-      let currRests = data.rests.slice(0,5);
-      allRests = [];
-      // updateCards(allRests);
-      for(let i=0;i<currRests.length;i++){
-        const restaurant = JSON.parse(data.rests[i]);
-        drawRest(restaurant);
-        allRests.push(restaurant);
-        let pos = {lat: parseFloat(restaurant.coordinates.latitude), lng: parseFloat(restaurant.coordinates.longitude)};
-        let marker = new google.maps.Marker({
-          title: restaurant.name,
-          position: new google.maps.LatLng(pos.lat, pos.lng),
-          animation: google.maps.Animation.DROP,
-          map: map,
-          clicked: false
-        });
-
-        let contentString = "<b>" + restaurant.name + "</b></br>" + restaurant.location.display_address ;
-        let infowindow = new google.maps.InfoWindow({
-          content: contentString
-        });
-
-        google.maps.event.addListener(infowindow,'closeclick',
-          function() {
-            marker.clicked = false;
-          })
-        marker.addListener('click', function() {
-          marker.clicked = true;
-          infowindow.open(map, marker);
-          marker.setAnimation(google.maps.Animation.BOUNCE);
-          setTimeout(function () {
-            marker.setAnimation(null);
-          }, 500);
-        });
-
-        marker.addListener('mouseover', function() {
-          infowindow.open(map, marker);
-        });
-        marker.addListener('mouseout', function() {
-          if(marker.clicked == false){
-            infowindow.close();
-          }
-
-
-        });
-        bounds.extend(marker.position);
-      }
+      drawRestMarkers(data.rests.slice(0,5));
       updateCards(allRests);
-      map.fitBounds(bounds);
 
 
 
@@ -173,7 +128,7 @@ const setup_chatter = () => {
           });
 
           // directions
-          displayRoute(JSON.parse(currRests[0]));
+          displayRoute(JSON.parse(data.rests[0]));
 
 
         // end directions.
@@ -236,6 +191,13 @@ const setup_chatter = () => {
         }
         allRests = newList;
         updateCards(newList);
+
+        // HEREEEEE
+        drawRestMarkers(newList);
+        if(selfpos != undefined){
+          //displayRoute(restaurants[currRanking[0]]);
+          displayRoute(newList[0]);
+        }
         break;
     }
   };
@@ -366,10 +328,7 @@ function updateRestList() {
 
     sendRestUpdateMsg(restListToSend);
     console.log("her" + restaurants[currRanking[0]].name);
-    if(selfpos != undefined){
-      //displayRoute(restaurants[currRanking[0]]);
-      displayRoute(restListToSend[0]);
-    }
+
 
 
 }
@@ -385,9 +344,9 @@ function updateCards(currRanking) {
           } else {
               temp.content.querySelector('.food').src = "https://www.shareicon.net/download/2016/09/02/824429_fork_512x512.png";
           }
-            temp.content.querySelector(".restaurant-name").innerHTML = restaurant.name;
+            temp.content.querySelector(".restaurant-name").innerHTML = restaurant.name ;
             if (restaurant.categories.length < 2) {
-                 temp.content.querySelector(".categories").innerHTML = restaurant.categories[0].title;
+                 temp.content.querySelector(".categories").innerHTML = restaurant.categories[0].title ;
             } else{
                 temp.content.querySelector(".categories").innerHTML = restaurant.categories[0].title + ", " + restaurant.categories[1].title;
             }
@@ -468,6 +427,58 @@ function drawRest(restaurant){
           temp.content.querySelector(".fa.thumb.fa-thumbs-down").id = restaurant.id;
             let clone = document.importNode(temp.content, true);
             $('#suggestions').append(clone);
+}
+
+function drawRestMarkers(restList){
+  bounds = new google.maps.LatLngBounds();
+  //let currRests = data.rests.slice(0,5);
+  let currRests = restList;
+  allRests = [];
+  for(let i=0;i<currRests.length;i++){
+    const restaurant = JSON.parse(currRests[i]);
+    drawRest(restaurant);
+    allRests.push(restaurant);
+    let pos = {lat: parseFloat(restaurant.coordinates.latitude), lng: parseFloat(restaurant.coordinates.longitude)};
+    let marker = new google.maps.Marker({
+      title: restaurant.name,
+      position: new google.maps.LatLng(pos.lat, pos.lng),
+      animation: google.maps.Animation.DROP,
+      map: map,
+      clicked: false
+    });
+
+    let contentString = "<b>" + restaurant.name + "</b></br>" + restaurant.location.display_address;
+    let infowindow = new google.maps.InfoWindow({
+      content: contentString
+    });
+
+    google.maps.event.addListener(infowindow,'closeclick',
+      function() {
+        marker.clicked = false;
+      })
+    marker.addListener('click', function() {
+      marker.clicked = true;
+      infowindow.open(map, marker);
+      marker.setAnimation(google.maps.Animation.BOUNCE);
+      setTimeout(function () {
+        marker.setAnimation(null);
+      }, 500);
+    });
+
+    marker.addListener('mouseover', function() {
+      infowindow.open(map, marker);
+    });
+    marker.addListener('mouseout', function() {
+      if(marker.clicked == false){
+        infowindow.close();
+      }
+
+
+    });
+    bounds.extend(marker.position);
+  }
+
+  map.fitBounds(bounds);
 }
 
 function displayRoute(endRest){

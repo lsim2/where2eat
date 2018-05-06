@@ -15,7 +15,8 @@
 }
 
 #poll-info {
-  background-color: #FFF0F5;
+  /*background-color: #FFF0F5;*/
+  	background-color:#d3edea;
   padding: 10px;
   border-radius: 10px;
 }
