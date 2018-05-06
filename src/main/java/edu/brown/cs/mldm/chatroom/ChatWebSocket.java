@@ -165,16 +165,14 @@ public class ChatWebSocket {
 
   }
 
-  public void addPreviousMessages(Session session, String receivedRoomURL)
+  private JsonObject addPreviousMessages(String receivedName, Session session, String receivedRoomURL)
       throws IOException {
     JsonObject jObject = new JsonObject();
     jObject.addProperty("type", MESSAGE_TYPE.ADDTOROOM.ordinal());
 
     JsonObject payLoadObject = new JsonObject();
     payLoadObject.addProperty("id", nextId);
-    payLoadObject.addProperty("myName",
-        myChatroomMaps.getidsToName().get(nextId));
-
+    payLoadObject.addProperty("myName", receivedName);
     JsonArray dates = new JsonArray();
     JsonArray names = new JsonArray();
     JsonArray ids = new JsonArray();
@@ -202,7 +200,6 @@ public class ChatWebSocket {
       String stringName = msg.getSenderName();
       String stringContent = msg.getContent();
 
-      System.out.println(stringDate);
       ids.add(StringId);
       dates.add(stringDate);
       names.add(stringName);
@@ -222,8 +219,7 @@ public class ChatWebSocket {
                                               // room
 
     jObject.add("payload", payLoadObject);
-    session.getRemote().sendString(GSON.toJson(jObject));
-
+    return jObject;
   }
 
   // when we receive a message from the client
@@ -269,7 +265,10 @@ public class ChatWebSocket {
       if (!msgsInRoom.contains(msg)) {
         msgsInRoom.add(msg);
       }
-      addPreviousMessages(session, receivedRoomURL);
+      JsonObject toSend = addPreviousMessages(receivedName, session, receivedRoomURL);
+      for (Session sesh : myQueue) {
+        sesh.getRemote().sendString(GSON.toJson(toSend));
+      }
       return;
     } else if (msgType == MESSAGE_TYPE.UPDATERESTS.ordinal()) {
       updateRestaurants(receivedPayload, receivedRoomURL);
