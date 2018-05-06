@@ -38,7 +38,7 @@
                   <div class="bottom-wrapper">
                     <div class="input">
                       <label style="color: white">Date and Time</label>
-                      <input type="text" name="date" id="date-format" autocomplete="off" placeholder="When are you planning to meet?" required/>
+                      <input type="text" name="date" id="date-format" autocomplete="off" placeholder="Select a present or future time" required/>
                     </div>
                     <div class="input">
                       <label style="color: white">Message</label>

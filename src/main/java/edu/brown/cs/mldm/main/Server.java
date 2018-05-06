@@ -14,7 +14,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 
 import edu.brown.cs.mldm.chatroom.ChatWebSocket;
-import edu.brown.cs.mldm.lsim2.frontend.Poll;
+import edu.brown.cs.mldm.model.Poll;
 import edu.brown.cs.mldm.yelp.Answer;
 import edu.brown.cs.mldm.yelp.Ranker;
 import edu.brown.cs.mldm.yelp.Restaurant;
@@ -30,20 +30,32 @@ import spark.Spark;
 import spark.TemplateViewRoute;
 import spark.template.freemarker.FreeMarkerEngine;
 
+/**
+ *
+ * The Server class handles all data retrieval from the back-end and calls to
+ * the chat websocket, by running a Spark Server that maps to multiple ftl files
+ * and handles get and post requests to the front-end.
+ *
+ */
 public class Server {
 
-  static ChatWebSocket chatSocket;
+  private static ChatWebSocket chatSocket;
 
   private static Map<UUID, Poll> pollDb = new HashMap<>();
   private static Map<UUID, List<Answer>> answersDb = new HashMap<>();
-  public static Map<String, String> cuisinesDb = new HashMap<>();
-  public static Map<String, String> restrictionsDb = new HashMap<>();
-  public static Map<String, String> foodDb = new HashMap<>();
+  private static Map<String, String> cuisinesDb = new HashMap<>();
+  private static Map<String, String> restrictionsDb = new HashMap<>();
+  private static Map<String, String> foodDb = new HashMap<>();
 
   private static final Gson GSON = new Gson();
-   private static final String YELPKEY =
-   "gKGjR4vy8kXQAyKrBjuPXepYBqladSEtwSTm_NNshaMPebXqQkZsGLIOe6FSUESQIh_l-cSN5lIhxiQ3-mkCnr_orbJARb_cCSr3OlQs0Jxi21D-m8uiqoHJr1jVWnYx";
 
+  /**
+   * Runs the Spark server on the given port number, it initializes the
+   * chatsocket and sets up all the post and get handlers.
+   *
+   * @param port
+   *          the port number to run the server on.
+   */
   void runSparkServer(int port) {
     readFiles();
     chatSocket = new ChatWebSocket();
@@ -58,12 +70,12 @@ public class Server {
     // note: there should NOT be a chatroom get handler
     Spark.get("/name", new NameGetHandler(), freeMarker);
 
-    Spark.get("/home", new homeFrontHandler(), freeMarker);
-    Spark.post("/home", new homeSubmitHandler());
-    Spark.get("/poll/:id", new pollUniqueHandler(), freeMarker);
-    Spark.post("/validate", new resignInHandler());
-    Spark.post("/chat/:id", new pollResHandler(), freeMarker);
-    Spark.get("/chat/:id", new pollUniqueHandler(), freeMarker);
+    Spark.get("/home", new HomeFrontHandler(), freeMarker);
+    Spark.post("/home", new HomeSubmitHandler());
+    Spark.get("/poll/:id", new PollUniqueHandler(), freeMarker);
+    Spark.post("/validate", new ResignInHandler());
+    Spark.post("/chat/:id", new PollResHandler(), freeMarker);
+    Spark.get("/chat/:id", new PollUniqueHandler(), freeMarker);
   }
 
   private static FreeMarkerEngine createEngine() {
@@ -79,6 +91,10 @@ public class Server {
     return new FreeMarkerEngine(config);
   }
 
+  /**
+   * Reads all the data files into a hashmap so it can be used for to get food
+   * categories in our database.
+   */
   private void readFiles() {
     Reader reader = new Reader();
     reader.readFiles("data/cuisines.txt", cuisinesDb);
@@ -87,11 +103,9 @@ public class Server {
   }
 
   /**
-   * Handle requests to the front page of our Stars website.
-   *
-   * @author lsim2
+   * Handle requests to the front page of our When2Eat website.
    */
-  private static class homeFrontHandler implements TemplateViewRoute {
+  private static class HomeFrontHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(Request req, Response res) {
       Map<String, Object> variables = ImmutableMap.of("title", "Where2Eat");
@@ -100,11 +114,13 @@ public class Server {
   }
 
   /**
-   * Handle requests to the front page of our Autocorrect website.
+   * Handle requests to the poll page of our When2Eat website. It gets the
+   * requested URL and extracts the id from the poll HashMap and gets the poll
+   * information. This information is then sent to the poll page of the website
+   * with all the information displayed.
    *
-   * @author lsim2
    */
-  private static class pollUniqueHandler implements TemplateViewRoute {
+  private static class PollUniqueHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(Request req, Response res) {
       String id = req.raw().getQueryString();
@@ -122,11 +138,13 @@ public class Server {
   }
 
   /**
-   * Handle requests to the front page of our Autocorrect website.
+   * This handler is called when the poll initiator submits the initial poll
+   * information. A new poll object is created and a random id is generated for
+   * the poll and stored in the poll data structure. This information is then
+   * bundled up and sent as a JSON object to the front-end.
    *
-   * @author lsim2
    */
-  private static class homeSubmitHandler implements Route {
+  private static class HomeSubmitHandler implements Route {
     @Override
     public String handle(Request req, Response res) {
       QueryParamsMap qm = req.queryMap();
@@ -136,6 +154,9 @@ public class Server {
       String date = qm.value("date");
       String msg = qm.value("message");
       UUID pollId = UUID.randomUUID();
+      while (pollDb.containsKey(pollId)) {
+        pollId = UUID.randomUUID();
+      }
       String lat = qm.value("lat");
       String lng = qm.value("lng");
 
@@ -152,13 +173,19 @@ public class Server {
     }
   }
 
-
   /**
-   * Handle requests to the front page of our Autocorrect website.
+   * Handles the results from every poll. When a user sumbits their preferences
+   * to the poll, this handler is called. All the inputs from the poll are
+   * extracted and parsed to create a new Answer object that holds all the
+   * information. The answer corresponding to the unique user and poll id is
+   * then passed into a hashmap to be stored for later retrival. The answer
+   * object is also passed into the YelpApi and Ranker class which retrives
+   * relevant restaurants and ranks them according to the provided preferences.
+   * Then the top ten restaurants are selected and sent to the front-end.
    *
    * @author lsim2
    */
-  private static class pollResHandler implements TemplateViewRoute {
+  private static class PollResHandler implements TemplateViewRoute {
 
     @SuppressWarnings("unchecked")
     @Override
@@ -211,9 +238,9 @@ public class Server {
       if (previousAns != null) {
         prevAns = GSON.toJson(prevAns);
       }
-      
+
       Poll poll = pollDb.get(id);
-     
+
       Map<String, Object> variables = ImmutableMap.<String, Object>builder()
           .put("title", "Where2Eat")
           .put("user", user).put("restaurants", restaurants).put("pollId", id)
@@ -229,11 +256,12 @@ public class Server {
   }
 
   /**
-   * Handle requests to the front page of our Stars website.
-   *
-   * @author lsim2
+   * This handler is called when ther user attempts to sign in on the poll page.
+   * If the user has signed in to this particular unique poll before, the user
+   * is directed directly to the chat page, and they don't have to refill their
+   * preferences.
    */
-  private static class resignInHandler implements Route {
+  private static class ResignInHandler implements Route {
     @Override
     public String handle(Request req, Response res) {
       QueryParamsMap qm = req.queryMap();
@@ -245,13 +273,17 @@ public class Server {
       Map<String, Object> variables = ImmutableMap.of("oldUser", false);
       if (usersDb.containsKey(id) && usersDb.get(id).containsKey(username)) {
         Answer ans = usersDb.get(id).get(username);
-        Map<String, Object> variables2 = ImmutableMap.of("oldUser", true, "answer", ans, "id", id);
+        Map<String, Object> variables2 = ImmutableMap.of("oldUser", true,
+            "answer", ans, "id", id);
         return GSON.toJson(variables2);
       }
       return GSON.toJson(variables);
     }
   }
 
+  /**
+   * Gets the name of the user from the chat and sends it to the front-end.
+   */
   private static class NameGetHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(Request request, Response response) {
@@ -279,14 +311,26 @@ public class Server {
     }
   }
 
+  /**
+   *
+   * @return the hashmap mapping cuisine ids to names
+   */
   public static Map<String, String> getCuisinesMap() {
     return cuisinesDb;
   }
 
+  /**
+   *
+   * @return the hashmap mapping food restriction ids to names
+   */
   public static Map<String, String> getRestrictionsMap() {
     return restrictionsDb;
   }
 
+  /**
+   *
+   * @return the hashmap mapping food term ids to names
+   */
   public static Map<String, String> getFoodTermsMap() {
     return foodDb;
   }

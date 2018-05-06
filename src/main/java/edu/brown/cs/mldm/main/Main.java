@@ -44,7 +44,6 @@ public class Main {
       Server server = new Server();
       server.runSparkServer((int) options.valueOf("port"));
     }
-
     Reader reader = new InputStreamReader(System.in, Charset.forName("UTF-8"));
 
     try (BufferedReader in = new BufferedReader(reader)) {
