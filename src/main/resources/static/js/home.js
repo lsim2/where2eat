@@ -112,7 +112,7 @@ $("#update").click(function(e){
 
 function initAutocomplete() {
     let options = {
-        componentRestrictions: {country: ['US','CA']}
+        componentRestrictions: {country: 'US'}
     };
 
   autocomplete = new google.maps.places.Autocomplete((document.getElementById('location')),
