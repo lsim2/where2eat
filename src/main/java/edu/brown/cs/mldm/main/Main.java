@@ -44,23 +44,6 @@ public class Main {
       server.runSparkServer((int) options.valueOf("port"));
     }
 
-    Reader reader = new InputStreamReader(System.in, Charset.forName("UTF-8"));
-
-    try (BufferedReader in = new BufferedReader(reader)) {
-      String line;
-      while ((line = in.readLine()) != null) {
-        System.out.println("echoding: " + line);
-      }
-    } catch (IOException e) {
-      e.printStackTrace();
-    } finally {
-      try {
-        reader.close();
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }
-
   }
 
 }
