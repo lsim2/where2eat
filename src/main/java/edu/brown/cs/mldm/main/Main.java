@@ -19,7 +19,6 @@ public class Main {
 	}
 
 	public static void main(String[] args) {
-
 		OptionParser parser = new OptionParser();
 		parser.accepts("gui");
 		parser.accepts("port").withRequiredArg().ofType(Integer.class).defaultsTo(DEFAULT_PORT);
