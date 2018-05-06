@@ -55,6 +55,7 @@ $(function() {
   });
   $('#misc').selectize({
       plugins: ['remove_button'],
+      maxItems: 3,
   });
 });
 

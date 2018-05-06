@@ -13,7 +13,7 @@
       <div class="container-fluid">
         <div class="navbar-header">
           <a class="navbar-brand" href="/home">Where2Eat &nbsp; |</a>
-          <a class="navbar-brand" href="javascript:{}" id="getEvent">Hide Details</a>
+          <a class="navbar-brand" href="javascript:{}" id="getEvent">Show Details</a>
           <a class="navbar-brand dropdown-toggle" data-toggle="dropdown" href=""> | &nbsp;&nbsp;Sort Suggestions<span class="caret"></span></a>
             <ul style="margin-left: 250px;" class="dropdown-menu">
               <li> <a class="dropdown-item" id="pRanker" href="javascript:{}">Order by Price</a></li>
@@ -31,7 +31,7 @@
 <div class="container bootstrap snippet">
     <div class="row">
     <div id="details">
-    <h4 id="event"><b>${author}</b> invites you for <b>${pollTitle}</b> at <b>${pollLoc}</b> on <b>${pollDate}</b></h4></div>
+    <h4 id="event"><b>${author}</b> invites you for <b>${pollTitle}</b> near <b>${pollLoc}</b> on <b>${pollDate}</b></h4></div>
     <br>
         <div class="col-md-4">
                 <div id="suggestions"></div>
@@ -51,7 +51,7 @@
                     <strong class="fa-stack-1x downNum" style="margin-top:24px; font-size:70%">0
                     </strong>
                     </span>
-                    
+
                   </div>
                   <a onclick="removeCard(this"class="popup-close-card" data-popup-close="popup-1">x</a>
                 </div>

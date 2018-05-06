@@ -494,6 +494,11 @@ function drawRestMarkers(restList){
     bounds.extend(marker.position);
   }
 
+  if(selfpos!=undefined){
+    bounds.extend(selfpos);
+  }
+
+
   map.fitBounds(bounds);
 }
 
@@ -537,8 +542,6 @@ function displayRoute(endRest){
       });
     directionsDisplay.setMap(map);
     let r = endRest;
-    console.log(selfpos.lat);
-    console.log(selfpos.lng);
 
 
     let endPos = new google.maps.LatLng(parseFloat(r.coordinates.latitude), parseFloat(r.coordinates.longitude));
