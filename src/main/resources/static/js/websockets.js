@@ -169,12 +169,24 @@ const setup_chatter = () => {
         let myContent = data.payload.content;
         let myNames = data.payload.names;
         // need to ask user for name
-        for (let i = 0; i < myDates.length; i++) {
-          let date = myDates[i];
-          let txtId = myIds[i];
-          let txt = myContent[i];
-          let nameTxt = myNames[i];
-          addChatMsg(nameTxt,date,txt);
+        console.log(data.payload.myName);
+        if (myName == data.payload.myName) {
+            for (let i = 0; i < myDates.length; i++) {
+              let date = myDates[i];
+              let txtId = myIds[i];
+              let txt = myContent[i];
+              let nameTxt = myNames[i];
+              console.log("new user", txt);
+              addChatMsg(nameTxt,date,txt);
+            }
+        } else {
+            let i = myDates.length-1; 
+            let date = myDates[i];
+            let txtId = myIds[i];
+            let txt = myContent[i];
+            let nameTxt = myNames[i];
+            console.log("new msg addtoroom", txt);
+            addChatMsg(nameTxt,date,txt);
         }
         break;
       case MESSAGE_TYPE.UPDATE:
