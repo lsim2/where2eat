@@ -82,10 +82,19 @@ const setup_chatter = () => {
 
 
 //markers start here
-      let centerLat = parseFloat(JSON.parse(data.rests[0]).coordinates.latitude);
-      let centerLng = parseFloat(JSON.parse(data.rests[0]).coordinates.longitude);
+      let center;
 
-      let center = {lat: centerLat, lng: centerLng};
+      if(data.rests[0]) !=null){
+        let centerLat = parseFloat(JSON.parse(data.rests[0]).coordinates.latitude);
+        let centerLng = parseFloat(JSON.parse(data.rests[0]).coordinates.longitude);
+        center = {lat: centerLat, lng: centerLng};
+      } else{
+        let uluru = {lat: -37.0902, lng: 95.7129};
+        center = uluru;
+      }
+
+
+
 
       map = new google.maps.Map(document.getElementById('map'), {
         zoom: 18,
@@ -180,7 +189,7 @@ const setup_chatter = () => {
               addChatMsg(nameTxt,date,txt);
             }
         } else {
-            let i = myDates.length-1; 
+            let i = myDates.length-1;
             let date = myDates[i];
             let txtId = myIds[i];
             let txt = myContent[i];
@@ -231,11 +240,13 @@ const send_chat = chat => {
   let payLoad = {"name": myName, "id": myId, "text": chat, "roomURL": window.location.href};
   let jsonObject = { "type": MESSAGE_TYPE.SEND, "payload": payLoad}
   let jsonString = JSON.stringify(jsonObject)
-  conn.send(jsonString);
+  if (chat != "") {
+    conn.send(jsonString);
+  }
 }
 
 function initMap() {
-  let uluru = {lat: -25.363, lng: 131.044};
+  let uluru = {lat: -37.0902, lng: 95.7129};
   let map = new google.maps.Map(document.getElementById('map'), {
     zoom: 4,
     center: uluru
@@ -424,7 +435,7 @@ function updateRestaurantList(dataList) {
     if(selfpos != undefined){
       displayRoute(JSON.parse(dataList[0]));
     }
-    console.log("Top: " + JSON.parse(dataList[0]).name);
+    //console.log("Top: " + JSON.parse(dataList[0]).name);
 }
 
 function drawRest(restaurant){

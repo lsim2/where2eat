@@ -34,7 +34,7 @@
     <h4 id="event"><b>${author}</b> invites you for <b>${pollTitle}</b> near <b>${pollLoc}</b> on <b>${pollDate}</b></h4></div>
     <br>
         <div class="col-md-4">
-                <div id="suggestions"></div>
+                <div id="suggestions">No Suggestions Found!</div>
                 <template id="suggestion">
                 <div class="card">
                   <div class="container">

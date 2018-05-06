@@ -8,6 +8,7 @@ let postParameter = {};
 let places;
 let filled = false;
 let linkText;
+let autocomplete;
 
 $("#flip").click(function(e){
     document.getElementById('name').value = "";
@@ -110,31 +111,35 @@ $("#update").click(function(e){
 });
 
 function initAutocomplete() {
-  let input = document.getElementById('location');
-  let searchBox = new google.maps.places.SearchBox(input);
+    let options = {
+        componentRestrictions: {country: ['US','CA']}
+    };
+
+  autocomplete = new google.maps.places.Autocomplete((document.getElementById('location')),
+            options);
 
   // Listen for the event fired when the user selects a prediction and retrieve
   // more details for that place.
-  searchBox.addListener('places_changed', function() {
-    places = searchBox.getPlaces();
+  autocomplete.addListener('place_changed', function() {
+    places = autocomplete.getPlace();
     if (places.length == 0) {
       return;
     }
     // For each place, get the icon, name and location.
     let bounds = new google.maps.LatLngBounds();
-    places.forEach(function(place) {
+    let place = places;
       if (!place.geometry) {
         console.log("Returned place contains no geometry");
         return;
       }
       postParameter.lat = place.geometry.location.lat();
       postParameter.lng = place.geometry.location.lng();
+      console.log( postParameter.lng,  postParameter.lat);
       if (place.geometry.viewport) {
         // Only geocodes have viewport.
         bounds.union(place.geometry.viewport);
       } else {
         bounds.extend(place.geometry.location);
       }
-    });
   });
 }
