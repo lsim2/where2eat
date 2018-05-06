@@ -72,7 +72,7 @@ $("#submit").click(function(e) {
         let title = "" + responseObject.pollTitle;
         let location = "" + responseObject.location;
         let date = "" + responseObject.date;
-        document.getElementById('pollTitle').innerHTML = "Details: " + title + " at " + location + " on " + date;
+        document.getElementById('pollTitle').innerHTML = "Details: " + title + " near " + location + " on " + date;
         let a = document.createElement('a');
         linkText = document.createTextNode('localhost:4567/poll/:id?'+pollId);
         a.appendChild(linkText);
