@@ -5,18 +5,16 @@ body {
 	font-family: 'Montserrat', sans-serif;
 	background-size: cover;
 	background: #50C9C3;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #96DEDA, #50C9C3);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #96DEDA, #50C9C3); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
+  background: -webkit-linear-gradient(to right, #96DEDA, #50C9C3);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #96DEDA, #50C9C3); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
-
 
 #name {
 	background-color: white;
 	border-radius: 5px;
 	padding: 3px;
 	color: #737173;
-	  padding-left: 8px;
+	padding-left: 8px;
 }
 
 #title {
@@ -24,7 +22,7 @@ body {
 	border-radius: 5px;
 	padding: 3px;
 	color: #737173;
-	  padding-left: 8px;
+	padding-left: 8px;
 }
 
 #location {
@@ -32,7 +30,7 @@ body {
 	border-radius: 5px;
 	padding: 3px;
 	color: #737173;
-	  padding-left: 8px;
+	padding-left: 8px;
 }
 
 #date-format {
@@ -40,7 +38,7 @@ body {
 	border-radius: 5px;
 	padding: 3px;
 	color: #737173;
-	  padding-left: 8px;
+	padding-left: 8px;
 }
 
 #message {
@@ -48,11 +46,10 @@ body {
 	border-radius: 5px;
 	padding: 3px;
 	color: 	#737173;
-	  padding-left: 8px;
+	padding-left: 8px;
 }
 
 #urlInfo {
-	/*background-color: #FFF0F5;*/
 	background-color:#d3edea;
 	padding: 10px;
 	border-radius: 5px;

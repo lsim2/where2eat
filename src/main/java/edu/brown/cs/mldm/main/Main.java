@@ -9,44 +9,58 @@ import java.nio.charset.Charset;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 
+/**
+ * This is the main class which starts our program.
+ *
+ */
 public class Main {
 
-	private static final int DEFAULT_PORT = 4567;
-	private String[] args;
+  private static final int DEFAULT_PORT = 4567;
 
-	private Main(String[] args) {
-		this.args = args;
-	}
+  /**
+   * The constructor with arguments.
+   * 
+   * @param args
+   */
+  private Main(String[] args) {
+  }
 
-	public static void main(String[] args) {
+  /**
+   * Reads information from the command line and runs the program with the
+   * specified arguments.
+   * 
+   * @param args
+   */
+  public static void main(String[] args) {
 
-		OptionParser parser = new OptionParser();
-		parser.accepts("gui");
-		parser.accepts("port").withRequiredArg().ofType(Integer.class).defaultsTo(DEFAULT_PORT);
-		OptionSet options = parser.parse(args);
+    OptionParser parser = new OptionParser();
+    parser.accepts("gui");
+    parser.accepts("port").withRequiredArg().ofType(Integer.class)
+        .defaultsTo(DEFAULT_PORT);
+    OptionSet options = parser.parse(args);
 
-		if (options.has("gui")) {
-			Server server = new Server();
-			server.runSparkServer((int) options.valueOf("port"));
-		}
+    if (options.has("gui")) {
+      Server server = new Server();
+      server.runSparkServer((int) options.valueOf("port"));
+    }
 
-		Reader reader = new InputStreamReader(System.in, Charset.forName("UTF-8"));
+    Reader reader = new InputStreamReader(System.in, Charset.forName("UTF-8"));
 
-		try (BufferedReader in = new BufferedReader(reader)) {
-			String line;
-			while ((line = in.readLine()) != null) {
-				System.out.println("echoding: " + line);
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				reader.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+    try (BufferedReader in = new BufferedReader(reader)) {
+      String line;
+      while ((line = in.readLine()) != null) {
+        System.out.println("echoding: " + line);
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    } finally {
+      try {
+        reader.close();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
 
-	}
+  }
 
 }

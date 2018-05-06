@@ -2,15 +2,12 @@ package edu.brown.cs.mldm.model;
 
 import java.util.Date;
 
-import edu.brown.cs.mldm.yelp.Restaurant;
-
 public class Message {
 
 	private String content;
 	private String senderName;
 	private int senderId;
 	private Date date;
-	private int tracker;
 
 	public final String getContent() {
 		return content;
@@ -48,8 +45,7 @@ public class Message {
 	
 	 @Override
 	 public boolean equals(Object msg) {
-
 	    return this.getContent().equals(((Message)  msg).getContent());
-	  }
+	 }
 
 }

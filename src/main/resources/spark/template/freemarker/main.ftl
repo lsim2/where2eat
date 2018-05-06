@@ -19,19 +19,17 @@
 		<link href='http://fonts.googleapis.com/css?family=Roboto:400,500' rel='stylesheet' type='text/css'>
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   </head>
-
   <body>
-   <script src="/js/jquery-3.1.1.js"></script>
-   <script src='http://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.8.5/js/standalone/selectize.min.js'></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.14/angular.min.js">
-		<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script src="/js/jquery-3.1.1.js"></script>
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.8.5/js/standalone/selectize.min.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.14/angular.min.js">
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.5.10/js/ripples.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.5.10/js/material.min.js"></script>
-		<script type="text/javascript" src="http://momentjs.com/downloads/moment-with-locales.min.js"></script>
-		<script type="text/javascript" src="/js/bootstrap-material-datetimepicker.js"></script>
-     <script src="/js/script.js"></script>
-     <script src="/js/time.js"></script>
-
+    <script type="text/javascript" src="http://momentjs.com/downloads/moment-with-locales.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap-material-datetimepicker.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/time.js"></script>
     <!-- Matt's stuff-->
     <script src="/js/websockets.js"></script>
     <script src="/js/chatroom.js"></script>

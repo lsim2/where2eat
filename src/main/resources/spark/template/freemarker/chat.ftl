@@ -2,7 +2,6 @@
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
-
 <link rel='stylesheet prefetch' href='https://simeydotme.github.io/jQuery-ui-Slider-Pips/dist/css/jqueryui.min.css'>
 <link rel='stylesheet prefetch' href='https://simeydotme.github.io/jQuery-ui-Slider-Pips/dist/css/jquery-ui-slider-pips.min.css'>
 <link rel='stylesheet prefetch' href='http://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.8.5/css/selectize.default.css'>
@@ -34,46 +33,40 @@
     <h4 id="event"><b>${author}</b> invites you for <b>${pollTitle}</b> near <b>${pollLoc}</b> on <b>${pollDate}</b></h4></div>
     <br>
         <div class="col-md-4">
-                <div id="suggestions">No Suggestions Found!</div>
-                <template id="suggestion">
-                <div class="card">
-                  <div class="container">
-                   <img class="food" src="https://www.shareicon.net/download/2016/09/02/824429_fork_512x512.png" alt="Food pic" style="width:110px; height: 100px;">
-                    <h5 class="restaurant-name"><b>Name</b></h5>
-                    <p class="categories" style="font-size:10px"></p>
-                    <span class="fa-stack">
-                    <span onclick="thumbUp(this)" class="fa thumb fa-thumbs-up fa-stack-2x"></span>
-                    <strong class="fa-stack-1x upNum" style="margin-top:24px; font-size:70%">0
-                    </strong>
-                    </span>
-                    <span class="fa-stack">
-                     <span onclick="thumbDown(this)" class="fa thumb fa-thumbs-down fa-stack-2x"></span>
-                    <strong class="fa-stack-1x downNum" style="margin-top:24px; font-size:70%">0
-                    </strong>
-                    </span>
-
-                  </div>
-                  <a onclick="removeCard(this)"class="popup-close-card" data-popup-close="popup-1">x</a>
+            <div id="suggestions">No Suggestions Found!</div>
+            <template id="suggestion">
+              <div class="card">
+                <div class="container">
+                 <img class="food" src="https://www.shareicon.net/download/2016/09/02/824429_fork_512x512.png" alt="Food pic" style="width:110px; height: 100px;">
+                  <h5 class="restaurant-name"><b>Name</b></h5>
+                  <p class="categories" style="font-size:10px"></p>
+                  <span class="fa-stack">
+                  <span onclick="thumbUp(this)" class="fa thumb fa-thumbs-up fa-stack-2x"></span>
+                  <strong class="fa-stack-1x upNum" style="margin-top:24px; font-size:70%">0
+                  </strong>
+                  </span>
+                  <span class="fa-stack">
+                   <span onclick="thumbDown(this)" class="fa thumb fa-thumbs-down fa-stack-2x"></span>
+                  <strong class="fa-stack-1x downNum" style="margin-top:24px; font-size:70%">0
+                  </strong>
+                  </span>
                 </div>
-                </template>
-
-          </div>
-
+                <a onclick="removeCard(this)"class="popup-close-card" data-popup-close="popup-1">x</a>
+              </div>
+            </template>
+        </div>
         <!--=========================================================-->
         <!-- selected chat -->
         <div id="user" hidden>${user}</div>
         <div id="prevAns" hidden>${prevAns}</div>
-     <div class="col-md-5" id='map'>
-        <!--stuff i added -->
-
-        <script src="/js/maps.js"></script>
+        <div class="col-md-5" id='map'>
+          <!--stuff i added -->
+          <script src="/js/maps.js"></script>
           <script async defer
           src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwQc3YSCaD2g-U32PUbY4ZtoM2VocxYB8&callback=initMap">
           </script>
-
-        <!--stuff i added -->
-
-    </div>
+          <!--stuff i added -->
+        </div>
         <div id="myChat" class="col-md-3">
             <div class="chat-message" id="chat-message">
                 <ul id="chatMsgs" class="chat">
@@ -181,12 +174,10 @@
 <a class="popup-close" data-popup-close="popup-1">x</a>
 </div>
 </div>
-
 <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script src='https://simeydotme.github.io/jQuery-ui-Slider-Pips/dist/js/jquery-plus-ui.min.js'></script>
 <script src='https://simeydotme.github.io/jQuery-ui-Slider-Pips/dist/js/jquery-ui-slider-pips.js'></script>
 <script src='http://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.8.5/js/standalone/selectize.min.js'></script>
 <script src="/js/chat.js"></script>
-
 <#include "main.ftl">

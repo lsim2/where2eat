@@ -25,8 +25,6 @@ public class ChatroomMaps {
   private final Map<UUID, List<Restaurant>> uuidToDistRestaurants = new HashMap<>();
   private final Map<String, List<Message>> urlToMsgs = new HashMap<String, List<Message>>();
   private final Map<String, Queue<Session>> urlToQueueOfSessions = new HashMap<String, Queue<Session>>();
-  private final Map<String, Restaurant> upvotes = new HashMap<>();
-  private final Map<String, Restaurant> downvotes = new HashMap<>();
   private final Map<UUID, Map<String, Restaurant>> uuidToUpVoteMap = new HashMap<>();
   private final Map<UUID, Map<String, Restaurant>> uuidToDownVoteMap = new HashMap<>();
 
