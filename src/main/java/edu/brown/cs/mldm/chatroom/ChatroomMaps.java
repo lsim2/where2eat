@@ -74,6 +74,7 @@ public class ChatroomMaps {
       Map<String, Restaurant> upvotes = new HashMap<>();
       uuidToUpVoteMap.put(uuid, upvotes);
     }
+    // return upvotes;
     return uuidToUpVoteMap.get(uuid);
 
   }
@@ -86,7 +87,9 @@ public class ChatroomMaps {
       Map<String, Restaurant> dvotes = new HashMap<>();
       uuidToDownVoteMap.put(uuid, dvotes);
     }
+
     return uuidToDownVoteMap.get(uuid);
+    // return downvotes;
   }
 
 }

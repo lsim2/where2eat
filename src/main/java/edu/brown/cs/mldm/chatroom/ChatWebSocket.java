@@ -418,13 +418,21 @@ public class ChatWebSocket {
 
     if (direction.equals("up")) {
       if (upVotes.containsKey(rest.getId())) {
-        upVotes.get(rest.getId()).incrementUpVotes();
+        if (upVotes.get(rest.getId()).getUpVotes() != rest.getUpVotes()) {
+          upVotes.get(rest.getId()).incrementUpVotes();
+        }
+        // System.out
+        // .println(rest.getUpVotes() + "dsfasdfasdfasdfasdfasdfdfasdfsdfsdf");
+        // System.out.println(upVotes.get(rest.getId()).getUpVotes()
+        // + "sdfasdfasdfasdfasfasfsdfasdfsdf");
       } else {
         upVotes.put(rest.getId(), rest);
       }
     } else if (direction.equals("down")) {
       if (dVotes.containsKey(rest.getId())) {
-        dVotes.get(rest.getId()).incrementDownVotes();
+        if (dVotes.get(rest.getId()).getDownVotes() != rest.getDownVotes()) {
+          dVotes.get(rest.getId()).incrementDownVotes();
+        }
       } else {
         dVotes.put(rest.getId(), rest);
       }

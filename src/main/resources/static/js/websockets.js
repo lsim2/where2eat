@@ -372,7 +372,6 @@ function updateRestList() {
 
 function updateCards(currRanking) {
      $("#suggestions").empty();
-     //console.log(currRanking.length);
     for(i= 0; i < currRanking.length; i++) {
         let restaurant = currRanking[i];
           let temp = document.getElementById("suggestion");
@@ -402,9 +401,9 @@ function updateCards(currRanking) {
             }
 
             let uVotes = restaurant.upVotes;
-            if ((restaurant.id in upvotes)) { uVotes = upvotes[restaurant.id] }
+          //if ((restaurant.id in upvotes)) { uVotes = upvotes[restaurant.id] }
             let dVotes = restaurant.downVotes;
-            if ((restaurant.id in downvotes)) { dVotes = downvotes[restaurant.id]}
+            //if ((restaurant.id in downvotes)) { dVotes = downvotes[restaurant.id]}
             temp.content.querySelector(".fa-stack-1x.upNum").id = "thumbUp-"+ restaurant.id;
             temp.content.querySelector(".fa-stack-1x.downNum").id = "thumbDown-"+ restaurant.id
 

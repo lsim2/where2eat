@@ -15,15 +15,7 @@
 	      <a class="navbar-brand" href="/home">Where2Eat</a>
           <a class="navbar-brand" style="margin-left: 700px;" href="" id="shareURL" target="_blank">Share Poll &nbsp; |</a>
           <a class="navbar-brand" data-popup-open="popup-1" href="javascript:{}" onclick="myF()">Change Preferences  &nbsp;|</a>
-          <a id="chat" class="navbar-brand" href="javascript:{}">Chat &nbsp;|</a>
-        <a class="navbar-brand" href="javascript:{}" id="navbarDropdown" role="button" data-toggle="dropdown" id="order-dropdown" aria-haspopup="true" aria-expanded="false">
-         Switch Order
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" id="pRanker" href="javascript:{}">Order by Price</a>
-          <a class="dropdown-item" id="distRanker" href="javascript:{}">Order by Distance</a>
-          <a class="dropdown-item" id="resetOrder" href="javascript:{}">Reset Order</a>
-        </div>
+          <a id="chat" class="navbar-brand" href="javascript:{}">Chat</a>
 	    </div>
 	  </div>
 	</nav>
