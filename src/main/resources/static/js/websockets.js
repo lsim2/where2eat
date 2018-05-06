@@ -382,13 +382,13 @@ function updateRestList() {
         let restaurant = restaurants[id];
         restListToSend.push(restaurant);
      }
-     console.log(currRanking[0]);
+     console.log("Top: " + currRanking[0]);
     sendRestUpdateMsg(restListToSend);
 }
 
 function updateCards(currRanking) {
      $("#suggestions").empty();
-     console.log(currRanking.length);
+     //console.log(currRanking.length);
     for(i= 0; i < currRanking.length; i++) {
         let restaurant = currRanking[i];
           let temp = document.getElementById("suggestion");
