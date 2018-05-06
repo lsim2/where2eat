@@ -460,6 +460,7 @@ function updateRestaurantList(dataList) {
         restaurants[restaurant.id] = restaurant;
        // allRests.push(restaurant);
     }
+    console.log("Top: " + JSON.parse(dataList[0]).name);
 }
 
 function drawRest(restaurant){
