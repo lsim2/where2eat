@@ -272,9 +272,6 @@ public class ChatWebSocket {
     payLoadObject.add("content", content);
     payLoadObject.add("suggestions", suggestions);
     payLoadObject.add("rests", rests);
-
-    // TODO: repeated code!
-
     addNamesInRoom(session, receivedRoomURL); // helper func: THIS ADDS ALL THE
                                               // names of the users within a
                                               // room
@@ -424,10 +421,6 @@ public class ChatWebSocket {
         if (upVotes.get(rest.getId()).getUpVotes() != rest.getUpVotes()) {
           upVotes.get(rest.getId()).incrementUpVotes();
         }
-        // System.out
-        // .println(rest.getUpVotes() + "dsfasdfasdfasdfasdfasdfdfasdfsdfsdf");
-        // System.out.println(upVotes.get(rest.getId()).getUpVotes()
-        // + "sdfasdfasdfasdfasfasfsdfasdfsdf");
       } else {
         upVotes.put(rest.getId(), rest);
       }
