@@ -19,7 +19,7 @@ public class Main {
 
   /**
    * The constructor with arguments.
-   * 
+   *
    * @param args
    */
   private Main(String[] args) {
@@ -28,7 +28,7 @@ public class Main {
   /**
    * Reads information from the command line and runs the program with the
    * specified arguments.
-   * 
+   *
    * @param args
    *          the arguments from the main class.
    */
