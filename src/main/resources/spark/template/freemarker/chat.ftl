@@ -12,6 +12,7 @@
       <div class="container-fluid">
         <div class="navbar-header">
           <a class="navbar-brand" href="/home">Where2Eat &nbsp; |</a>
+          <a class="navbar-brand" href="/poll/:id?${pollId}">Back to Poll &nbsp; |</a>
           <a class="navbar-brand" href="javascript:{}" id="getEvent">Show Details</a>
           <a class="navbar-brand dropdown-toggle" data-toggle="dropdown" href=""> | &nbsp;&nbsp;Sort Suggestions<span class="caret"></span></a>
             <ul style="margin-left: 250px;" class="dropdown-menu">
@@ -19,7 +20,7 @@
               <li><a class="dropdown-item" id="distRanker" href="javascript:{}">Order by Distance</a></li>
               <li><a class="dropdown-item" id="resetOrder" href="javascript:{}">Order by Votes</a></li>
             </ul>
-          <a class="navbar-brand" style="margin-left: 400px;" href="" id="shareURL" target="_blank">Share Poll &nbsp; |</a>
+          <a class="navbar-brand" style="margin-left: 300px;" href="" id="shareURL" target="_blank">Share Poll &nbsp; |</a>
           <a class="navbar-brand" data-popup-open="popup-1" href="javascript:{}" onclick="myF()">Change Preferences  &nbsp;|</a>
           <a id="chat" class="navbar-brand" href="javascript:{}">Chat</a>
         </div>

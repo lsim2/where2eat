@@ -122,7 +122,6 @@ public class ChatWebSocket {
    */
   @OnWebSocketConnect
   public void connected(Session session) throws IOException {
-    System.out.println("Web socket connected");
     sessions.add(session);
 
     JsonObject jObject = new JsonObject();
