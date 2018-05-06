@@ -142,7 +142,6 @@ public class YelpApi {
 
         url.append("&radius=" + radius);
         backupurl.append("&radius=" + radius);
-        System.out.println(url);
         
         List<Restaurant> originalReq = this.makeRequest(url.toString());
         if(originalReq.size()>0 ){
@@ -179,7 +178,6 @@ public class YelpApi {
             // for each suggestion in the result from the Api, converts to a Restaurant object and adds to results list
             for (JsonElement str : myResponse) {
                 Restaurant rest = GSON.fromJson(str.getAsJsonObject(), Restaurant.class);
-                System.out.println("added" + rest.getName());
                 results.add(rest);
             }
 
