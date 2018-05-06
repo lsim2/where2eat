@@ -53,7 +53,7 @@
                     </span>
 
                   </div>
-                  <a onclick="removeCard(this"class="popup-close-card" data-popup-close="popup-1">x</a>
+                  <a onclick="removeCard(this)"class="popup-close-card" data-popup-close="popup-1">x</a>
                 </div>
                 </template>
 

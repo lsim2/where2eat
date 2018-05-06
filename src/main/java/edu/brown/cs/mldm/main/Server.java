@@ -247,11 +247,11 @@ public class Server {
       Map<UUID, Map<String, Answer>> usersDb = chatSocket.getMaps()
           .getUsersDb();
       Map<String, Object> variables = ImmutableMap.of("oldUser", false);
-      if (usersDb.get(id).containsKey(username)) {
+      if (usersDb.containsKey(id) && usersDb.get(id).containsKey(username)) {
         Answer ans = usersDb.get(id).get(username);
-        variables = ImmutableMap.of("oldUser", true, "answer", ans, "id", id);
+        Map<String, Object> variables2 = ImmutableMap.of("oldUser", true, "answer", ans, "id", id);
+        return GSON.toJson(variables2);
       }
-
       return GSON.toJson(variables);
     }
   }
