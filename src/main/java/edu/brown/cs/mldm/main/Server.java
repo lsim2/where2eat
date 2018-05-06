@@ -155,20 +155,6 @@ public class Server {
     }
   }
 
-  /**
-   * Handle requests to the front page of our Autocorrect website.
-   *
-   * @author lsim2
-   */
-  private static class chatFrontHandler implements TemplateViewRoute {
-
-    @Override
-    public ModelAndView handle(Request req, Response res) {
-      Map<String, Object> variables = ImmutableMap.of("title", "Where2Eat",
-          "user", "John", "restaurants", "");
-      return new ModelAndView(variables, "chat.ftl");
-    }
-  }
 
   /**
    * Handle requests to the front page of our Autocorrect website.
@@ -229,12 +215,19 @@ public class Server {
       if (previousAns != null) {
         prevAns = GSON.toJson(prevAns);
       }
-
+      
+      Poll poll = pollDb.get(id);
+     
       Map<String, Object> variables = ImmutableMap.<String, Object>builder()
           .put("title", "Where2Eat")
           .put("user", user).put("restaurants", restaurants).put("pollId", id)
           .put("cuisines", cuisinesDb).put("restrictions", restrictionsDb)
-          .put("food", foodDb).put("prevAns", prevAns).build();
+          .put("food", foodDb).put("prevAns", prevAns)
+          .put("pollTitle", poll.getMeal())
+          .put("pollDate", poll.getDate())
+          .put("pollLoc", poll.getLocation())
+          .put("author", poll.getAuthor())
+          .build();
       return new ModelAndView(variables, "chat.ftl");
     }
   }

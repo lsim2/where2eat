@@ -416,14 +416,7 @@ function updateCards(currRanking) {
             } else if (votes.down.indexOf(restaurant.id) > -1) {
                 thumbsDown.classList.add("active");
             }
-<<<<<<< HEAD
             console.log(restaurant.name +" : "+ restaurant.downVotes + " : " + downvotes[restaurant.id]);
-=======
-            // console.log(restaurant.upVotes);
-            // console.log(downvotes[restaurant.id]);
-            // console.log(restaurant.id + "restaurant: "+ restaurant.name);
->>>>>>> 3ee920b4af5203923b748b87319a51b03552465c
-
             let uVotes = restaurant.upVotes;
             if ((restaurant.id in upvotes)) { uVotes = upvotes[restaurant.id] }
             let dVotes = restaurant.downVotes;

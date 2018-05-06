@@ -285,7 +285,6 @@ a:hover, a:active, a:focus {
 }
 
 #map {
-  margin-top: 60px;
   width: 780px;
   height: 575px;
 }
@@ -342,5 +341,22 @@ a:hover, a:active, a:focus {
 
 #myChat {
     margin-left:150%;
+}
+
+#details {
+    margin-left: 15px; 
+    padding: 5px;
+    border-radius: 3px; 
+    background-color: white; 
+    display: none;
+}
+
+#event {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.navbar-brand:hover {
+    color: white;
 }
 

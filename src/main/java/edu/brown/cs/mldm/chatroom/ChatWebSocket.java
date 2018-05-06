@@ -115,12 +115,6 @@ public class ChatWebSocket {
     List<Restaurant> restaurantList = getRestaurantList(receivedRoomURL);
     for (Restaurant r : restaurantList) {
       suggestions.add(r.getName());
-      System.out.println(r.getName() + "DVotes: " + r.getDownVotes()
-          + "UVOTEs: " + r.getUpVotes());
-      updateRestVotes(r);
-      System.out.println(r.getName() + "DVotes: " + r.getDownVotes()
-          + "UVOTEs: " + r.getUpVotes());
-
       rests.add(GSON.toJson(r));
     }
 

@@ -133,4 +133,12 @@ $('#toResults').click(function() {
     $("#form").submit();
 });
 
+$("#getEvent").click(function() {
+    $("#details").toggle();
+    if($("#details").is(":hidden") == true) {
+        $("#getEvent").html("Show Details");
+    } else {
+        $("#getEvent").html("Hide Details");
+    }
+});
 

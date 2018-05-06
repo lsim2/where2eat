@@ -12,8 +12,15 @@
 <nav class="navbar navbar-fixed-top">
 	  <div class="container-fluid">
 	    <div class="navbar-header">
-	      <a class="navbar-brand" href="/home">Where2Eat</a>
-          <a class="navbar-brand" style="margin-left: 700px;" href="" id="shareURL" target="_blank">Share Poll &nbsp; |</a>
+	      <a class="navbar-brand" href="/home">Where2Eat &nbsp; |</a>
+          <a class="navbar-brand" href="javascript:{}" id="getEvent">Hide Details</a>
+          <a class="navbar-brand dropdown-toggle" data-toggle="dropdown" href=""> | &nbsp;&nbsp;Sort Suggestions<span class="caret"></span></a>
+            <ul style="margin-left: 250px;" class="dropdown-menu">
+              <li> <a class="dropdown-item" id="pRanker" href="javascript:{}">Order by Price</a></li>
+              <li><a class="dropdown-item" id="distRanker" href="javascript:{}">Order by Distance</a></li>
+              <li><a class="dropdown-item" id="resetOrder" href="javascript:{}">Reset Order</a></li>
+            </ul>
+          <a class="navbar-brand" style="margin-left: 400px;" href="" id="shareURL" target="_blank">Share Poll &nbsp; |</a>
           <a class="navbar-brand" data-popup-open="popup-1" href="javascript:{}" onclick="myF()">Change Preferences  &nbsp;|</a>
           <a id="chat" class="navbar-brand" href="javascript:{}">Chat</a>
 	    </div>
@@ -23,12 +30,11 @@
 <br><br>
 <div class="container bootstrap snippet">
     <div class="row">
+    <div id="details">
+    <h4 id="event"><b>${author}</b> invites you for <b>${pollTitle}</b> at <b>${pollLoc}</b> on <b>${pollDate}</b></h4></div>
+    <br>
 		<div class="col-md-4">
-            <h4><b>Suggestions</b></h4>
-                <button type="button" id="pRanker" class="rankers">Order by price</button>
-                <button type="button" id="distRanker" class="rankers">Order by distance</button>
-                <button type="button" id="resetOrder" class="rankers">Reset order</button>
-                <div id="suggestions">Suggestions</div>
+                <div id="suggestions"></div>
                 <template id="suggestion">
                 <div class="card">
                   <div class="container">
@@ -176,8 +182,10 @@
 </div>
 
 <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script src='https://simeydotme.github.io/jQuery-ui-Slider-Pips/dist/js/jquery-plus-ui.min.js'></script>
 <script src='https://simeydotme.github.io/jQuery-ui-Slider-Pips/dist/js/jquery-ui-slider-pips.js'></script>
 <script src='http://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.8.5/js/standalone/selectize.min.js'></script>
 <script src="/js/chat.js"></script>
+
 <#include "main.ftl">
