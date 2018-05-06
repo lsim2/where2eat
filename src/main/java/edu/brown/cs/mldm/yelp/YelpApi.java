@@ -68,7 +68,7 @@ public class YelpApi {
         // String location = "Providence, RI";
         String terms = "restaurants"; // makes sure that search results only include restaurants, no other types of businesses 
         String price = "1"; // price 1 = $, 2 = $$, 3 = $$$, 4 = $$$$
-        String radius = "39999"; // ~20 miles - max radius 
+        String radius = "39999"; // ~25 miles - max radius 
         String categories = "";
 
         List<Restaurant> restaurants = new ArrayList<>();

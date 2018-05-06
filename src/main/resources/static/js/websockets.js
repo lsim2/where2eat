@@ -9,7 +9,7 @@ const MESSAGE_TYPE = {
 };
 
 const VOTE_TYPE = {
-    NONE: 0, 
+    NONE: 0,
     UP: 1,
     DOWN: 2
 };
@@ -21,12 +21,12 @@ let myName;
 let regSuggestions;
 //keeps track of all the restaurants displayed on the screen
 let allRests  = [];
-let restaurants; 
+let restaurants;
 let votes = {up:[], down:[]}
 let upvotes = {};
 let downvotes = {};
 
-let ranking = {}; 
+let ranking = {};
 let myMap = new Map();
 
 // Setup the WebSocket connection for live updating of scores.
@@ -76,7 +76,7 @@ const setup_chatter = () => {
         regSuggestions = data.suggestions;
         updateRestaurantList(data.rests);
 
-        let centerLat = parseFloat(JSON.parse(data.rests[0]).coordinates.latitude);
+      let centerLat = parseFloat(JSON.parse(data.rests[0]).coordinates.latitude);
       let centerLng = parseFloat(JSON.parse(data.rests[0]).coordinates.longitude);
 
       let center = {lat: centerLat, lng: centerLng};
@@ -85,7 +85,7 @@ const setup_chatter = () => {
         zoom: 18,
         center: center
       });
-            
+
       let bounds = new google.maps.LatLngBounds();
      // allRests = data.rests.slice(0,5);
       let currRests = data.rests.slice(0,5);
@@ -214,8 +214,8 @@ const setup_chatter = () => {
         // sending our info to the server, so the server can put us in the right room
         myId = data.payload.id;
         myName = data.payload.myName;
-        let payLoad = {"name": myName, "id": myId, "roomURL": window.location.href}; 
-        let jsonObject = { "type": MESSAGE_TYPE.ADDTOROOM, "payload": payLoad} 
+        let payLoad = {"name": myName, "id": myId, "roomURL": window.location.href};
+        let jsonObject = { "type": MESSAGE_TYPE.ADDTOROOM, "payload": payLoad}
         let jsonString = JSON.stringify(jsonObject)
         conn.send(jsonString);
         break;
@@ -248,7 +248,7 @@ const setup_chatter = () => {
       case MESSAGE_TYPE.UPDATERESTS:
         let newRanking = data.payload.ranking;
         let newList = [];
-        
+
         for (let i = 0; i< newRanking.length; i++) {
             let restaurant = JSON.parse(newRanking[i]);
             newList.push(restaurant);
@@ -337,7 +337,7 @@ function addChatMsg(nameTxt,date,txt) {
 
 function thumbUp(x) {
     event.preventDefault();
-    let id = x.id; 
+    let id = x.id;
     $(".fa.thumb.fa-thumbs-down." + id).removeClass('active');
     x.classList.add("active");
     ranking[id]++;
@@ -356,7 +356,7 @@ function thumbUp(x) {
 
 function thumbDown(x) {
     event.preventDefault();
-    let id = x.id; 
+    let id = x.id;
     $(".fa.thumb.fa-thumbs-up." + id).removeClass('active');
     x.classList.add("active");
     ranking[id]--;
@@ -382,12 +382,13 @@ function updateRestList() {
         let restaurant = restaurants[id];
         restListToSend.push(restaurant);
      }
+     console.log("Top: " + currRanking[0]);
     sendRestUpdateMsg(restListToSend);
 }
 
 function updateCards(currRanking) {
      $("#suggestions").empty();
-     console.log(currRanking.length);
+     //console.log(currRanking.length);
     for(i= 0; i < currRanking.length; i++) {
         let restaurant = currRanking[i];
           let temp = document.getElementById("suggestion");
@@ -415,7 +416,13 @@ function updateCards(currRanking) {
             } else if (votes.down.indexOf(restaurant.id) > -1) {
                 thumbsDown.classList.add("active");
             }
+<<<<<<< HEAD
             console.log(restaurant.name +" : "+ restaurant.downVotes + " : " + downvotes[restaurant.id]);
+=======
+            // console.log(restaurant.upVotes);
+            // console.log(downvotes[restaurant.id]);
+            // console.log(restaurant.id + "restaurant: "+ restaurant.name);
+>>>>>>> 3ee920b4af5203923b748b87319a51b03552465c
 
             let uVotes = restaurant.upVotes;
             if ((restaurant.id in upvotes)) { uVotes = upvotes[restaurant.id] }
@@ -430,15 +437,15 @@ function updateCards(currRanking) {
             document.getElementById("thumbUp-"+ restaurant.id).innerHTML = uVotes;
             document.getElementById("thumbDown-"+ restaurant.id).innerHTML = dVotes;
 
-            
+
         }
 }
 
 function sendRestUpdateMsg(restListToSend){
   let payLoad = {
-      "name": myName, 
-      "id": myId, 
-      "text": "", 
+      "name": myName,
+      "id": myId,
+      "text": "",
       "roomURL": window.location.href,
       "voteRank": restListToSend,
       "upvotes": upvotes,

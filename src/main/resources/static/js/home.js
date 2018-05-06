@@ -6,7 +6,7 @@ let ractive = new Ractive({
 let pollId = "";
 let postParameter = {};
 let places;
-
+let filled = false;
 let linkText;
 
 $("#flip").click(function(e){
@@ -22,13 +22,16 @@ $("#newForm").click(function(e){
     document.getElementById('title').value = "";
     document.getElementById('location').value = "";
     document.getElementById('date-format').value = "";
-    document.getElementById('message').value = "";
-    $('[data-popup-close]').on('click', function(e)  {
-    let targeted_popup_class = jQuery(this).attr('data-popup-close');
-    $('[data-popup="' + targeted_popup_class + '"]').fadeOut(350);
-    e.preventDefault();
-    ractive.toggle( 'flipCard' );
-});
+    document.getElementById('message').value = "Let's eat!";
+
+    console.log(filled);
+    if(filled == true){
+      ractive.toggle( 'flipCard' );
+        let targeted_popup_class = jQuery('[data-popup-close]').attr('data-popup-close');
+            $('[data-popup="' + targeted_popup_class + '"]').fadeOut(350);
+    }
+
+    filled = false;
 });
 
 $("#submit").click(function(e) {
@@ -85,6 +88,7 @@ $("#submit").click(function(e) {
      setTimeout(function(){
     let targeted_popup_class = jQuery('[data-popup-open]').attr('data-popup-open');
     $('[data-popup="' + targeted_popup_class + '"]').fadeIn(350);
+    filled = true;
     e.preventDefault(); } , 2000);
 }
 );

@@ -198,14 +198,15 @@ public class ChatWebSocket {
         .get(receivedRoomURL);
     for (Message msg : msgsInRoom) {
       Date unParsedDate = msg.getDate();
-      SimpleDateFormat dataFormat = new SimpleDateFormat("h:m a");
+      SimpleDateFormat dataFormat = new SimpleDateFormat("h:mm a");
       Integer senderId = msg.getSenderId();
 
       String StringId = Integer.toString(senderId);
       String stringDate = dataFormat.format(unParsedDate);
       String stringName = msg.getSenderName();
       String stringContent = msg.getContent();
-
+      
+      System.out.println(stringDate);
       ids.add(StringId);
       dates.add(stringDate);
       names.add(stringName);
@@ -299,7 +300,7 @@ public class ChatWebSocket {
     msgsInRoom.add(msg);
 
     // wanna iterate through all messages and
-    SimpleDateFormat dataFormat = new SimpleDateFormat("h:m a");
+    SimpleDateFormat dataFormat = new SimpleDateFormat("h:mm a");
     String date = dataFormat.format(now);
 
     JsonObject updatedObject = new JsonObject();
