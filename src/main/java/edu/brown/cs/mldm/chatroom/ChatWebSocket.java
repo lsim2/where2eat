@@ -356,7 +356,7 @@ public class ChatWebSocket {
         rest.resetVote();
         updatedRestaurantList.add(rest);
       } catch (Exception e) {
-        e.printStackTrace();
+        System.out.println("ERROR: Error updating!");
       }
 
     }
