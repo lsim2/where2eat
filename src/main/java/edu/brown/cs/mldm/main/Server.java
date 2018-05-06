@@ -43,9 +43,6 @@ public class Server {
   private static final Gson GSON = new Gson();
    private static final String YELPKEY =
    "gKGjR4vy8kXQAyKrBjuPXepYBqladSEtwSTm_NNshaMPebXqQkZsGLIOe6FSUESQIh_l-cSN5lIhxiQ3-mkCnr_orbJARb_cCSr3OlQs0Jxi21D-m8uiqoHJr1jVWnYx";
-//  private static final String YELPKEY = "F291TzGm16HMb6ZoMS4j1azreUQJq9PHCLjoeNPcS33pOntIq"
-//      + "SRpC-aO-cXuQ_8O2O8TM-RohICpxPAzXuTekf-T7i2Ktym"
-//      + "LLCUTwTyEqJKsLm3XzmuWTSKPbzLdWnYx";
 
   void runSparkServer(int port) {
     readFiles();

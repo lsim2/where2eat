@@ -3,32 +3,27 @@ body {
   font-size: 12px;
   color: #777;
   background: #f9f9f9;
-  font-family: 'Open Sans',sans-serif;
-  margin-top:20px;
+  font-family: 'Open Sans', sans-serif;
+  margin-top: 20px;
 }
-
 .bg-white {
   padding: 5px;
   background-color: #fff;
 }
-
 .friend-list {
   list-style: none;
-margin-left: -40px;
+  margin-left: -40px;
 }
-
 .friend-list li {
   border-bottom: 1px solid #eee;
 }
-
 .friend-list li a img {
   float: left;
   width: 45px;
   height: 45px;
   margin-right: 0px;
 }
-
- .friend-list li a {
+.friend-list li a {
   position: relative;
   display: block;
   padding: 10px;
@@ -38,33 +33,26 @@ margin-left: -40px;
   -ms-transition: all .2s ease;
   -o-transition: all .2s ease;
 }
-
 .friend-list li.active a {
   background-color: #f1f5fc;
 }
-
-.friend-list li a .friend-name,
-.friend-list li a .friend-name:hover {
+.friend-list li a .friend-name, .friend-list li a .friend-name:hover {
   color: #777;
 }
-
 .friend-list li a .last-message {
   width: 65%;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
 }
-
 .friend-list li a .time {
   position: absolute;
   top: 10px;
   right: 8px;
 }
-
 small, .small {
   font-size: 85%;
 }
-
 .friend-list li a .chat-alert {
   position: absolute;
   right: 8px;
@@ -72,19 +60,16 @@ small, .small {
   font-size: 10px;
   padding: 3px 5px;
 }
-
 .chat-message {
-/*  padding: 60px 20px 11px;*/
+  /*  padding: 60px 20px 11px;*/
   overflow-y: auto;
   height: 480px;
-  width: 400px; 
+  width: 400px;
 }
-
 .chat {
-    list-style: none;
-    margin: 0;
+  list-style: none;
+  margin: 0;
 }
-
 .chat li img {
   width: 45px;
   height: 45px;
@@ -92,40 +77,32 @@ small, .small {
   -moz-border-radius: 50em;
   -webkit-border-radius: 50em;
 }
-
-
 img {
   max-width: 100%;
 }
-
 .chat-body {
   padding-bottom: 20px;
 }
-
 .chat li.left .chat-body {
   margin-left: 70px;
   background-color: #fff;
 }
-
 .chat li .chat-body {
   position: relative;
   font-size: 11px;
   padding: 10px;
   border: 1px solid #f1f5fc;
-  box-shadow: 0 1px 1px rgba(0,0,0,.05);
-  -moz-box-shadow: 0 1px 1px rgba(0,0,0,.05);
-  -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+  -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 }
-
 .chat li .chat-body .header {
   padding-bottom: 5px;
   border-bottom: 1px solid #f1f5fc;
 }
-
 .chat li .chat-body p {
   margin: 0;
 }
-
 .chat li.left .chat-body:before {
   position: absolute;
   top: 10px;
@@ -143,7 +120,6 @@ img {
   -ms-transform: rotate(-45deg);
   -o-transform: rotate(-45deg);
 }
-
 .chat li.right .chat-body:before {
   position: absolute;
   top: 10px;
@@ -161,16 +137,13 @@ img {
   -ms-transform: rotate(45deg);
   -o-transform: rotate(45deg);
 }
-
 .chat li {
   margin: 15px 0;
 }
-
 .chat li.right .chat-body {
   margin-right: 70px;
   background-color: #fff;
 }
-
 .chat-box {
   position: fixed;
   bottom: 0;
@@ -185,230 +158,203 @@ img {
   -o-transition: all .5s ease;
   display: none;
 }
-
 .primary-font {
   color: #3c8dbc;
 }
-
 a:hover, a:active, a:focus {
   text-decoration: none;
   outline: 0;
 }
-
 #userInput {
-    width: 350px;
-    height: 20px;
+  width: 350px;
+  height: 20px;
 }
-
 .col-md-5 {
   width: 200px;
   height: 400px;
 }
-
-
-
-
 .card {
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    transition: 0.3s;
-    width: 50%;
-    border-radius: 5px;
-    position: relative; 
-    float: left; 
-    margin-bottom: 5px; 
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+  width: 50%;
+  border-radius: 5px;
+  position: relative;
+  float: left;
+  margin-bottom: 5px;
 }
-
 .card:hover {
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 }
-
 .food {
-    border-radius: 5px 5px 5px 5px;
-    position: relative; 
-    float: left; 
-    margin-left: -10px;
-    margin-top: 10px;
-    margin-right: 10px;
-    margin-bottom: -5px;
+  border-radius: 5px 5px 5px 5px;
+  position: relative;
+  float: left;
+  margin-left: -10px;
+  margin-top: 10px;
+  margin-right: 10px;
+  margin-bottom: -5px;
 }
-
 .container {
-	padding: 10px; 
-    margin-top: -14px;
-    margin-left: 5px; 
-    position: relative; 
-    float: left; 
+  padding: 10px;
+  margin-top: -14px;
+  margin-left: 5px;
+  position: relative;
+  float: left;
 }
 .fa.thumb {
-    font-size: 25px;
-    cursor: pointer;
-    user-select: none;
-    padding: 5px;
+  font-size: 25px;
+  cursor: pointer;
+  user-select: none;
+  padding: 5px;
 }
-
 .fa.fa-thumbs-up:hover {
   color: #4cd137;
 }
-
 .fa.fa-thumbs-down:hover {
   color: #F03434;
 }
-
 .fa.fa-thumbs-up.active {
   color: #4cd137;
 }
-
 .fa.fa-thumbs-down.active {
   color: #F03434;
 }
-
-.h5 { 
-    float: left; 
-    margin-top: 10px;
+.h5 {
+  float: left;
+  margin-top: 10px;
 }
-
 .p {
-    padding: 5px; 
+  padding: 5px;
 }
-
 #map {
   width: 780px;
   height: 575px;
 }
-
 .popup {
-    width:990px;
-    display:none;
-    position:fixed;
-    top: 55%;
-    left: 50%;
-    margin-left: -495px;
-    background:rgba(0,0,0,0.75);
+  width: 990px;
+  display: none;
+  position: fixed;
+  top: 55%;
+  left: 50%;
+  margin-left: -495px;
+  background: rgba(0, 0, 0, 0.75);
 }
 /* Inner */
-.popup-inner {
-    max-width:1000px;
-    width:980px;
-    height: 550px; 
-    padding:40px;
-    position:absolute;
-    top:50%;
-    left:50%;
-    -webkit-transform:translate(-50%, -50%);
-    transform:translate(-50%, -50%);
-    box-shadow:0px 2px 6px rgba(0,0,0,1);
-    border-radius:3px;
-    background:#fff;
-}
-/* Close Button */
-.popup-close {
-    width:30px;
-    height:30px;
-    padding-top:4px;
-    display:inline-block;
-    position:absolute;
-    top:0px;
-    right:0px;
-    transition:ease 0.25s all;
-    -webkit-transform:translate(50%, -50%);
-    transform:translate(50%, -50%);
-    border-radius:1000px;
-    background:rgba(0,0,0,0.8);
-    font-family:Arial, Sans-Serif;
-    font-size:20px;
-    text-align:center;
-    line-height:100%;
-    color:#fff;
-}
 
+.popup-inner {
+  max-width: 1000px;
+  width: 980px;
+  height: 550px;
+  padding: 40px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 1);
+  border-radius: 3px;
+  background: #fff;
+}
 /* Close Button */
+
+.popup-close {
+  width: 30px;
+  height: 30px;
+  padding-top: 4px;
+  display: inline-block;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  transition: ease 0.25s all;
+  -webkit-transform: translate(50%, -50%);
+  transform: translate(50%, -50%);
+  border-radius: 1000px;
+  background: rgba(0, 0, 0, 0.8);
+  font-family: Arial, Sans-Serif;
+  font-size: 20px;
+  text-align: center;
+  line-height: 100%;
+  color: #fff;
+}
+/* Close Button */
+
 .popup-close-card {
-    width:20px;
-    height:20px;
-    padding:4px;
-    display:inline-block;
-    position:absolute;
-    top:15px;
-    right:15px;
-    transition:ease 0.25s all;
-    -webkit-transform:translate(50%, -50%);
-    transform:translate(50%, -50%);
-    border-radius:1000px;
-    background:rgba(0,0,0,0.8);
-    font-family:Arial, Sans-Serif;
-    font-size:12px;
-    text-align:center;
-    line-height:100%;
-    color:#fff;
+  width: 20px;
+  height: 20px;
+  padding: 4px;
+  display: inline-block;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  transition: ease 0.25s all;
+  -webkit-transform: translate(50%, -50%);
+  transform: translate(50%, -50%);
+  border-radius: 1000px;
+  background: rgba(0, 0, 0, 0.8);
+  font-family: Arial, Sans-Serif;
+  font-size: 12px;
+  text-align: center;
+  line-height: 100%;
+  color: #fff;
 }
 .popup-close:hover {
-    -webkit-transform:translate(50%, -50%) rotate(180deg);
-    transform:translate(50%, -50%) rotate(180deg);
-    background:rgba(0,0,0,1);
-    text-decoration:none;
+  -webkit-transform: translate(50%, -50%) rotate(180deg);
+  transform: translate(50%, -50%) rotate(180deg);
+  background: rgba(0, 0, 0, 1);
+  text-decoration: none;
 }
-
 .popup-close-card:hover {
-    -webkit-transform:translate(50%, -50%) rotate(180deg);
-    transform:translate(50%, -50%) rotate(180deg);
-    background:rgba(0,0,0,1);
-    text-decoration:none;
+  -webkit-transform: translate(50%, -50%) rotate(180deg);
+  transform: translate(50%, -50%) rotate(180deg);
+  background: rgba(0, 0, 0, 1);
+  text-decoration: none;
 }
-
 #myChat {
-    margin-left:150%;
+  margin-left: 150%;
 }
-
 #details {
-    margin-left: 15px; 
-    padding: 5px;
-    border-radius: 3px; 
-    background-color: white; 
-    display: none;
+  margin-left: 15px;
+  padding: 5px;
+  border-radius: 3px;
+  background-color: white;
+  display: none;
 }
-
 #event {
-    text-align: center;
-    vertical-align: middle;
+  text-align: center;
+  vertical-align: middle;
 }
-
 .navbar-brand:hover {
-    text-shadow: 2px 2px 5px #000000;
+  text-shadow: 2px 2px 5px #000000;
 }
-
 .item {
-    padding: 5px;
-    background-color:#0094e4 !important;
+  padding: 5px;
+  background-color: #0094e4 !important;
 }
-
 .selectize-input.items.not-full.has-options, .selectize-input.items.not-full.has-options.focus, .selectize-input.items.has-options.has-items.full {
-    position: relative;
-    z-index: 1;
-    display: inline-block;
-    width: 100%;
-    padding: 8px 8px;
-    overflow: hidden;
-    border: 1px solid #d0d0d0;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  width: 100%;
+  padding: 8px 8px;
+  overflow: hidden;
+  border: 1px solid #d0d0d0;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
-
-
 .submitButton {
-    position: absolute;
-    top: 450px;
-    left: 650px;
-    border: 2px solid grey;
-    border-radius: 5px;
+  position: absolute;
+  top: 450px;
+  left: 650px;
+  border: 2px solid grey;
+  border-radius: 5px;
 }
-
 .submitB {
-    border: 2px solid grey;
-    border-radius: 5px;
+  border: 2px solid grey;
+  border-radius: 5px;
 }

@@ -17,6 +17,11 @@ public class Main {
 
   private static final int DEFAULT_PORT = 4567;
 
+  /**
+   * The constructor with arguments.
+   * 
+   * @param args
+   */
   private Main(String[] args) {
   }
 
