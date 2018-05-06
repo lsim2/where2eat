@@ -31,6 +31,7 @@ let map;
 let selfpos;
 let directionsDisplay;
 let bounds;
+let markers = [];
 
 // Setup the WebSocket connection for live updating of scores.
 const setup_chatter = () => {
@@ -196,7 +197,7 @@ const setup_chatter = () => {
             newList.push(restaurant);
             restaurants[restaurant.id].voteType = VOTE_TYPE.NONE;
         }
-        drawRestMarkers(newList);
+        drawRestMarkers(newRanking);
         allRests = newList;
         updateCards(newList);
 
@@ -438,9 +439,19 @@ function drawRest(restaurant){
 }
 
 function drawRestMarkers(restList){
+
+  if(markers != undefined){
+    for(let i=0;i<markers.length;i++){
+      markers[i].setMap(null);
+    }
+    markers = [];
+  }
+
+
   bounds = new google.maps.LatLngBounds();
   //let currRests = data.rests.slice(0,5);
   let currRests = restList;
+
   allRests = [];
   for(let i=0;i<currRests.length;i++){
     const restaurant = JSON.parse(currRests[i]);
@@ -454,6 +465,7 @@ function drawRestMarkers(restList){
       map: map,
       clicked: false
     });
+    markers.push(marker);
 
     let contentString = "<b>" + restaurant.name + "</b></br>" + restaurant.location.display_address;
     let infowindow = new google.maps.InfoWindow({

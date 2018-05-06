@@ -8,7 +8,7 @@ let preferences = {user:$('#user').html(), cuisine:JSON.stringify([]), restricti
 
 function myF() {
   let targeted_popup_class = jQuery('[data-popup-open]').attr('data-popup-open');
-  $('[data-popup="' + targeted_popup_class + '"]').fadeIn(350);   
+  $('[data-popup="' + targeted_popup_class + '"]').fadeIn(350);
 }
 
 $(function() {
@@ -26,7 +26,7 @@ $(function() {
     $('[data-popup="' + targeted_popup_class + '"]').fadeOut(350);
     e.preventDefault();
     });
-    
+
      $("#chat").on('click', function (e) {
         e.stopPropagation();
         e.preventDefault();
@@ -45,7 +45,7 @@ $(function() {
 
 
 $(function() {
-    
+
   $('#cuisine').selectize({
       plugins: ['remove_button'],
       maxItems: 3,
@@ -90,7 +90,7 @@ $("#flat-slider-vertical-1")
         max: prices.length - 1,
         min: 0,
         range: "min",
-        value: preferences.price,
+        value: 0,
      change: function(event, ui) {
         preferences.price = ui.value;
     }
@@ -99,7 +99,7 @@ $("#flat-slider-vertical-1")
         rest: "label",
         labels: prices
     });
-    
+
     $("#flat-slider-vertical-2")
     .slider({
         max: 25,
@@ -141,4 +141,3 @@ $("#getEvent").click(function() {
         $("#getEvent").html("Hide Details");
     }
 });
-
