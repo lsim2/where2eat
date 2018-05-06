@@ -33,11 +33,11 @@
                 <div class="card">
                   <div class="container">
                    <img class="food" src="https://www.shareicon.net/download/2016/09/02/824429_fork_512x512.png" alt="Food pic" style="width:110px; height: 100px;">
-                    <h5 class="restaurant-name"><b>Name</b></h5> 
+                    <h5 class="restaurant-name"><b>Name</b></h5>
                     <p class="categories" style="font-size:10px"></p>
                     <span class="fa-stack">
                     <span onclick="thumbUp(this)" class="fa thumb fa-thumbs-up fa-stack-2x"></span>
-                    <strong class="fa-stack-1x upNum" style="margin-top:24px; font-size:70%">0   
+                    <strong class="fa-stack-1x upNum" style="margin-top:24px; font-size:70%">0
                     </strong>
                     </span>
                     <span class="fa-stack">
@@ -45,11 +45,11 @@
                     <strong class="fa-stack-1x downNum" style="margin-top:24px; font-size:70%">0
                     </strong>
                     </span>
-                    
+
                   </div>
                 </div>
                 </template>
-                
+
           </div>
 
         <!--=========================================================-->
@@ -63,7 +63,7 @@
 	      <script async defer
 	      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwQc3YSCaD2g-U32PUbY4ZtoM2VocxYB8&callback=initMap">
 	      </script>
-	
+
 	    <!--stuff i added -->
 
     </div>
@@ -166,7 +166,7 @@
       </#list>
     </select>
 </div>
-<div class="ranking submitBtn">
+<div class="ranking">
 <button type="button" id="toResults" class="btn">Submit</button>
 </div>
 </form>
@@ -174,10 +174,10 @@
 <a class="popup-close" data-popup-close="popup-1">x</a>
 </div>
 </div>
-     
+
 <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 <script src='https://simeydotme.github.io/jQuery-ui-Slider-Pips/dist/js/jquery-plus-ui.min.js'></script>
-<script src='https://simeydotme.github.io/jQuery-ui-Slider-Pips/dist/js/jquery-ui-slider-pips.js'></script> 
+<script src='https://simeydotme.github.io/jQuery-ui-Slider-Pips/dist/js/jquery-ui-slider-pips.js'></script>
 <script src='http://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.8.5/js/standalone/selectize.min.js'></script>
 <script src="/js/chat.js"></script>
 <#include "main.ftl">
