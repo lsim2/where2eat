@@ -15,7 +15,15 @@
 	      <a class="navbar-brand" href="/home">Where2Eat</a>
           <a class="navbar-brand" style="margin-left: 700px;" href="" id="shareURL" target="_blank">Share Poll &nbsp; |</a>
           <a class="navbar-brand" data-popup-open="popup-1" href="javascript:{}" onclick="myF()">Change Preferences  &nbsp;|</a>
-          <a id="chat" class="navbar-brand" href="javascript:{}">Chat</a>
+          <a id="chat" class="navbar-brand" href="javascript:{}">Chat &nbsp;|</a>
+        <a class="navbar-brand" href="javascript:{}" id="navbarDropdown" role="button" data-toggle="dropdown" id="order-dropdown" aria-haspopup="true" aria-expanded="false">
+         Switch Order
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" id="pRanker" href="javascript:{}">Order by Price</a>
+          <a class="dropdown-item" id="distRanker" href="javascript:{}">Order by Distance</a>
+          <a class="dropdown-item" id="resetOrder" href="javascript:{}">Reset Order</a>
+        </div>
 	    </div>
 	  </div>
 	</nav>
@@ -25,9 +33,6 @@
     <div class="row">
 		<div class="col-md-4">
             <h4><b>Suggestions</b></h4>
-                <button type="button" id="pRanker" class="rankers">Order by price</button>
-                <button type="button" id="distRanker" class="rankers">Order by distance</button>
-                <button type="button" id="resetOrder" class="rankers">Reset order</button>
                 <div id="suggestions">Suggestions</div>
                 <template id="suggestion">
                 <div class="card">

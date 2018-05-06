@@ -111,15 +111,11 @@ public class ChatWebSocket {
 
     JsonArray suggestions = new JsonArray();
     JsonArray rests = new JsonArray();
-
+    UUID uuid = this.getUuid(receivedRoomURL);
     List<Restaurant> restaurantList = getRestaurantList(receivedRoomURL);
     for (Restaurant r : restaurantList) {
       suggestions.add(r.getName());
-      System.out.println(r.getName() + "DVotes: " + r.getDownVotes()
-          + "UVOTEs: " + r.getUpVotes());
-      updateRestVotes(r);
-      System.out.println(r.getName() + "DVotes: " + r.getDownVotes()
-          + "UVOTEs: " + r.getUpVotes());
+      updateRestVotes(r, uuid);
 
       rests.add(GSON.toJson(r));
     }
@@ -205,7 +201,7 @@ public class ChatWebSocket {
       String stringDate = dataFormat.format(unParsedDate);
       String stringName = msg.getSenderName();
       String stringContent = msg.getContent();
-      
+
       System.out.println(stringDate);
       ids.add(StringId);
       dates.add(stringDate);
@@ -339,7 +335,9 @@ public class ChatWebSocket {
     JsonElement voteRank = receivedPayload.get("voteRank");
     JsonArray newResList = voteRank.getAsJsonArray();
     List<Restaurant> updatedRestaurantList = new ArrayList<>();
+
     List<Restaurant> currRestaurantList = getRestaurantList(receivedRoomURL);
+    UUID uuid = this.getUuid(receivedRoomURL);
     for (JsonElement jsonObj : newResList) {
       try {
         Restaurant rest = GSON.fromJson(jsonObj.getAsJsonObject(),
@@ -348,10 +346,10 @@ public class ChatWebSocket {
         Restaurant restFromList = currRestaurantList.get(index);
         if (rest.getVoteType() == VOTE_TYPE.UP.ordinal()) {
           restFromList.incrementUpVotes();
-          this.updateVotes(restFromList, "up");
+          this.updateVotes(restFromList, "up", uuid);
         } else if (rest.getVoteType() == VOTE_TYPE.DOWN.ordinal()) {
           restFromList.incrementDownVotes();
-          this.updateVotes(restFromList, "down");
+          this.updateVotes(restFromList, "down", uuid);
         }
 
         rest = restFromList;
@@ -413,9 +411,10 @@ public class ChatWebSocket {
    * @param rest
    * @param direction
    */
-  private void updateVotes(Restaurant rest, String direction) {
-    Map<String, Restaurant> dVotes = myChatroomMaps.getDownvotes();
-    Map<String, Restaurant> upVotes = myChatroomMaps.getUpvotes();
+  private void updateVotes(Restaurant rest, String direction, UUID uuid) {
+
+    Map<String, Restaurant> dVotes = myChatroomMaps.getDownvotes(uuid);
+    Map<String, Restaurant> upVotes = myChatroomMaps.getUpvotes(uuid);
 
     if (direction.equals("up")) {
       if (upVotes.containsKey(rest.getId())) {
@@ -432,9 +431,9 @@ public class ChatWebSocket {
     }
   }
 
-  private void updateRestVotes(Restaurant rest) {
-    Map<String, Restaurant> dvotes = myChatroomMaps.getDownvotes();
-    Map<String, Restaurant> uvotes = myChatroomMaps.getUpvotes();
+  private void updateRestVotes(Restaurant rest, UUID uuid) {
+    Map<String, Restaurant> dvotes = myChatroomMaps.getDownvotes(uuid);
+    Map<String, Restaurant> uvotes = myChatroomMaps.getUpvotes(uuid);
     if (dvotes.containsKey(rest.getId())) {
       rest.setDownVotes(dvotes.get(rest.getId()).getDownVotes());
     }

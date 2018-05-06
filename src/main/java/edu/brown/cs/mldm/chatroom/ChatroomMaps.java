@@ -27,6 +27,8 @@ public class ChatroomMaps {
   private final Map<String, Queue<Session>> urlToQueueOfSessions = new HashMap<String, Queue<Session>>();
   private final Map<String, Restaurant> upvotes = new HashMap<>();
   private final Map<String, Restaurant> downvotes = new HashMap<>();
+  private final Map<UUID, Map<String, Restaurant>> uuidToUpVoteMap = new HashMap<>();
+  private final Map<UUID, Map<String, Restaurant>> uuidToDownVoteMap = new HashMap<>();
 
   public Map<Integer, String> getidsToName() {
     return idsToName;
@@ -67,15 +69,24 @@ public class ChatroomMaps {
   /**
    * @return the upvotes
    */
-  public Map<String, Restaurant> getUpvotes() {
-    return upvotes;
+  public Map<String, Restaurant> getUpvotes(UUID uuid) {
+    if (!uuidToUpVoteMap.containsKey(uuid)) {
+      Map<String, Restaurant> upvotes = new HashMap<>();
+      uuidToUpVoteMap.put(uuid, upvotes);
+    }
+    return uuidToUpVoteMap.get(uuid);
+
   }
 
   /**
    * @return the downvotes
    */
-  public Map<String, Restaurant> getDownvotes() {
-    return downvotes;
+  public Map<String, Restaurant> getDownvotes(UUID uuid) {
+    if (!uuidToDownVoteMap.containsKey(uuid)) {
+      Map<String, Restaurant> dvotes = new HashMap<>();
+      uuidToDownVoteMap.put(uuid, dvotes);
+    }
+    return uuidToDownVoteMap.get(uuid);
   }
 
 }

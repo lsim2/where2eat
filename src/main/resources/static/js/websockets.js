@@ -308,14 +308,10 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 }
 
 function priceRanker(r1, r2){
-  // let rest1 = JSON.parse(r1);
-  // let rest2 = JSON.parse(r2);
   let dif = parseInt(r1.intPrice)-parseInt(r2.intPrice);
   return dif;
 }
 function distRanker(r1, r2){
-  // let rest1 = JSON.parse(r1);
-  // let rest2 = JSON.parse(r2);
   let dif = parseFloat(r1.dist)-parseFloat(r2.dist);
   return dif;
 }
@@ -416,13 +412,6 @@ function updateCards(currRanking) {
             } else if (votes.down.indexOf(restaurant.id) > -1) {
                 thumbsDown.classList.add("active");
             }
-<<<<<<< HEAD
-            console.log(restaurant.name +" : "+ restaurant.downVotes + " : " + downvotes[restaurant.id]);
-=======
-            // console.log(restaurant.upVotes);
-            // console.log(downvotes[restaurant.id]);
-            // console.log(restaurant.id + "restaurant: "+ restaurant.name);
->>>>>>> 3ee920b4af5203923b748b87319a51b03552465c
 
             let uVotes = restaurant.upVotes;
             if ((restaurant.id in upvotes)) { uVotes = upvotes[restaurant.id] }
