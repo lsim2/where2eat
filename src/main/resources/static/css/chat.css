@@ -285,7 +285,6 @@ a:hover, a:active, a:focus {
 }
 
 #map {
-  margin-top: 60px;
   width: 780px;
   height: 575px;
 }
@@ -333,7 +332,35 @@ a:hover, a:active, a:focus {
     line-height:100%;
     color:#fff;
 }
+
+/* Close Button */
+.popup-close-card {
+    width:20px;
+    height:20px;
+    padding:4px;
+    display:inline-block;
+    position:absolute;
+    top:15px;
+    right:15px;
+    transition:ease 0.25s all;
+    -webkit-transform:translate(50%, -50%);
+    transform:translate(50%, -50%);
+    border-radius:1000px;
+    background:rgba(0,0,0,0.8);
+    font-family:Arial, Sans-Serif;
+    font-size:12px;
+    text-align:center;
+    line-height:100%;
+    color:#fff;
+}
 .popup-close:hover {
+    -webkit-transform:translate(50%, -50%) rotate(180deg);
+    transform:translate(50%, -50%) rotate(180deg);
+    background:rgba(0,0,0,1);
+    text-decoration:none;
+}
+
+.popup-close-card:hover {
     -webkit-transform:translate(50%, -50%) rotate(180deg);
     transform:translate(50%, -50%) rotate(180deg);
     background:rgba(0,0,0,1);
@@ -342,5 +369,22 @@ a:hover, a:active, a:focus {
 
 #myChat {
     margin-left:150%;
+}
+
+#details {
+    margin-left: 15px; 
+    padding: 5px;
+    border-radius: 3px; 
+    background-color: white; 
+    display: none;
+}
+
+#event {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.navbar-brand:hover {
+    color: white;
 }
 

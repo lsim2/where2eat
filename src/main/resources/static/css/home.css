@@ -1,7 +1,7 @@
 body {
 	padding: 40px;
 	color: black;
-	margin-left: 30px; 
+	margin-left: 30px;
 	font-family: 'Montserrat', sans-serif;
 	background-size: cover;
 	background: #50C9C3;  /* fallback for old browsers */
@@ -47,7 +47,8 @@ body {
 }
 
 #urlInfo {
-	background-color: #FFF0F5;
+	/*background-color: #FFF0F5;*/
+	background-color:#d3edea;
 	padding: 10px;
 	border-radius: 5px;
 }
@@ -436,12 +437,29 @@ body {
     line-height:100%;
     color:#fff;
 }
+
+.popup-close-card {
+    width:30px;
+    height:30px;
+    padding-top:4px;
+    display:inline-block;
+    position:absolute;
+    top:0px;
+    right:0px;
+    transition:ease 0.25s all;
+    -webkit-transform:translate(50%, -50%);
+    transform:translate(50%, -50%);
+    border-radius:1000px;
+    background:rgba(0,0,0,0.8);
+    font-family:Arial, Sans-Serif;
+    font-size:20px;
+    text-align:center;
+    line-height:100%;
+    color:#fff;
+}
 .popup-close:hover {
     -webkit-transform:translate(50%, -50%) rotate(180deg);
     transform:translate(50%, -50%) rotate(180deg);
     background:rgba(0,0,0,1);
     text-decoration:none;
 }
-
-
- 

@@ -21,6 +21,7 @@ let myName;
 let regSuggestions;
 //keeps track of all the restaurants displayed on the screen
 let allRests  = [];
+let remainingRests = {};
 let restaurants;
 let votes = {up:[], down:[]}
 let upvotes = {};
@@ -28,7 +29,8 @@ let downvotes = {};
 let ranking = {};
 let map;
 let selfpos;
-  let directionsDisplay;
+let directionsDisplay;
+let bounds;
 
 // Setup the WebSocket connection for live updating of scores.
 const setup_chatter = () => {
@@ -77,6 +79,8 @@ const setup_chatter = () => {
         regSuggestions = data.suggestions;
         updateRestaurantList(data.rests);
 
+
+//markers start here
       let centerLat = parseFloat(JSON.parse(data.rests[0]).coordinates.latitude);
       let centerLng = parseFloat(JSON.parse(data.rests[0]).coordinates.longitude);
 
@@ -87,56 +91,14 @@ const setup_chatter = () => {
         center: center
       });
 
-      let bounds = new google.maps.LatLngBounds();
-     // allRests = data.rests.slice(0,5);
       let currRests = data.rests.slice(0,5);
+      let lastFive = data.rests.slice(5,10);
+      addRemainingRests(lastFive);
       allRests = [];
-      // updateCards(allRests);
-      for(let i=0;i<currRests.length;i++){
-        const restaurant = JSON.parse(data.rests[i]);
-        drawRest(restaurant);
-        allRests.push(restaurant);
-        let pos = {lat: parseFloat(restaurant.coordinates.latitude), lng: parseFloat(restaurant.coordinates.longitude)};
-        let marker = new google.maps.Marker({
-          title: restaurant.name,
-          position: new google.maps.LatLng(pos.lat, pos.lng),
-          animation: google.maps.Animation.DROP,
-          map: map,
-          clicked: false
-        });
 
-        let contentString = "<b>" + restaurant.name + "</b></br>" + restaurant.location.display_address ;
-        let infowindow = new google.maps.InfoWindow({
-          content: contentString
-        });
+      drawRestMarkers(data.rests.slice(0,5));
 
-        google.maps.event.addListener(infowindow,'closeclick',
-          function() {
-            marker.clicked = false;
-          })
-        marker.addListener('click', function() {
-          marker.clicked = true;
-          infowindow.open(map, marker);
-          marker.setAnimation(google.maps.Animation.BOUNCE);
-          setTimeout(function () {
-            marker.setAnimation(null);
-          }, 500);
-        });
-
-        marker.addListener('mouseover', function() {
-          infowindow.open(map, marker);
-        });
-        marker.addListener('mouseout', function() {
-          if(marker.clicked == false){
-            infowindow.close();
-          }
-
-
-        });
-        bounds.extend(marker.position);
-      }
       updateCards(allRests);
-      map.fitBounds(bounds);
 
 
 
@@ -173,7 +135,7 @@ const setup_chatter = () => {
           });
 
           // directions
-          displayRoute(JSON.parse(currRests[0]));
+          displayRoute(JSON.parse(data.rests[0]));
 
 
         // end directions.
@@ -228,14 +190,22 @@ const setup_chatter = () => {
       case MESSAGE_TYPE.UPDATERESTS:
         let newRanking = data.payload.ranking;
         let newList = [];
-
+        remainingRests = data.payload.remaining;
         for (let i = 0; i< newRanking.length; i++) {
             let restaurant = JSON.parse(newRanking[i]);
             newList.push(restaurant);
             restaurants[restaurant.id].voteType = VOTE_TYPE.NONE;
         }
+        drawRestMarkers(newList);
         allRests = newList;
         updateCards(newList);
+
+        // HEREEEEE
+
+        if(selfpos != undefined){
+          //displayRoute(restaurants[currRanking[0]]);
+          displayRoute(newList[0]);
+        }
         break;
     }
   };
@@ -353,19 +323,14 @@ function thumbDown(x) {
 function updateRestList() {
      let currRanking = Object.keys(ranking).sort(function(a,b){return ranking[a]-ranking[b]});
      let restListToSend = [];
-     for(i= currRanking.length-1; i >= 0; i--) {
+     for(i= 4; i >= 0; i--) {
         let id = currRanking[i];
         let restaurant = restaurants[id];
         restListToSend.push(restaurant);
      }
-     console.log("Top: " + currRanking[0]);
-
     sendRestUpdateMsg(restListToSend);
     console.log("her" + restaurants[currRanking[0]].name);
-    if(selfpos != undefined){
-      //displayRoute(restaurants[currRanking[0]]);
-      displayRoute(restListToSend[0]);
-    }
+
 
 
 }
@@ -380,9 +345,9 @@ function updateCards(currRanking) {
           } else {
               temp.content.querySelector('.food').src = "https://www.shareicon.net/download/2016/09/02/824429_fork_512x512.png";
           }
-            temp.content.querySelector(".restaurant-name").innerHTML = restaurant.name;
+            temp.content.querySelector(".restaurant-name").innerHTML = restaurant.name ;
             if (restaurant.categories.length < 2) {
-                 temp.content.querySelector(".categories").innerHTML = restaurant.categories[0].title;
+                 temp.content.querySelector(".categories").innerHTML = restaurant.categories[0].title ;
             } else{
                 temp.content.querySelector(".categories").innerHTML = restaurant.categories[0].title + ", " + restaurant.categories[1].title;
             }
@@ -399,13 +364,14 @@ function updateCards(currRanking) {
             } else if (votes.down.indexOf(restaurant.id) > -1) {
                 thumbsDown.classList.add("active");
             }
-
+            console.log(restaurant.name +" : "+ restaurant.downVotes + " : " + downvotes[restaurant.id]);
             let uVotes = restaurant.upVotes;
           //if ((restaurant.id in upvotes)) { uVotes = upvotes[restaurant.id] }
             let dVotes = restaurant.downVotes;
             //if ((restaurant.id in downvotes)) { dVotes = downvotes[restaurant.id]}
             temp.content.querySelector(".fa-stack-1x.upNum").id = "thumbUp-"+ restaurant.id;
-            temp.content.querySelector(".fa-stack-1x.downNum").id = "thumbDown-"+ restaurant.id
+            temp.content.querySelector(".fa-stack-1x.downNum").id = "thumbDown-"+ restaurant.id;
+            temp.content.querySelector(".popup-close-card").id = restaurant.id;
 
             let clone = document.importNode(temp.content, true);
             $('#suggestions').append(clone);
@@ -425,7 +391,8 @@ function sendRestUpdateMsg(restListToSend){
       "roomURL": window.location.href,
       "voteRank": restListToSend,
       "upvotes": upvotes,
-      "downvotes": downvotes
+      "downvotes": downvotes,
+      "remaining": remainingRests
   };
   let jsonObject = { "type": MESSAGE_TYPE.UPDATERESTS, "payload": payLoad}
   let jsonString = JSON.stringify(jsonObject)
@@ -460,11 +427,90 @@ function drawRest(restaurant){
             temp.content.querySelector(".fa.thumb.fa-thumbs-up").classList.add(restaurant.id);
             temp.content.querySelector(".fa.thumb.fa-thumbs-up").id = restaurant.id;
             temp.content.querySelector(".fa.thumb.fa-thumbs-down").classList.add(restaurant.id);
-          temp.content.querySelector(".fa.thumb.fa-thumbs-down").id = restaurant.id;
+            temp.content.querySelector(".fa.thumb.fa-thumbs-down").id = restaurant.id;
+            temp.content.querySelector(".popup-close-card").id = restaurant.id;
             let clone = document.importNode(temp.content, true);
             $('#suggestions').append(clone);
 }
 
+function drawRestMarkers(restList){
+  bounds = new google.maps.LatLngBounds();
+  //let currRests = data.rests.slice(0,5);
+  let currRests = restList;
+  allRests = [];
+  for(let i=0;i<currRests.length;i++){
+    const restaurant = JSON.parse(currRests[i]);
+    drawRest(restaurant);
+    allRests.push(restaurant);
+    let pos = {lat: parseFloat(restaurant.coordinates.latitude), lng: parseFloat(restaurant.coordinates.longitude)};
+    let marker = new google.maps.Marker({
+      title: restaurant.name,
+      position: new google.maps.LatLng(pos.lat, pos.lng),
+      animation: google.maps.Animation.DROP,
+      map: map,
+      clicked: false
+    });
+
+    let contentString = "<b>" + restaurant.name + "</b></br>" + restaurant.location.display_address;
+    let infowindow = new google.maps.InfoWindow({
+      content: contentString
+    });
+
+    google.maps.event.addListener(infowindow,'closeclick',
+      function() {
+        marker.clicked = false;
+      })
+    marker.addListener('click', function() {
+      marker.clicked = true;
+      infowindow.open(map, marker);
+      marker.setAnimation(google.maps.Animation.BOUNCE);
+      setTimeout(function () {
+        marker.setAnimation(null);
+      }, 500);
+    });
+
+    marker.addListener('mouseover', function() {
+      infowindow.open(map, marker);
+    });
+    marker.addListener('mouseout', function() {
+      if(marker.clicked == false){
+        infowindow.close();
+      }
+
+
+    });
+    bounds.extend(marker.position);
+  }
+
+  map.fitBounds(bounds);
+}
+
+
+function removeCard(x) {
+    event.preventDefault();
+    let id = x.id;
+    if (Object.keys(remainingRests).length > 0) {
+            delete ranking[id];
+            for (let restaurantId in remainingRests) {
+               if (!(restaurantId in ranking)) {
+                   ranking[restaurantId] = 1;
+                   delete remainingRests[restaurantId];
+                   updateRestList();
+                   break;
+               }
+            }
+    } else {
+        alert("You've reached the limit on card deletion.");
+    }
+
+}
+
+function addRemainingRests(lastFive) {
+    for (i = 0; i < lastFive.length; i++) {
+        const restaurant = JSON.parse(lastFive[i]);
+        remainingRests[restaurant.id] = restaurant;
+    }
+}
 function displayRoute(endRest){
 
     if(directionsDisplay != undefined){
