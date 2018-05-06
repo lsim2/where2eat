@@ -141,15 +141,15 @@
 <div class="submit">
 <form id="form" method="POST" action="/chat/:id?${pollId}">
 <h2 id="title"><span id="username"></span>Choose your preferences</h2>
-<div class="ranking">
+<div class="ranking distance">
 <p><b>I'm willing to travel <i><span id="dist">12</span></i> mile(s).</b></p><br>
 <div id="flat-slider-vertical-2"></div>
 </div>
-<div class="ranking">
+<div class="ranking price">
 <p><b>My preferred price range is:</b></p><br>
 <div id="flat-slider-vertical-1"></div>
-</div>
-<div class="ranking">
+</div> 
+<div class="ranking restrictions">
 <p><b>Any dietary restrictions?</b></p>
     <select id="restrictions" class="select" multiple>
      <#list restrictions?keys as id>
@@ -157,7 +157,7 @@
       </#list>
     </select>
 </div>
-<div class="ranking">
+<div class="ranking cuisines">
 <p><b>Cuisine preferences (choose up to 3)</b>:</p>
     <select id="cuisine" class="select" multiple>
       <#list cuisines?keys as id>
@@ -165,7 +165,7 @@
       </#list>
     </select>
 </div>
-<div class="ranking">
+<div class="ranking misc">
 <p><b>Any additional preferences?</b></p>
     <select id="misc" class="select" multiple>
       <#list food?keys as id>
@@ -173,8 +173,8 @@
       </#list>
     </select>
 </div>
-<div class="ranking">
-<button type="button" id="toResults" class="btn">Submit</button>
+<div class="submitButton">
+<button type="button" id="toResults" class="btn submitB">Submit</button>
 </div>
 </form>
 </div>

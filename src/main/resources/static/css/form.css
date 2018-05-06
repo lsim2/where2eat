@@ -30,11 +30,42 @@ h3 {
     text-align: center;
 }
 .ranking {
-    position: relative;
-    float: left;
     padding: 10px;
-    margin-left: 90px;
-    margin-top: 10px;
+}
+
+.price {
+    position: absolute;
+    float: left;
+    left: 130px;
+    top: 100px;
+}
+
+.distance {
+    position: absolute;
+    float: left;
+    left: 550px;
+    top: 100px;
+}
+
+.cuisines {
+    position: absolute;
+    float: left;
+    left: 550px;
+    top: 250px;
+}
+
+.restrictions {
+    position: absolute;
+    float: left;
+    left: 130px;
+    top: 250px;
+}
+
+.misc {
+    position: absolute;
+    float: left;
+    left: 130px;
+    top: 400px;
 }
 
 .myForm {
