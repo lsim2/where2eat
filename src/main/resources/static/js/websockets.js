@@ -259,14 +259,10 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 }
 
 function priceRanker(r1, r2){
-  // let rest1 = JSON.parse(r1);
-  // let rest2 = JSON.parse(r2);
   let dif = parseInt(r1.intPrice)-parseInt(r2.intPrice);
   return dif;
 }
 function distRanker(r1, r2){
-  // let rest1 = JSON.parse(r1);
-  // let rest2 = JSON.parse(r2);
   let dif = parseFloat(r1.dist)-parseFloat(r2.dist);
   return dif;
 }
@@ -371,9 +367,9 @@ function updateCards(currRanking) {
             }
             console.log(restaurant.name +" : "+ restaurant.downVotes + " : " + downvotes[restaurant.id]);
             let uVotes = restaurant.upVotes;
-            if ((restaurant.id in upvotes)) { uVotes = upvotes[restaurant.id] }
+          //if ((restaurant.id in upvotes)) { uVotes = upvotes[restaurant.id] }
             let dVotes = restaurant.downVotes;
-            if ((restaurant.id in downvotes)) { dVotes = downvotes[restaurant.id]}
+            //if ((restaurant.id in downvotes)) { dVotes = downvotes[restaurant.id]}
             temp.content.querySelector(".fa-stack-1x.upNum").id = "thumbUp-"+ restaurant.id;
             temp.content.querySelector(".fa-stack-1x.downNum").id = "thumbDown-"+ restaurant.id;
             temp.content.querySelector(".popup-close-card").id = restaurant.id;

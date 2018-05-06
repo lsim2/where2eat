@@ -33,3 +33,7 @@
       rest.setUpVotes(uvotes.get(rest.getId()).getUpVotes());
     }
   }
+
+                 <button type="button"  class="rankers">Order by price</button>
+                <button type="button"  class="rankers">Order by distance</button>
+                <button type="button"  class="rankers">Reset order</button>
