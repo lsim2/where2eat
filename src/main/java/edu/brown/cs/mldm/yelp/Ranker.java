@@ -77,6 +77,7 @@ public class Ranker {
     list.sort(new PriceComparator());
     list.sort(new DistComparator(answer));
     list.sort(new ScoreComparator());
+
     List<Restaurant> ret = new ArrayList<Restaurant>();
     for (int a = 0; a < list.size() && a < 10; a++) {
       Restaurant rest = list.get(a);
@@ -84,7 +85,7 @@ public class Ranker {
         ret.add(rest);
       }
     }
-    // increments the top restaurant so that it shows up in the list
+    // increments the top restaurant so that it shows up in the final list
     if (!ret.isEmpty()) {
       ret.get(0).setScore(ret.get(0).getScore() + INC);
     }
@@ -151,7 +152,6 @@ public class Ranker {
    */
   private void checkRestrictions(List<Restaurant> allRests,
       Answer ans) {
-    List<Restaurant> toRemv = new ArrayList<Restaurant>();
     for (Restaurant rest : allRests) {
       if (!rest.getRestrictions().containsAll(ans.getRestrictions())) {
         rest.setScore(rest.getScore() + DEC);
@@ -163,7 +163,6 @@ public class Ranker {
   /**
    * The comparator for restaurant's scores.
    * 
-   * @author dmutako
    *
    */
   private class ScoreComparator implements Comparator<Restaurant> {
@@ -188,7 +187,14 @@ public class Ranker {
 
   }
 
-  // potentially change this..
+  /**
+   * This method checks whether a given restaurant is within the given list.
+   * 
+   * @param restaurants
+   *          the restaurant to look for in the list.
+   * @param rest
+   * @return
+   */
   public Restaurant isInList(Collection<Restaurant> restaurants,
       Restaurant rest) {
     for (Restaurant rst : restaurants) {
@@ -282,7 +288,7 @@ public class Ranker {
   }
 
   /**
-   * This method increments the top 10 cheapest restaurants.
+   * This method increments the top 10 cheapest restaurants's score.
    * 
    * @param rests
    *          all the user's restaurants.
@@ -316,31 +322,6 @@ public class Ranker {
         }
       }
     }
-  }
-
-  /**
-   * Called in the server so that it can sort restaurants by price, or distance.
-   * 
-   * @param sort_type
-   *          string indicating whether to sort by price or distance
-   * @param rests
-   *          the list to sort
-   * @param ans
-   *          the answer whose distance to use
-   * @return the sorted list of restaurants
-   */
-  public List<Restaurant> sortRests(String sort_type, List<Restaurant> rests,
-      Answer ans) {
-    if (sort_type.equals("price")) {
-      List<Restaurant> ret = new ArrayList<Restaurant>(rests);
-      ret.sort(new PriceComparator());
-      return ret;
-    } else if (sort_type.equals("distance")) {
-      List<Restaurant> ret = new ArrayList<Restaurant>(rests);
-      ret.sort(new DistComparator(ans));
-      return ret;
-    }
-    return rests;
   }
 
 }
