@@ -51,7 +51,6 @@ const setup_chatter = () => {
         break;
       case MESSAGE_TYPE.DELETE:
         let nameToDelete = String(data.name);
-        console.log("name to delete is: " + nameToDelete );
         $('ul#connectedUsrs li:contains(' + nameToDelete + ')').remove();
         break;
       case MESSAGE_TYPE.UPDATEALLNAMES:
@@ -66,7 +65,6 @@ const setup_chatter = () => {
 
         for (let i = 0; i < uniqueNames.length; i++) {
           let uniqueName = uniqueNames[i];
-          console.log("unique name is: " + uniqueName);
           $('#connectedUsrs').append("<li>" + uniqueName + "</li>");
         }
 
@@ -100,45 +98,7 @@ const setup_chatter = () => {
       let herewindow = new google.maps.InfoWindow({
         content: contentString
       });
-      if (navigator.geolocation) {
-
-       navigator.geolocation.getCurrentPosition(function(position) {
-         selfpos = {
-           lat: position.coords.latitude,
-           lng: position.coords.longitude
-         };
-
-         let marker = new google.maps.Marker({
-           title: "You!",
-           position: new google.maps.LatLng(selfpos.lat, selfpos.lng),
-           animation: google.maps.Animation.DROP,
-           map: map,
-           icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
-         });
-
-          bounds.extend(marker.position);
-          map.fitBounds(bounds);
-
-          marker.addListener('mouseover', function() {
-            herewindow.open(map, marker);
-          });
-          marker.addListener('mouseout', function() {
-
-              herewindow.close();
-
-          });
-          // directions
-          if(data.rests[0]!=null){
-            displayRoute(JSON.parse(data.rests[0]));
-          }
-          //end directions
-       }, function() {
-         handleLocationError(true, infoWindow, map.getCenter());
-       });
-     } else {
-       // Browser doesn't support Geolocation
-       handleLocationError(false, infoWindow, map.getCenter());
-     }
+      drawCurrLoc(data.rests[0]);
       break;
       
       case MESSAGE_TYPE.CONNECT:
@@ -156,14 +116,12 @@ const setup_chatter = () => {
         let myIds = data.payload.ids;
         let myContent = data.payload.content;
         let myNames = data.payload.names;
-        console.log(data.payload.myName);
         if (myName == data.payload.myName) {
             for (let i = 0; i < myDates.length; i++) {
               let date = myDates[i];
               let txtId = myIds[i];
               let txt = myContent[i];
               let nameTxt = myNames[i];
-              console.log("new user", txt);
               addChatMsg(nameTxt,date,txt);
             }
         } else {
@@ -172,7 +130,6 @@ const setup_chatter = () => {
             let txtId = myIds[i];
             let txt = myContent[i];
             let nameTxt = myNames[i];
-            console.log("new msg addtoroom", txt);
             addChatMsg(nameTxt,date,txt);
         }
       break;
@@ -206,7 +163,47 @@ const setup_chatter = () => {
     }
   };
 }
+function drawCurrLoc(rest){
+  if (navigator.geolocation) {
 
+       navigator.geolocation.getCurrentPosition(function(position) {
+         selfpos = {
+           lat: position.coords.latitude,
+           lng: position.coords.longitude
+         };
+
+         let marker = new google.maps.Marker({
+           title: "You!",
+           position: new google.maps.LatLng(selfpos.lat, selfpos.lng),
+           animation: google.maps.Animation.DROP,
+           map: map,
+           icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+         });
+
+          bounds.extend(marker.position);
+          map.fitBounds(bounds);
+
+          marker.addListener('mouseover', function() {
+            herewindow.open(map, marker);
+          });
+          marker.addListener('mouseout', function() {
+
+              herewindow.close();
+
+          });
+          // directions
+          if(rest!=null){
+            displayRoute(JSON.parse(rest));
+          }
+          //end directions
+       }, function() {
+         handleLocationError(true, infoWindow, map.getCenter());
+       });
+     } else {
+       // Browser doesn't support Geolocation
+       handleLocationError(false, infoWindow, map.getCenter());
+     }
+}
 
 
 /*Sends a chat message
@@ -381,7 +378,6 @@ function updateCards(currRanking) {
             } else if (votes.down.indexOf(restaurant.id) > -1) {
                 thumbsDown.classList.add("active");
             }
-            console.log(restaurant.name +" : "+ restaurant.downVotes + " : " + downvotes[restaurant.id]);
             let uVotes = restaurant.upVotes;
             let dVotes = restaurant.downVotes;
             temp.content.querySelector(".fa-stack-1x.upNum").id = "thumbUp-"+ restaurant.id;
@@ -390,7 +386,6 @@ function updateCards(currRanking) {
 
             let clone = document.importNode(temp.content, true);
             $('#suggestions').append(clone);
-             console.log(restaurant.name +" : "+ restaurant.downVotes + " : " + downvotes[restaurant.id]);
             document.getElementById("thumbUp-"+ restaurant.id).innerHTML = uVotes;
             document.getElementById("thumbDown-"+ restaurant.id).innerHTML = dVotes;
 

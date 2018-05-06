@@ -30,6 +30,7 @@ public class Main {
    * specified arguments.
    * 
    * @param args
+   *          the arguments from the main class.
    */
   public static void main(String[] args) {
 
@@ -42,6 +43,22 @@ public class Main {
     if (options.has("gui")) {
       Server server = new Server();
       server.runSparkServer((int) options.valueOf("port"));
+    }
+    Reader reader = new InputStreamReader(System.in, Charset.forName("UTF-8"));
+
+    try (BufferedReader in = new BufferedReader(reader)) {
+      String line;
+      while ((line = in.readLine()) != null) {
+        System.out.println("echoding: " + line);
+      }
+    } catch (IOException e) {
+      System.out.println("ERROR: Reading the command line");
+    } finally {
+      try {
+        reader.close();
+      } catch (IOException e) {
+        System.out.println("ERROR: Closing the buffer reader");
+      }
     }
 
   }
