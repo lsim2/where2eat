@@ -10,9 +10,9 @@
 <link rel="stylesheet" href="/css/chat.css">
 <link rel="stylesheet" href="/css/form.css">
 <nav class="navbar navbar-fixed-top">
-	  <div class="container-fluid">
-	    <div class="navbar-header">
-	      <a class="navbar-brand" href="/home">Where2Eat &nbsp; |</a>
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/home">Where2Eat &nbsp; |</a>
           <a class="navbar-brand" href="javascript:{}" id="getEvent">Hide Details</a>
           <a class="navbar-brand dropdown-toggle" data-toggle="dropdown" href=""> | &nbsp;&nbsp;Sort Suggestions<span class="caret"></span></a>
             <ul style="margin-left: 250px;" class="dropdown-menu">
@@ -23,9 +23,9 @@
           <a class="navbar-brand" style="margin-left: 400px;" href="" id="shareURL" target="_blank">Share Poll &nbsp; |</a>
           <a class="navbar-brand" data-popup-open="popup-1" href="javascript:{}" onclick="myF()">Change Preferences  &nbsp;|</a>
           <a id="chat" class="navbar-brand" href="javascript:{}">Chat</a>
-	    </div>
-	  </div>
-	</nav>
+        </div>
+      </div>
+    </nav>
 </head>
 <br><br>
 <div class="container bootstrap snippet">
@@ -33,7 +33,7 @@
     <div id="details">
     <h4 id="event"><b>${author}</b> invites you for <b>${pollTitle}</b> at <b>${pollLoc}</b> on <b>${pollDate}</b></h4></div>
     <br>
-		<div class="col-md-4">
+        <div class="col-md-4">
                 <div id="suggestions"></div>
                 <template id="suggestion">
                 <div class="card">
@@ -66,74 +66,74 @@
      <div class="col-md-5" id='map'>
         <!--stuff i added -->
 
-	    <script src="/js/maps.js"></script>
-	      <script async defer
-	      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwQc3YSCaD2g-U32PUbY4ZtoM2VocxYB8&callback=initMap">
-	      </script>
+        <script src="/js/maps.js"></script>
+          <script async defer
+          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwQc3YSCaD2g-U32PUbY4ZtoM2VocxYB8&callback=initMap">
+          </script>
 
-	    <!--stuff i added -->
+        <!--stuff i added -->
 
     </div>
-    	<div id="myChat" class="col-md-3">
+        <div id="myChat" class="col-md-3">
             <div class="chat-message" id="chat-message">
                 <ul id="chatMsgs" class="chat">
                 <li class="left clearfix">
                 <span class="chat-img pull-left">
-                    		<img src="https://api.adorable.io/avatars/50/Foodbot@adorable.png" alt="User Avatar">
-                    	</span>
-                    	<div class="chat-body clearfix">
-                    		<div class="header">
-                    			<strong class="primary-font">FoodBot</strong>
-                    		</div>
-                    		<p>
-                    			Welcome to Where2Eat! Chat here to talk to your fellow fooders!
-                    		</p>
-                    	</div>
+                            <img src="https://api.adorable.io/avatars/50/Foodbot@adorable.png" alt="User Avatar">
+                        </span>
+                        <div class="chat-body clearfix">
+                            <div class="header">
+                                <strong class="primary-font">FoodBot</strong>
+                            </div>
+                            <p>
+                                Welcome to Where2Eat! Chat here to talk to your fellow fooders!
+                            </p>
+                        </div>
                         </li>
                     <template id="left">
                     <li class="left clearfix">
-                    	<span class="chat-img pull-left">
-                    		<img class="avatar" src="" alt="User Avatar">
-                    	</span>
-                    	<div class="chat-body clearfix">
-                    		<div class="header">
-                    			<strong class="primary-font user"></strong>
-                    			<small class="pull-right text-muted"><i class="fa fa-clock-o time"></i></small>
-                    		</div>
-                    		<p class="msg"></p>
-                    	</div>
+                        <span class="chat-img pull-left">
+                            <img class="avatar" src="" alt="User Avatar">
+                        </span>
+                        <div class="chat-body clearfix">
+                            <div class="header">
+                                <strong class="primary-font user"></strong>
+                                <small class="pull-right text-muted"><i class="fa fa-clock-o time"></i></small>
+                            </div>
+                            <p class="msg"></p>
+                        </div>
                     </li>
                     </template>
                     <template id="right">
                     <li class="right clearfix">
                         <span class="chat-img pull-right">
-                    		<img src="" alt="User Avatar">
-                    	</span>
-                    	<div class="chat-body clearfix">
-                    		<div class="header">
-                    			<strong class="primary-font user"></strong>
-                    			<small class="pull-right text-muted"><i class="fa fa-clock-o time"></i></small>
-                    		</div>
-                    		<p class="msg"></p>
-                    	</div>
+                            <img src="" alt="User Avatar">
+                        </span>
+                        <div class="chat-body clearfix">
+                            <div class="header">
+                                <strong class="primary-font user"></strong>
+                                <small class="pull-right text-muted"><i class="fa fa-clock-o time"></i></small>
+                            </div>
+                            <p class="msg"></p>
+                        </div>
                     </li>
                     </template>
                 </ul>
             </div>
             <div class="chat-box">
-            	<div class="input-group bg-white">
+                <div class="input-group bg-white">
                 <form id = "userForm">
-            		<input id="userInput" name="firstInput" class="form-control border no-shadow no-rounded" placeholder="Type your message here" autocomplete="off">
+                    <input id="userInput" name="firstInput" class="form-control border no-shadow no-rounded" placeholder="Type your message here" autocomplete="off">
                 </form>
-            	</div><!-- /input-group -->
+                </div><!-- /input-group -->
             </div>
-		</div>
-	</div>
+        </div>
+    </div>
 </div>
 <div hidden>
-  	<p hidden>Currently connected users</p>
-  	<ul id="connectedUsrs" hidden></ul>
-	 </div>
+    <p hidden>Currently connected users</p>
+    <ul id="connectedUsrs" hidden></ul>
+     </div>
 <div class="popup" data-popup="popup-1">
 <div class="popup-inner">
 <h3 id="pollTitle"></h3>
