@@ -56,7 +56,7 @@ public class Answer {
 	public String toHTML() {
 	  StringBuilder sb = new StringBuilder();
 	  sb.append("<h5>" + userId + "'s Preferences:</h5>");
-	  sb.append("<b>Price</b>: " + priceSigns[price] + "<br>");
+	  sb.append("<b>Price</b>: " + priceSigns[price-1] + "<br>");
 	  sb.append("<b>Distance</b>: " + Math.round(radius/1609.34) + " miles<br>");
 	  addToHTML(sb, cuisine, "Cuisines", Server.getCuisinesMap());
 	  addToHTML(sb, restrictions, "Food Restrictions", Server.getRestrictionsMap());
