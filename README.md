@@ -1,5 +1,3 @@
-Approved by Alex!
-
 # Where2Eat
 **Team Members:** Diane Mutako, Lina Sim, Matthew Liu, Mounika Dandu
 
@@ -24,17 +22,12 @@ An app that lets a group of friends decide where to eat. An initial user - from 
 **Problem:**
 This app will help people explore different cuisines and places to eat. It will save time while deciding where to have their meals because it will do the deciding for them. This will be especially helpful when multiple people want to share a meal because it will align their interests/preferences.
 
-**Mentor TA:** _Put your mentor TA's name and email here once you're assigned one!_
+**Mentor:** 
 Jacob Leiken
 
 ## Meetings
 _On your first meeting with your mentor TA, you should plan dates for at least the following meetings:_
 
-**Specs, Mockup, and Design Meeting:** _(Schedule for on or before March 16)_
-
-**4-Way Checkpoint:** _(Schedule for on or before April 23)_
-
-**Adversary Checkpoint:** _(Schedule once you are assigned an adversary TA)_
 
 ## Project Specs, Mockup, and Design (March 16)
 _A link to your specifications, mockup, and your design presentation will go here!_
@@ -42,7 +35,6 @@ Specs/Design:
 https://docs.google.com/document/d/1G1jawLaQgQToq7AnwRABAXkI2r7d8_QyW5dzpf_zUlk/edit?ts=5aa6d201
 
 ## How to Build and Run
-_A necessary part of any README!_
 
 To build the program, run mvn package in a terminal. 
 To run, enter 
